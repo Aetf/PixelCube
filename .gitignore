@@ -1,3 +1,6 @@
+# Peruser solution options
+*.suo
+
 # Compiled Object files
 *.slo
 *.lo
