@@ -1,0 +1,6 @@
+[bugtraq]
+	url = http://git.oschina.net/Aetf-git/PixelCube/issues/%BUGID%
+	message = #%BUGID%
+	append = false
+	number = true
+	warnifnoissue = true
