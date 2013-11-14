@@ -61,6 +61,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Interfaces\ICube.cs" />
+    <Compile Include="Interfaces\IArtwork.cs" />
+    <Compile Include="Interfaces\ISceneControler.cs" />
+    <Compile Include="Interfaces\IVolume.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
