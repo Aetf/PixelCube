@@ -65,6 +65,8 @@
     <Compile Include="ConfigProvider.cs" />
     <Compile Include="Interfaces\ICube.cs" />
     <Compile Include="Interfaces\IArtwork.cs" />
+    <Compile Include="Interfaces\IBackgroundMusic.cs" />
+    <Compile Include="Interfaces\IBackgroundSound.cs" />
     <Compile Include="Interfaces\ISceneControler.cs" />
     <Compile Include="Interfaces\IVolume.cs" />
     <Compile Include="MainWindow.xaml.cs">
