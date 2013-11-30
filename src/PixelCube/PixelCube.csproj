@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LeapCSharp.NET4.0">
+      <HintPath>..\..\..\..\..\ProjectManagement\Homework\LeapDeveloperKit\LeapSDK\lib\LeapCSharp.NET4.0.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -67,8 +70,14 @@
     <Compile Include="Interfaces\IArtwork.cs" />
     <Compile Include="Interfaces\IBackgroundMusic.cs" />
     <Compile Include="Interfaces\IBackgroundSound.cs" />
+    <Compile Include="Interfaces\ILeapMotion.cs" />
     <Compile Include="Interfaces\ISceneControler.cs" />
     <Compile Include="Interfaces\IVolume.cs" />
+    <Compile Include="LeapMotion\DeviceInfoArgs.cs" />
+    <Compile Include="LeapMotion\FingerArgs.cs" />
+    <Compile Include="LeapMotion\HandArgs.cs" />
+    <Compile Include="LeapMotion\LeapArgs.cs" />
+    <Compile Include="LeapMotion\LeapListener.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
