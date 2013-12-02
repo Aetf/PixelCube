@@ -8,8 +8,12 @@ namespace PixelCube.LeapMotion
 {
     public class DeviceInfoArgs:EventArgs
     {
-        private bool isConnected = false;
-        public DeviceInfoArgs() { }
+        public bool isConnected { set; get; }
+        public DeviceInfoArgs() 
+        {
+            this.isConnected = false;
+        }
+
 
     }
 }
