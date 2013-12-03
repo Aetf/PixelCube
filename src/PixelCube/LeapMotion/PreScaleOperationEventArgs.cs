@@ -1,7 +1,7 @@
 ﻿
 namespace PixelCube.LeapMotion
 {
-    class PreScaleOperationEventArgs
+    public class PreScaleOperationEventArgs
     {
         public float ScaleFactor { set; get; }
 

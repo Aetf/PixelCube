@@ -2,7 +2,7 @@
 
 namespace PixelCube.LeapMotion
 {
-    class PreDrawOperationEventArgs
+    public class PreDrawOperationEventArgs
     {
         public Vector DrawPosition { set; get; }
 

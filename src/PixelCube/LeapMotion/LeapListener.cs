@@ -16,7 +16,7 @@ namespace PixelCube.LeapMotion
     /// <summary>
     /// 
     /// </summary>
-    class LeapListener:Listener,ILeapMotion
+   public class LeapListener:Listener,ILeapMotion
     {
         
         /// <summary>
@@ -80,12 +80,12 @@ namespace PixelCube.LeapMotion
         /// <param name="controller"> Leap Controller </param>
         public override void OnDisconnect(Controller controller)
         {
-            EventHandler<LeapStatusChangeEventArgs> leapStatusEvent = LeapStatusEvent;
-            if (leapStatusEvent != null)
+            EventHandler<LeapStatusChangeEventArgs> leapStatusChangeEvent = LeapStatusChangeEvent;
+            if (leapStatusChangeEvent != null)
             {
                 LeapStatusChangeEventArgs deviceInfoArg = new LeapStatusChangeEventArgs();
                 deviceInfoArg.isConnected = false;
-                leapStatusEvent(this, deviceInfoArg);
+                leapStatusChangeEvent(this, deviceInfoArg);
             }
             base.OnDisconnect(controller);
         }

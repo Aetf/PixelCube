@@ -2,7 +2,7 @@
 
 namespace PixelCube.LeapMotion
 {
-    class PreRotateOperationEventArgs
+   public class PreRotateOperationEventArgs
     {
         public PreRotateOperationEventArgs()
         {

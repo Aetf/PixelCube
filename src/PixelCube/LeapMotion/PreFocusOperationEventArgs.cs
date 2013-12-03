@@ -2,7 +2,7 @@
 
 namespace PixelCube.LeapMotion
 {
-    class PreFocusOperationEventArgs
+   public class PreFocusOperationEventArgs
     {
         public Vector FocusPosition { set; get; }
 
