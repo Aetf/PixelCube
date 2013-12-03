@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Leap;
+using PixelCube.LeapMotion;
 
 namespace PixelCube.OpCore
 {
@@ -74,6 +75,25 @@ namespace PixelCube.OpCore
         public event EventHandler<PostScaleOperationEventArgs> PostScaleOperationEvent;
 
         public OpCore()
+        {
+        }
+
+        /// <summary>
+        /// 焦点变化响应函数
+        /// </summary>
+        /// <param name="sender">事件源</param>
+        /// <param name="e">事件参数</param>
+        public void OnPreFocusOperation(object sender, PreFocusOperationEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// 旋转操作响应函数
+        /// </summary>
+        /// <param name="sender">事件源</param>
+        /// <param name="e">事件参数</param>
+        public void OnPreRotateOperation(object sender, PreRotateOperationEventArgs e)
         {
         }
     }
