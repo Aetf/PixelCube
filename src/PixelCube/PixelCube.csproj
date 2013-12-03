@@ -73,8 +73,12 @@
     <Compile Include="Interfaces\ILeapMotion.cs" />
     <Compile Include="Interfaces\ISceneControler.cs" />
     <Compile Include="Interfaces\IVolume.cs" />
-    <Compile Include="LeapMotion\DeviceInfoArgs.cs" />
+    <Compile Include="LeapMotion\LeapStatusChangeEventArgs.cs" />
     <Compile Include="LeapMotion\LeapListener.cs" />
+    <Compile Include="LeapMotion\PreDrawOperationEventArgs.cs" />
+    <Compile Include="LeapMotion\PreFocusOperationEventArgs.cs" />
+    <Compile Include="LeapMotion\PreRotateOperationEventArgs.cs" />
+    <Compile Include="LeapMotion\PreScaleOperationEventArgs.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

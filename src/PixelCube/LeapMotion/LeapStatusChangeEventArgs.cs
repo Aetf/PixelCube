@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace PixelCube.LeapMotion
 {
-    public class DeviceInfoArgs:EventArgs
+    public class LeapStatusChangeEventArgs:EventArgs
     {
         public bool isConnected { set; get; }
-        public DeviceInfoArgs() 
+        public LeapStatusChangeEventArgs() 
         {
             this.isConnected = false;
         }

@@ -22,11 +22,11 @@ namespace PixelCube.LeapMotion
         /// <summary>
         /// All events this class will offer
         /// </summary>
-        public event EventHandler<DeviceInfoArgs> LeapStatusEvent;
-        public event EventHandler<Vector> PreDrawOperationEvent;
-        public event EventHandler<Vector> PreFocusOperationEvent;
-        public event EventHandler<EventArgs> PreRotateOperationEvent;
-        public event EventHandler<float> PreScaleOperationEvent;
+        public event EventHandler<LeapStatusChangeEventArgs> LeapStatusChangeEvent;
+        public event EventHandler<PreDrawOperationEventArgs> PreDrawOperationEvent;
+        public event EventHandler<PreFocusOperationEventArgs> PreFocusOperationEvent;
+        public event EventHandler<PreRotateOperationEventArgs> PreRotateOperationEvent;
+        public event EventHandler<PreScaleOperationEventArgs> PreScaleOperationEvent;
 
     /* Attributes */
         private int pointableID;
@@ -57,17 +57,17 @@ namespace PixelCube.LeapMotion
         /// </param>
         public override void OnConnect(Controller controller)
         {
-            EventHandler<DeviceInfoArgs> leapStatusEvent = LeapStatusEvent;
+            EventHandler<LeapStatusChangeEventArgs> leapStatusChangeEvent = LeapStatusChangeEvent;
             //controller.EnableGesture(Gesture.GestureType.TYPECIRCLE);
             controller.EnableGesture(Gesture.GestureType.TYPEKEYTAP);
             controller.EnableGesture(Gesture.GestureType.TYPESCREENTAP);
             //controller.EnableGesture(Gesture.GestureType.TYPESWIPE);
 
-            if (leapStatusEvent != null)
+            if (leapStatusChangeEvent != null)
             {
-                DeviceInfoArgs deviceInfoArg = new DeviceInfoArgs();
-                deviceInfoArg.isConnected = true;
-                leapStatusEvent(this, deviceInfoArg);
+                LeapStatusChangeEventArgs leapStatusChangeEventArgs = new LeapStatusChangeEventArgs();
+                leapStatusChangeEventArgs.isConnected = true;
+                leapStatusChangeEvent(this, leapStatusChangeEventArgs);
             }
 
             base.OnConnect(controller);
@@ -80,10 +80,10 @@ namespace PixelCube.LeapMotion
         /// <param name="controller"> Leap Controller </param>
         public override void OnDisconnect(Controller controller)
         {
-            EventHandler<DeviceInfoArgs> leapStatusEvent = LeapStatusEvent;
+            EventHandler<LeapStatusChangeEventArgs> leapStatusEvent = LeapStatusEvent;
             if (leapStatusEvent != null)
             {
-                DeviceInfoArgs deviceInfoArg = new DeviceInfoArgs();
+                LeapStatusChangeEventArgs deviceInfoArg = new LeapStatusChangeEventArgs();
                 deviceInfoArg.isConnected = false;
                 leapStatusEvent(this, deviceInfoArg);
             }
@@ -110,8 +110,8 @@ namespace PixelCube.LeapMotion
             // If has two hands, suppose it will has a scale operation soon.
             if (currentFrame.Hands.Count > 2)
             {
-                EventHandler<float> scale = PreScaleOperationEvent;
-                scale(this, currentFrame.ScaleFactor(lastFrame));
+                EventHandler<PreScaleOperationEventArgs> scale = PreScaleOperationEvent;
+                scale(this, new PreScaleOperationEventArgs(currentFrame.ScaleFactor(lastFrame)));
                 
             }
 
