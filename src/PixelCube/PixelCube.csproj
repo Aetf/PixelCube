@@ -74,9 +74,6 @@
     <Compile Include="Interfaces\ISceneControler.cs" />
     <Compile Include="Interfaces\IVolume.cs" />
     <Compile Include="LeapMotion\DeviceInfoArgs.cs" />
-    <Compile Include="LeapMotion\FingerArgs.cs" />
-    <Compile Include="LeapMotion\HandArgs.cs" />
-    <Compile Include="LeapMotion\LeapArgs.cs" />
     <Compile Include="LeapMotion\LeapListener.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
