@@ -11,7 +11,7 @@ namespace PixelCube.Scene3D
     /// <summary>
     /// 表示一个场景控制器
     /// </summary>
-    interface ISceneControler
+    public interface ISceneControler
     {
         /// <summary>
         /// 获取和设置对于整个世界坐标的变换
