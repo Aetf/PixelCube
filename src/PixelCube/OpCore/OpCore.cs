@@ -106,6 +106,25 @@ namespace PixelCube.OpCore
         /// <param name="e">事件参数</param>
         public void OnPreDrawOperation(object sender, PreDrawOperationEventArgs e)
         {
+            Vector drawPosition = e.DrawPosition;
+            //i,j,k为小方块的三维位置索引
+            int i = (int)drawPosition.x / mcubea;
+            int j = (int)drawPosition.y / mcubea;
+            int k = (int)drawPosition.z / mcubea;
+
+            //计算小方块在链表中的索引
+            int index = i + (int)martwork.SceneSize.X * j + (int)martwork.SceneSize.Y * k;
+
+            //获取要图画的小方块
+            ICube cube = martwork.Cubes[index];
+
+            //修改小方块上色的颜色
+            //...
+
+            //发出要图画事件
+            if (PostDrawOperationEvent != null) {
+                PostDrawOperationEvent(this, new PostDrawOperationEventArgs(index));
+            }
         }
 
         /// <summary>

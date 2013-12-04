@@ -11,8 +11,11 @@ namespace PixelCube.OpCore
     /// </summary>
     public class PostDrawOperationEventArgs : EventArgs
     {
-        public PostDrawOperationEventArgs()
+        public int Index { private set; get; }
+
+        public PostDrawOperationEventArgs(int index)
         {
+            this.Index = Index;
         }
     }
 }
