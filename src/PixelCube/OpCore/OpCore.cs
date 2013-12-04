@@ -44,6 +44,7 @@ namespace PixelCube.OpCore
 
         private IArtwork martwork;
         private int mcubea;//小方块的边长
+        private ISceneControler msceneController;
 
         #endregion
 
@@ -113,7 +114,23 @@ namespace PixelCube.OpCore
         /// <param name="e">事件参数</param>
         public void OnPreRotateOperation(object sender, PreRotateOperationEventArgs e)
         {
-
+            //从事件参数中获取旋转轴向量
+            float[] vector = e.RotationAxis.ToFloatArray();
+            //转化为用C#提供的向量类型表示
+            Vector3D rotateAxis = new Vector3D(vector[0], vector[1], vector[2]);
+            //从事件参数中获取旋转角度
+            float rotateAngel = e.RotationAngle;
+            //定义绕轴旋转变换
+            AxisAngleRotation3D axisAngelRotation = new AxisAngleRotation3D(rotateAxis, rotateAngel);
+            //根据变换定义变换矩阵
+            RotateTransform3D rotateTransform = new RotateTransform3D(axisAngelRotation);
+            //传递给视图控制类
+            msceneController.WorldTransform = rotateTransform;
+            //发出事件
+            if (PostRotateOperationEvent != null)
+            {
+                PostRotateOperationEvent(this, new PostRotateOperationEventArgs());
+            }
         }
 
         /// <summary>
