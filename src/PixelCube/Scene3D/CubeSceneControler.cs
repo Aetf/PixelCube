@@ -49,6 +49,16 @@ namespace PixelCube.Scene3D
             }
         }
 
+        public void SetFocus(int i, int j, int k)
+        {
+            return;
+        }
+
+        public void Erase(int i, int j, int k)
+        {
+            return;
+        }
+
         #endregion
 
         #region IDisposable 成员

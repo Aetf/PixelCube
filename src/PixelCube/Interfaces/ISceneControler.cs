@@ -19,8 +19,25 @@ namespace PixelCube.Scene3D
         Transform3D WorldTransform { get; set; }
 
         /// <summary>
-        /// 进行控制器初始化工作
+        /// 将(i, j, k)的小方块设置为焦点方块
         /// </summary>
+        /// <param name="i"></param>
+        /// <param name="j"></param>
+        /// <param name="k"></param>
+        void SetFocus(int i, int j, int k);
+
+        /// <summary>
+        /// 擦除(i, j, k)的小方块
+        /// </summary>
+        /// <param name="i"></param>
+        /// <param name="j"></param>
+        /// <param name="k"></param>
+        void Erase(int i, int j, int k);
+
+        /// <summary>
+        /// 控制器的初始化
+        /// </summary>
+        /// <param name="win">应用主窗口</param>
         void DoInit(MainWindow win);
     }
 }
