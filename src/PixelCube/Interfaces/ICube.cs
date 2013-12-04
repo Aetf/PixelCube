@@ -23,5 +23,17 @@ namespace PixelCube.Scene3D
         /// 比如在4x4x4的场景中，某个角即为(0, 0, 0)
         /// </summary>
         Vector3D Position { get; set; }
+
+
+        /// <summary>
+        /// 是否可见
+        /// </summary>
+         bool Visible{ get; set;}
+
+        /// <summary>
+        /// 是否拥有焦点
+        /// </summary>
+         bool Hasfocus{ get; set ; }
+
     }
 }
