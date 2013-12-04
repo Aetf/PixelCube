@@ -18,22 +18,38 @@ namespace PixelCube.LeapMotion
     /// </summary>
    public class LeapListener:Listener,ILeapMotion
     {
-        
-        /// <summary>
-        /// All events this class will offer
-        /// </summary>
-        public event EventHandler<LeapStatusChangeEventArgs> LeapStatusChangeEvent;
-        public event EventHandler<PreDrawOperationEventArgs> PreDrawOperationEvent;
-        public event EventHandler<PreFocusOperationEventArgs> PreFocusOperationEvent;
-        public event EventHandler<PreRotateOperationEventArgs> PreRotateOperationEvent;
-        public event EventHandler<PreScaleOperationEventArgs> PreScaleOperationEvent;
+       /// <summary>
+       /// All events this class will offer
+       /// </summary>
+       public event EventHandler<LeapStatusChangeEventArgs> LeapStatusChangeEvent;
+       public event EventHandler<PreDrawOperationEventArgs> PreDrawOperationEvent;
+       public event EventHandler<PreFocusOperationEventArgs> PreFocusOperationEvent;
+       public event EventHandler<PreRotateOperationEventArgs> PreRotateOperationEvent;
+       public event EventHandler<PreScaleOperationEventArgs> PreScaleOperationEvent;
+       public event EventHandler<PreDragOperationEventArgs> PreDragOperationEvent;
+       public event EventHandler<PreEraseOperationEventArgs> PreEraseOperationEvent;
+       public event EventHandler<PreChangeColorOperationEventArgs> PreChangeColorOperationEvent;
+       
 
     /* Attributes */
-        private int pointableID;
-        private bool isDrawing;
-        private Frame lastFrame;
-        private Frame currentFrame;
-        
+       private int pointableID;
+       private bool isDrawing;
+       private Frame lastFrame;
+       private Frame currentFrame;
+       private Controller controller;
+       
+    /* Intializer and Unintializer */
+       public void Initialize()
+       {
+           controller = new Controller();
+           controller.AddListener(this);
+       }
+
+       public void Unintialize()
+       {
+           controller.RemoveListener(this);
+           controller.Dispose();
+       }
         
         /// <summary>
         ///     Initialize the private attributes
@@ -45,6 +61,7 @@ namespace PixelCube.LeapMotion
             isDrawing = false;
             lastFrame = null;
             currentFrame = null;
+            controller = null;
             
             base.OnInit(controller);
         }
