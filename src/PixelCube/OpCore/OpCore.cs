@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Leap;
 using PixelCube.LeapMotion;
+using PixelCube.Interfaces;
 
 namespace PixelCube.OpCore
 {
@@ -45,6 +46,28 @@ namespace PixelCube.OpCore
         /// <param name="e">事件参数</param>
         public void OnPreFocusOperation(object sender, PreFocusOperationEventArgs e)
         {
+            Vector curPosition = e.FocusPosition;
+            //x,y,z为小方块的绝对三维坐标
+            float x = curPosition.x;
+            float y = curPosition.y;
+            float z = curPosition.z;
+            //getArtwork 
+            
+            //getCube's length
+            int cubeLength = 1;
+            //i,j,k为小方块的三维位置索引
+            int i = (int)x / cubeLength;
+            int j = (int)y / cubeLength;
+            int k = (int)z / cubeLength;
+            int index = 1;//i + SceneSize.x * j + SceneSize.y * k;
+            //getCube
+            //setCube's attribute
+
+            //发出事件
+            if (PostFocusOperationEvent != null)
+            {
+                PostFocusOperationEvent(this, new PostFocusOperationEventArgs(index));
+            }
         }
 
         /// <summary>
