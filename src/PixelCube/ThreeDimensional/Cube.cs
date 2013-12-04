@@ -21,8 +21,7 @@ namespace PixelCube.ThreeDimensional
         }
         public void Init()
         {
-            Visible = true;
-            Hasfocus = true;
+            
         }
 
         /// <summary>
@@ -31,16 +30,20 @@ namespace PixelCube.ThreeDimensional
         /// </summary>
 
 
+
         public Vector3D Position
         {
             get;
             set;
         }
-       
+
+
+
 
         /// <summary>
         /// 小方块的颜色
         /// </summary>
+
 
 
         public Color CubeColor
@@ -48,6 +51,8 @@ namespace PixelCube.ThreeDimensional
             get;
             set;
         }
+
+   
 
 
         /// <summary>
@@ -60,15 +65,21 @@ namespace PixelCube.ThreeDimensional
             set;
         }
 
+
+
+
         /// <summary>
         /// 是否拥有焦点
         /// </summary>
+
 
         public bool Hasfocus
         {
             get;
             set;
         }
+
+  
 
         /// <summary>
         /// 序列化

@@ -25,15 +25,20 @@ namespace PixelCube.ThreeDimensional
         /// 背景颜色
         /// </summary>
 
+
         public Color BackgroundFill
         {
             get;
             set;
         }
 
+
+
+
         /// <summary>
         /// 画布的大小
         /// </summary>
+
 
         public Vector3D SceneSize
         {
@@ -41,9 +46,13 @@ namespace PixelCube.ThreeDimensional
             set;
         }
 
+  
+
+
         /// <summary>
         /// 返回场景中所有的小方块，位于(i, j, k)的小方块的索引为 i+SceneSize.x*j+SceneSize.y*k
         /// </summary>
+
 
         public List<ICube> Cubes
         {
@@ -51,9 +60,12 @@ namespace PixelCube.ThreeDimensional
             set;
         }
 
+ 
+
         /// <summary>
         /// 文件目录字符串
         /// </summary>
+
 
 
         public string FileName
@@ -61,7 +73,9 @@ namespace PixelCube.ThreeDimensional
             get;
             set;
         }
-       
+
+
+
 
         /// <summary>
         /// 序列化
