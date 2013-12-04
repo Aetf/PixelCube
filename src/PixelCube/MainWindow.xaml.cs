@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using PixelCube.Scene3D;
 using PixelCube.LeapMotion;
+using System.Windows.Media.Media3D;
 
 namespace PixelCube
 {
@@ -26,6 +27,16 @@ namespace PixelCube
         public IArtwork CurrentArt;
         public ILeapMotion Leap;
 
+        public Viewport3D getViewport()
+        {
+            return sceneViewport;
+        }
+
+        public Model3DGroup getCubeGroup()
+        {
+            return cubeGroup;
+        }
+
 
         public MainWindow()
         {
@@ -37,8 +48,8 @@ namespace PixelCube
         #region Modules Initializatoin
         private ISceneControler CreateSceneControler()
         {
-            ISceneControler isc = new CubeSceneControler(sceneViewport);
-            isc.DoInit();
+            ISceneControler isc = new CubeSceneControler();
+            isc.DoInit(this);
             return isc;
         }
 
