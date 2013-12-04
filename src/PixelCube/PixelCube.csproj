@@ -87,6 +87,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="OpCore\OpCore.cs" />
+    <Compile Include="OpCore\PostDrawOperationEventArgs.cs" />
+    <Compile Include="OpCore\PostFocusOperationEventArgs.cs" />
+    <Compile Include="OpCore\PostRotateOperationEventArgs.cs" />
+    <Compile Include="OpCore\PostScaleOperationEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

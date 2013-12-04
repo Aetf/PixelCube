@@ -4,49 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Leap;
+using PixelCube.LeapMotion;
 
 namespace PixelCube.OpCore
 {
-    /// <summary>
-    /// 焦点变换事件参数
-    /// </summary>
-    public class PostFocusOperationEventArgs : EventArgs
-    {
-        public PostFocusOperationEventArgs(string car)
-        {
-            //this.Car = car;
-        }
-    }
-
-    /// <summary>
-    /// 上色事件参数
-    /// </summary>
-    public class PostDrawOperationEventArgs : EventArgs
-    {
-        public PostDrawOperationEventArgs()
-        {
-        }
-    }
-
-    /// <summary>
-    /// 旋转事件参数
-    /// </summary>
-    public class PostRotateOperationEventArgs : EventArgs
-    {
-        public PostRotateOperationEventArgs()
-        {
-        }
-    }
-
-    /// <summary>
-    /// 缩放事件参数
-    /// </summary>
-    public class PostScaleOperationEventArgs : EventArgs
-    {
-        public PostScaleOperationEventArgs()
-        {
-        }
-    }
 
     /// <summary>
     /// 操作核心实现类
@@ -74,6 +35,42 @@ namespace PixelCube.OpCore
         public event EventHandler<PostScaleOperationEventArgs> PostScaleOperationEvent;
 
         public OpCore()
+        {
+        }
+
+        /// <summary>
+        /// 焦点变化响应函数
+        /// </summary>
+        /// <param name="sender">事件源</param>
+        /// <param name="e">事件参数</param>
+        public void OnPreFocusOperation(object sender, PreFocusOperationEventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// 着色响应函数
+        /// </summary>
+        /// <param name="sender">事件源</param>
+        /// <param name="e">事件参数</param>
+        public void OnPreDrawOperation(object sender, PreDrawOperationEventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// 旋转变化响应函数
+        /// </summary>
+        /// <param name="sender">事件源</param>
+        /// <param name="e">事件参数</param>
+        public void OnPreRotateOperation(object sender, PreRotateOperationEventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// 缩放响应函数
+        /// </summary>
+        /// <param name="sender">事件源</param>
+        /// <param name="e">事件参数</param>
+        public void OnPreScaleOperation(object sender, PreScaleOperationEventArgs e)
         {
         }
     }
