@@ -41,8 +41,6 @@ namespace PixelCube
         public MainWindow()
         {
             InitializeComponent();
-            SceneControler = CreateSceneControler();
-            Leap = CreateLeapMotion();
         }
 
         #region Modules Initializatoin
@@ -61,7 +59,13 @@ namespace PixelCube
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            Leap = CreateLeapMotion();
             SceneControler = CreateSceneControler();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
         }
     }
 }
