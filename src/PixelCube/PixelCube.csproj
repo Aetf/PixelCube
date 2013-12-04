@@ -60,6 +60,9 @@
     <Compile Include="LeapMotion\PreChangeColorOperationEventArgs.cs" />
     <Compile Include="LeapMotion\PreDragOperationEventArgs.cs" />
     <Compile Include="LeapMotion\PreEraseOperationEventArgs.cs" />
+    <Compile Include="OpCore\PostChangeColorOperationEventArgs.cs" />
+    <Compile Include="OpCore\PostDragOperationEventArgs.cs" />
+    <Compile Include="OpCore\PostEraseOperationEventArgs.cs" />
     <Compile Include="Scene3D\CubeSceneControler.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -124,6 +124,33 @@ namespace PixelCube.OpCore
         public void OnPreScaleOperation(object sender, PreScaleOperationEventArgs e)
         {
         }
+
+        /// <summary>
+        /// 颜色变换响应函数
+        /// </summary>
+        /// <param name="sender">事件源</param>
+        /// <param name="e">事件参数</param>
+        public void OnChangeColorOperation(object sender, PreChangeColorOperationEventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// 平移响应函数
+        /// </summary>
+        /// <param name="sender">事件源</param>
+        /// <param name="e">事件参数</param>
+        public void OnDragOperation(object sender, PreDragOperationEventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// 擦出响应函数
+        /// </summary>
+        /// <param name="sender">事件源</param>
+        /// <param name="e">事件参数</param>
+        public void OnEraseOperation(object sender, PreEraseOperationEventArgs e)
+        {
+        }
         #endregion
         #endregion
     }
