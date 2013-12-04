@@ -78,7 +78,7 @@ namespace PixelCube.LeapMotion
             //controller.EnableGesture(Gesture.GestureType.TYPECIRCLE);
             controller.EnableGesture(Gesture.GestureType.TYPEKEYTAP);
             controller.EnableGesture(Gesture.GestureType.TYPESCREENTAP);
-            //controller.EnableGesture(Gesture.GestureType.TYPESWIPE);
+            controller.EnableGesture(Gesture.GestureType.TYPESWIPE);
 
             if (leapStatusChangeEvent != null)
             {
@@ -125,17 +125,31 @@ namespace PixelCube.LeapMotion
             currentFrame = controller.Frame();
 
             // If has two hands, suppose it will has a scale operation soon.
-            if (currentFrame.Hands.Count > 2)
+            if (currentFrame.Hands.Count >= 2)
             {
-                EventHandler<PreScaleOperationEventArgs> scale = PreScaleOperationEvent;
-                scale(this, new PreScaleOperationEventArgs(currentFrame.ScaleFactor(lastFrame)));
-                
+                #region Scale
+                // Suppose it is playing a scale action when the number of fingers greater than 7
+                if (currentFrame.Fingers.Count >= 8)
+                {
+                    EventHandler<PreScaleOperationEventArgs> scale = PreScaleOperationEvent;
+                    scale(this, new PreScaleOperationEventArgs(currentFrame.ScaleFactor(lastFrame)));
+                }
+                #endregion
+
+                #region Rotate
+                HandList hands = currentFrame.Hands;
+                foreach (Hand hand in hands)
+                {
+
+                }
+                #endregion
+
             }
 
             if (currentFrame.Hands.Count == 1)
             {
                 Hand hand = currentFrame.Hands[0];
-
+                
 
             }
 
