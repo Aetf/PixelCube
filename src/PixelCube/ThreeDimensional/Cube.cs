@@ -21,54 +21,32 @@ namespace PixelCube.ThreeDimensional
         }
         public void Init()
         {
-            visible = true;
-            hasfocus = true;
+            Visible = true;
+            Hasfocus = true;
         }
 
         /// <summary>
         /// 小方块相对场景的位置。
         /// 比如在4x4x4的场景中，某个角即为(0, 0, 0)
         /// </summary>
-        private Vector3D Position;
-
-        public Vector3D Position1
-        {
-            get { return Position; }
-            set { Position = value; }
-        }
+        public Vector3D Position { get; set; }
        
 
         /// <summary>
         /// 小方块的颜色
         /// </summary>
-        private Color CubeColor;
-
-        public Color CubeColor1
-        {
-            get { return CubeColor; }
-            set { CubeColor = value; }
-        }
+        public Color CubeColor { get; set; }
 
 
         /// <summary>
         /// 是否可见
         /// </summary>
-        private bool visible;
-        public bool Visible
-        {
-            get { return visible; }
-            set { visible = value; }
-        }
+        public bool Visible { get; set; }
 
         /// <summary>
         /// 是否拥有焦点
         /// </summary>
-        private bool hasfocus;
-        public bool Hasfocus
-        {
-            get { return hasfocus; }
-            set { hasfocus = value; }
-        }
+        public bool Hasfocus { get; set; }
 
         /// <summary>
         /// 序列化

@@ -24,43 +24,22 @@ namespace PixelCube.ThreeDimensional
         /// <summary>
         /// 背景颜色
         /// </summary>
-        private Color BackgroundFill;
-        public Color BackgroundFill1
-        {
-            get { return BackgroundFill; }
-            set { BackgroundFill = value; }
-        }
+        public Color BackgroundFill { get; set; }
 
         /// <summary>
         /// 画布的大小
         /// </summary>
-        private Vector3D SceneSize;
-        public Vector3D SceneSize1
-        {
-            get { return SceneSize; }
-            set { SceneSize = value; }
-        }
+        public Vector3D SceneSize { get; set; }
 
         /// <summary>
         /// 返回场景中所有的小方块，位于(i, j, k)的小方块的索引为 i+SceneSize.x*j+SceneSize.y*k
         /// </summary>
-        List<ICube> Cubes;
-        public List<ICube> Cubes1
-        {
-            get { return Cubes; }
-            set { Cubes = value; }
-        }
+        public List<ICube> Cubes { get; set; }
 
         /// <summary>
         /// 文件目录字符串
         /// </summary>
-        private  string FileName;
-
-        public string FileName1
-        {
-            get { return FileName; }
-            set { FileName = value; }
-        }
+        public string FileName { get; set; }
        
 
         /// <summary>
