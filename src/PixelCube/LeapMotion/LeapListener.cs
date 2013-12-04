@@ -45,7 +45,7 @@ namespace PixelCube.LeapMotion
            controller.AddListener(this);
        }
 
-       public void Unintialize()
+       public void Uninitialize()
        {
            controller.RemoveListener(this);
            controller.Dispose();

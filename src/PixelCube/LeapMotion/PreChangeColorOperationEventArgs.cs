@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PixelCube.LeapMotion
 {
-    class PreChangeColorOperationEventArgs
+    public class PreChangeColorOperationEventArgs
     {
     }
 }
