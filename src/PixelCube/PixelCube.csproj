@@ -64,6 +64,8 @@
     <Compile Include="OpCore\PostDragOperationEventArgs.cs" />
     <Compile Include="OpCore\PostEraseOperationEventArgs.cs" />
     <Compile Include="Scene3D\CubeSceneControler.cs" />
+    <Compile Include="ThreeDimensional\Artwork.cs" />
+    <Compile Include="ThreeDimensional\Cube.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
