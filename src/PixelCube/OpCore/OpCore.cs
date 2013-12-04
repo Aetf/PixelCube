@@ -60,6 +60,7 @@ namespace PixelCube.OpCore
         public void DoInit(MainWindow win)
         {
             martwork = win.CurrentArt;
+            msceneController = win.SceneControler;
             //获取小方块的边长
             mcubea = (int)win.FindResource("cubeA");
         }
@@ -88,8 +89,8 @@ namespace PixelCube.OpCore
             //获取指定小方块
             ICube cube = martwork.Cubes[index];
 
-            //修改其属性
-            //cube.visible = true;
+            //修改其为高亮颜色
+            //cube.CubeColor = Colors.Blue;
 
             //发出事件
             if (PostFocusOperationEvent != null)
@@ -167,6 +168,7 @@ namespace PixelCube.OpCore
         /// <param name="e">事件参数</param>
         public void OnEraseOperation(object sender, PreEraseOperationEventArgs e)
         {
+
         }
         #endregion
         #endregion
