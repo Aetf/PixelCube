@@ -11,9 +11,10 @@ namespace PixelCube.OpCore
     /// </summary>
     public class PostFocusOperationEventArgs : EventArgs
     {
-        public PostFocusOperationEventArgs(string car)
+        public int Index { private set; get; }
+        public PostFocusOperationEventArgs(int index)
         {
-            //this.Car = car;
+            this.Index = index;
         }
     }
 }
