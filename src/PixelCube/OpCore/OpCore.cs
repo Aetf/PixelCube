@@ -42,7 +42,6 @@ namespace PixelCube.OpCore
 
         #endregion
 
-        private IArtwork martwork;
         private int mcubea;//小方块的边长
         private ISceneControler msceneController;
 
@@ -59,7 +58,6 @@ namespace PixelCube.OpCore
         /// <param name="win">框架实例</param>
         public void DoInit(MainWindow win)
         {
-            martwork = win.CurrentArt;
             msceneController = win.SceneControler;
             //获取小方块的边长
             mcubea = (int)win.FindResource("cubeA");
@@ -83,20 +81,10 @@ namespace PixelCube.OpCore
             int i = x / mcubea;
             int j = y / mcubea;
             int k = z / mcubea;
-            //计算出小方块在链表中的索引
-            int index = i + (int)martwork.SceneSize.X * j + (int)martwork.SceneSize.Y * k;
             
-            //获取指定小方块
-            ICube cube = martwork.Cubes[index];
-
-            //修改其为高亮颜色
-            //cube.CubeColor = Colors.Blue;
-
-            //发出事件
-            if (PostFocusOperationEvent != null)
-            {
-                PostFocusOperationEvent(this, new PostFocusOperationEventArgs(index));
-            }
+            //通知视图控制类
+            msceneController.SetFocus(i, j, k);
+            
         }
 
         /// <summary>
@@ -187,7 +175,19 @@ namespace PixelCube.OpCore
         /// <param name="e">事件参数</param>
         public void OnEraseOperation(object sender, PreEraseOperationEventArgs e)
         {
+            Vector curPosition = e.Position;
+            //x,y,z为小方块的绝对三维坐标
+            int x = (int)curPosition.x;
+            int y = (int)curPosition.y;
+            int z = (int)curPosition.z;
 
+            //i,j,k为小方块的三维位置索引
+            int i = x / mcubea;
+            int j = y / mcubea;
+            int k = z / mcubea;
+
+            //通知试图控制类
+            msceneController.Erase(i, j, k);
         }
         #endregion
         #endregion
