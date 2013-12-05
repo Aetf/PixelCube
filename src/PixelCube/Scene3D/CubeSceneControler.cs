@@ -58,6 +58,11 @@ namespace PixelCube.Scene3D
         {
             return;
         }
+        
+        public void SetColor(int i, int j, int k, Color c)
+        {
+            return;
+        }
 
         #endregion
 
