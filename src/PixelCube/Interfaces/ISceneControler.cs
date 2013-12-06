@@ -19,6 +19,11 @@ namespace PixelCube.Scene3D
         Transform3D WorldTransform { get; set; }
 
         /// <summary>
+        /// 摄像机的原始坐标
+        /// </summary>
+        Point3D CameraOrig { get; }
+
+        /// <summary>
         /// 将(i, j, k)的小方块设置为焦点方块
         /// </summary>
         /// <param name="i"></param>
@@ -33,6 +38,15 @@ namespace PixelCube.Scene3D
         /// <param name="j"></param>
         /// <param name="k"></param>
         void Erase(int i, int j, int k);
+
+        /// <summary>
+        /// 设置(i, j, k)的小方块的颜色。
+        /// </summary>
+        /// <param name="i"></param>
+        /// <param name="j"></param>
+        /// <param name="k"></param>
+        /// <param name="c">为了以后的扩展性，现在传null就好</param>
+        void SetColor(int i, int j, int k, Color c);
 
         /// <summary>
         /// 控制器的初始化

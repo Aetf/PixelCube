@@ -58,6 +58,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="LeapMotion\CoordinatesTrans.cs" />
+    <Compile Include="LeapMotion\LeapController.cs" />
     <Compile Include="LeapMotion\PreChangeColorOperationEventArgs.cs" />
     <Compile Include="LeapMotion\PreDragOperationEventArgs.cs" />
     <Compile Include="LeapMotion\PreEraseOperationEventArgs.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Scene3D\CubeSceneControler.cs" />
     <Compile Include="ThreeDimensional\Artwork.cs" />
     <Compile Include="ThreeDimensional\Cube.cs" />
+    <Compile Include="Utils\MatixTransform3DExtension.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

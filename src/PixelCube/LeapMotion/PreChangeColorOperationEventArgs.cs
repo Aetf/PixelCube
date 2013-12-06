@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Leap;
 
 namespace PixelCube.LeapMotion
 {
     public class PreChangeColorOperationEventArgs
     {
+        public Vector Position { set; get; }
+        public PreChangeColorOperationEventArgs(Vector position)
+        {
+            Position = position;
+        }
     }
 }

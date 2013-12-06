@@ -65,7 +65,7 @@ namespace PixelCube
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-
+            Leap.Uninitialize();
         }
     }
 }

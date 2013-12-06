@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
 namespace PixelCube.Scene3D
@@ -21,7 +17,20 @@ namespace PixelCube.Scene3D
             }
             set
             {
-                mView.Camera.Transform = value;
+                mView.Dispatcher.BeginInvoke(new Action(
+                    () => 
+                    {
+                        mView.Camera.Transform = value;
+                    })
+                    , null);
+            }
+        }
+
+        public Point3D CameraOrig
+        {
+            get
+            {
+                return (mView.Camera as PerspectiveCamera).Position;
             }
         }
 
@@ -58,6 +67,11 @@ namespace PixelCube.Scene3D
         {
             return;
         }
+        
+        public void SetColor(int i, int j, int k, Color c)
+        {
+            return;
+        }
 
         #endregion
 
@@ -74,6 +88,7 @@ namespace PixelCube.Scene3D
 
         public CubeSceneControler()
         {
+            
         }
     }
 }
