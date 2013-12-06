@@ -156,7 +156,7 @@ namespace PixelCube.OpCore
         /// <param name="e">事件参数</param>
         public void OnEraseOperation(object sender, PreEraseOperationEventArgs e)
         {
-            Vector curPosition = new Vector() ;//= e.FocusPosition;
+            Vector curPosition = e.Position;
             //x,y,z为小方块的绝对三维坐标
             int x = (int)curPosition.x;
             int y = (int)curPosition.y;

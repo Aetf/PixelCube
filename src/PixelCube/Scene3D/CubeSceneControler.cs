@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
 namespace PixelCube.Scene3D
@@ -21,7 +17,12 @@ namespace PixelCube.Scene3D
             }
             set
             {
-                mView.Camera.Transform = value;
+                mView.Dispatcher.BeginInvoke(new Action(
+                    () => 
+                    {
+                        mView.Camera.Transform = value;
+                    })
+                    , null);
             }
         }
 
@@ -55,6 +56,11 @@ namespace PixelCube.Scene3D
         }
 
         public void Erase(int i, int j, int k)
+        {
+            return;
+        }
+        
+        public void SetColor(int i, int j, int k, Color c)
         {
             return;
         }
