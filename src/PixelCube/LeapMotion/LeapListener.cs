@@ -20,7 +20,7 @@ namespace PixelCube.LeapMotion
     /// <summary>
     /// 
     /// </summary>
-   public class LeapListener:Listener,ILeapMotion
+   internal class LeapListener:Listener
    {
        // Debug
               
@@ -28,14 +28,14 @@ namespace PixelCube.LeapMotion
        /// <summary>
        /// All events this class will offer
        /// </summary>
-       public event EventHandler<LeapStatusChangeEventArgs> LeapStatusChangeEvent;
-       public event EventHandler<PreDrawOperationEventArgs> PreDrawOperationEvent;
-       public event EventHandler<PreFocusOperationEventArgs> PreFocusOperationEvent;
-       public event EventHandler<PreRotateOperationEventArgs> PreRotateOperationEvent;
-       public event EventHandler<PreScaleOperationEventArgs> PreScaleOperationEvent;
-       public event EventHandler<PreDragOperationEventArgs> PreDragOperationEvent;
-       public event EventHandler<PreEraseOperationEventArgs> PreEraseOperationEvent;
-       public event EventHandler<PreChangeColorOperationEventArgs> PreChangeColorOperationEvent;
+       internal EventHandler<LeapStatusChangeEventArgs> LeapStatusChangeEvent;
+       internal event EventHandler<PreDrawOperationEventArgs> PreDrawOperationEvent;
+       internal event EventHandler<PreFocusOperationEventArgs> PreFocusOperationEvent;
+       internal event EventHandler<PreRotateOperationEventArgs> PreRotateOperationEvent;
+       internal event EventHandler<PreScaleOperationEventArgs> PreScaleOperationEvent;
+       internal event EventHandler<PreDragOperationEventArgs> PreDragOperationEvent;
+       internal event EventHandler<PreEraseOperationEventArgs> PreEraseOperationEvent;
+       internal event EventHandler<PreChangeColorOperationEventArgs> PreChangeColorOperationEvent;
        #endregion   
 
        #region Attributes
@@ -55,22 +55,6 @@ namespace PixelCube.LeapMotion
        private Frame currentFrame;      // Represent the current frame
        private Controller controller;   // Refer to the Leap controller
        #endregion
-
-       #region Init&Uninit
-       /* Intializer and Unintializer */
-       public void Initialize()
-       {
-           controller = new Controller();
-           controller.AddListener(this);
-       }
-       
-       public void Uninitialize()
-       {
-           controller.RemoveListener(this);
-           controller.Dispose();
-       }
-       #endregion
-
 
         /// <summary>
         ///     Initialize the private attributes
