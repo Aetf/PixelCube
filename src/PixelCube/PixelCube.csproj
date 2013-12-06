@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HelixToolkit.Wpf">
+      <HintPath>lib\HelixToolkit.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="LeapCSharp.NET4.0">
       <HintPath>lib\LeapCSharp.NET4.0.dll</HintPath>
     </Reference>

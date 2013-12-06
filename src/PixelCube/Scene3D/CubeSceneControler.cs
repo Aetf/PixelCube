@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using HelixToolkit.Wpf;
 
 namespace PixelCube.Scene3D
 {
@@ -93,7 +94,7 @@ namespace PixelCube.Scene3D
 
         #endregion
 
-        private Viewport3D mView;
+        private HelixViewport3D mView;
         private MainWindow mWin;
 
         public CubeSceneControler()
