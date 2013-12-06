@@ -117,13 +117,14 @@ namespace PixelCube.OpCore
         /// <param name="e">事件参数</param>
         public void OnPreDrawOperation(object sender, PreDrawOperationEventArgs e)
         {
+            //通过事件参数获取上色小方块坐标
             Vector drawPosition = e.DrawPosition;
             //i,j,k为小方块的三维位置索引
             int i = (int)drawPosition.x / mcubea;
             int j = (int)drawPosition.y / mcubea;
             int k = (int)drawPosition.z / mcubea;
 
-            Color c ;
+            Color c = new Color() ;
 
             //修改小方块上色的颜色
             msceneController.SetColor(i, j, k, c);
