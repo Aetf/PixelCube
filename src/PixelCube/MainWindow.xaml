@@ -42,7 +42,7 @@
                         <Model3DGroup x:Name="cubeGroup">
                             <Model3DGroup.Children>
                                 <!-- Lights, MeshGeometry3D and DiffuseMaterial objects are added to the ModelVisual3D. -->
-                                <AmbientLight Color="#666666" />
+                                <AmbientLight Color="#555555" />
                                 <DirectionalLight Direction=" 1,-1,-1" Color="Gray"/>
                             </Model3DGroup.Children>
                         </Model3DGroup>
