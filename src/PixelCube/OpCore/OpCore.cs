@@ -41,6 +41,11 @@ namespace PixelCube.OpCore
         /// </summary>
         public event EventHandler<PostScaleOperationEventArgs> PostScaleOperationEvent;
 
+        /// <summary>
+        /// 世界平移事件
+        /// </summary>
+        public event EventHandler<PostDragOperationEventArgs> PostDragOperationEvent;
+
         #endregion
 
         private int mcubea;//小方块的边长
@@ -117,6 +122,41 @@ namespace PixelCube.OpCore
         /// <param name="e">事件参数</param>
         public void OnPreDrawOperation(object sender, PreDrawOperationEventArgs e)
         {
+            //通过事件参数获取上色小方块坐标
+            Vector drawPosition = e.DrawPosition;
+
+            //将leapmotion捕捉到的小方块坐标封装
+            Point3D inCameraPosition = new Point3D(drawPosition.x,drawPosition.y,drawPosition.z);
+
+            //将摄像机看到的坐标转换为小方块的绝对三维坐标
+            GeneralTransform3D transform = mcurmt.Inverse;
+            //进行转换
+            transform.Transform(inCameraPosition);
+
+            //i,j,k为小方块的三维位置索引
+            int i = (int)inCameraPosition.X / mcubea;
+            int j = (int)inCameraPosition.Y / mcubea;
+            int k = (int)inCameraPosition.Z / mcubea;
+
+            //设置小方块上色的颜色，目前为默认值
+            Color c = new Color() ;
+
+            //判断小方块绝对三维坐标是否离开画布
+            if (i < martwork.SceneSize.X && j <= martwork.SceneSize.Y && k < martwork.SceneSize.Z)
+            {
+                //修改小方块上色的颜色
+                msceneController.SetColor(i, j, k, c);
+
+                //发出上色效果音触发事件
+                if (PostDrawOperationEvent != null)
+                {
+                    PostDrawOperationEvent(this,new PostDrawOperationEventArgs(0));
+                }
+            }
+            else { 
+                //不上色
+                msceneController.SetColor(-1, -1, -1, c);
+            }
         }
 
         /// <summary>
@@ -155,6 +195,21 @@ namespace PixelCube.OpCore
         /// <param name="e">事件参数</param>
         public void OnPreScaleOperation(object sender, PreScaleOperationEventArgs e)
         {
+            //从事件参数中获取缩放程度参数
+            float scaleFactor = e.ScaleFactor;
+
+            //计算出摄像机变换矩阵缩放的参数，即取需要缩放大小的倒数
+            float inCameraScaleFactor = 1 / scaleFactor;
+
+            //完成世界矩阵的缩放,改变摄像机的变换矩阵实现缩放，并且以当前显示场景的坐标原点为中心
+            msceneController.WorldTransform = new ScaleTransform3D(new Vector3D(inCameraScaleFactor, inCameraScaleFactor, inCameraScaleFactor), msceneController.WorldTransform.Transform(new Point3D(0,0,0)));
+
+            //触发缩放完成事件，播放效果音
+            if (PostScaleOperationEvent != null) {
+                PostScaleOperationEvent(this, new PostScaleOperationEventArgs());
+            }
+
+
         }
 
         /// <summary>
@@ -173,6 +228,19 @@ namespace PixelCube.OpCore
         /// <param name="e">事件参数</param>
         public void OnDragOperation(object sender, PreDragOperationEventArgs e)
         {
+            //从事件参数中获取平移向量参数
+            float[] vector = e.TransVector.ToFloatArray();
+
+            //封装为三维向量,并转换为对摄像机的转换矩阵的平移向量参数，即对原平移向量坐标取反
+            Vector3D transVector = new Vector3D(-vector[0],-vector[1],-vector[2]);
+
+            //完成摄像机的转换矩阵的转换，实现场景的平移
+            msceneController.WorldTransform = new TranslateTransform3D(transVector);
+
+            //触发完成平移事件，发出效果音
+            if (PostDragOperationEvent != null) {
+                PostDragOperationEvent(this, new PostDragOperationEventArgs());
+            }
         }
 
         /// <summary>
