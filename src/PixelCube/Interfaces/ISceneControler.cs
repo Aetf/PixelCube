@@ -19,6 +19,11 @@ namespace PixelCube.Scene3D
         Transform3D WorldTransform { get; set; }
 
         /// <summary>
+        /// 摄像机的原始坐标
+        /// </summary>
+        Point3D CameraOrig { get; }
+
+        /// <summary>
         /// 将(i, j, k)的小方块设置为焦点方块
         /// </summary>
         /// <param name="i"></param>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
+using System.Windows;
 
 namespace PixelCube
 {
@@ -117,5 +118,13 @@ namespace PixelCube
             }
         }
         #endregion
+
+        public double CubeA
+        {
+            get
+            {
+                return (Double) App.Current.FindResource("cubeA");
+            }
+        }
     }
 }
