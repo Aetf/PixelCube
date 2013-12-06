@@ -26,6 +26,14 @@ namespace PixelCube.Scene3D
             }
         }
 
+        public Point3D CameraOrig
+        {
+            get
+            {
+                return (mView.Camera as PerspectiveCamera).Position;
+            }
+        }
+
         public void DoInit(MainWindow win)
         {
             mView = win.getViewport();
@@ -80,6 +88,7 @@ namespace PixelCube.Scene3D
 
         public CubeSceneControler()
         {
+            
         }
     }
 }
