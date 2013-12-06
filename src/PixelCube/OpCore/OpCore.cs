@@ -50,15 +50,12 @@ namespace PixelCube.OpCore
 
         private int mcubea;//小方块的边长
         private ISceneControler msceneController;
-        private MatrixTransform3D mcurmt;//当前所有变换累计的变换矩阵
         private IArtwork martwork;
 
         #endregion
 
         public OpCore()
         {
-            //初始化变换矩阵
-            mcurmt = new MatrixTransform3D();
         }
         #region 成员方法
 
@@ -85,7 +82,7 @@ namespace PixelCube.OpCore
             Vector curLPPosition = e.FocusPosition;
             Point3D curPosition = new Point3D(curLPPosition.x, curLPPosition.y, curLPPosition.z);
             //获取当前累计变换矩阵的逆矩阵
-            GeneralTransform3D transform = mcurmt.Inverse;
+            GeneralTransform3D transform = msceneController.WorldTransform.Inverse;
             //对当前坐标进行逆变换
             transform.Transform(curPosition);
             //x,y,z为小方块的绝对三维坐标
@@ -176,11 +173,13 @@ namespace PixelCube.OpCore
             AxisAngleRotation3D axisAngelRotation = new AxisAngleRotation3D(rotateAxis, rotateAngel);
             //根据变换定义变换矩阵
             RotateTransform3D rotateTransform = new RotateTransform3D(axisAngelRotation);
-            //传递给视图控制类
-            msceneController.WorldTransform = rotateTransform;
-
+            //从试图控制类中获取当前累计变换矩阵
+            MatrixTransform3D mt = new MatrixTransform3D(msceneController.WorldTransform.Value);
             //把本次旋转的矩阵加入到累计变换矩阵中
-            mcurmt.Merge(rotateTransform);
+            mt.Merge(rotateTransform);
+            //传递给视图控制类
+            msceneController.WorldTransform = mt;
+
             //发出事件
             if (PostRotateOperationEvent != null)
             {
@@ -250,19 +249,30 @@ namespace PixelCube.OpCore
         /// <param name="e">事件参数</param>
         public void OnEraseOperation(object sender, PreEraseOperationEventArgs e)
         {
-            Vector curPosition = e.Position;
+            Vector curLPPosition = e.Position;
+            Point3D curPosition = new Point3D(curLPPosition.x, curLPPosition.y, curLPPosition.z);
+            //获取当前累计变换矩阵的逆矩阵
+            GeneralTransform3D transform = msceneController.WorldTransform.Inverse;
+            //对当前坐标进行逆变换
+            transform.Transform(curPosition);
             //x,y,z为小方块的绝对三维坐标
-            int x = (int)curPosition.x;
-            int y = (int)curPosition.y;
-            int z = (int)curPosition.z;
+            int x = (int)curPosition.X;
+            int y = (int)curPosition.Y;
+            int z = (int)curPosition.Z;
 
             //i,j,k为小方块的三维位置索引
             int i = x / mcubea;
             int j = y / mcubea;
             int k = z / mcubea;
 
-            //通知试图控制类
-            msceneController.Erase(i, j, k);
+            //判断当前坐标是否越界
+            if (i < martwork.SceneSize.X
+                && j < martwork.SceneSize.Y
+                && k < martwork.SceneSize.Z)
+            {
+                //通知试图控制类
+                msceneController.Erase(i, j, k);
+            }
         }
         #endregion
         #endregion
