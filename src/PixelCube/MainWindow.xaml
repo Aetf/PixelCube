@@ -1,7 +1,7 @@
 ﻿<Window x:Class="PixelCube.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525" Loaded="Window_Loaded" Closing="Window_Closing">
+        Title="MainWindow" Height="480" Width="600" Loaded="Window_Loaded" Closing="Window_Closing">
     <Window.Resources>
     </Window.Resources>
     <Grid>
@@ -29,10 +29,10 @@
                 -->
                 <PerspectiveCamera 
 						FarPlaneDistance="100" 
-						LookDirection="0,0,1" 
+						LookDirection="-1,-1,-2" 
 						UpDirection="0,1,0" 
 						NearPlaneDistance="1" 
-						Position="0,0,-9"
+						Position="13,13,26"
 						FieldOfView="60" />
             </Viewport3D.Camera>
 
@@ -42,7 +42,8 @@
                         <Model3DGroup x:Name="cubeGroup">
                             <Model3DGroup.Children>
                                 <!-- Lights, MeshGeometry3D and DiffuseMaterial objects are added to the ModelVisual3D. -->
-                                <DirectionalLight Direction="-0.881580007869342,-0.388273275933859,-0.268440967292029" Color="White"/>
+                                <AmbientLight Color="#666666" />
+                                <DirectionalLight Direction=" 1,-1,-1" Color="Gray"/>
                             </Model3DGroup.Children>
                         </Model3DGroup>
                     </ModelVisual3D.Content>
