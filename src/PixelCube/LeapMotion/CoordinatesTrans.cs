@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Leap;
+using PixelCube.ThreeDimensional;
+
 namespace PixelCube.LeapMotion
 {
     class CoordinatesTrans
@@ -29,16 +31,16 @@ namespace PixelCube.LeapMotion
         private float maxCoord;
 
         /// <summary>
-        /// 构造函数
+        /// 带参构造
         /// </summary>
-        public CoordinatesTrans()
+        /// <param name="art">Artwork 的对象</param>
+        public CoordinatesTrans(Artwork art)
         {
             newVec = new Vector(0, 0, 0);
             ConfigProvider cp = ConfigProvider.Instance;
             cubea = cp.CubeA;       //获取小方块边长
 
-            //在此处获取当前每行小方块数目
-
+            cuben = (int)Math.Pow(art.Cubes.Count, 1 / 3);      //获取每行小方块数目
             maxCoord =(float) cubea * cuben + 40;
         }
 
@@ -64,9 +66,9 @@ namespace PixelCube.LeapMotion
             if (vec.x >= -300 && vec.x <= 300 && vec.y >= 30 && vec.y <= 630 && vec.z >= -300 && vec.z <= 300)
             {
                 //operations:
-                newVec.x = (vec.x + 300) / (600 / maxCoord) - maxCoord/2 - 20;
+                newVec.x = (vec.x + 300) / (600 / maxCoord) - 20;
                 newVec.y = (vec.y - 30) / (600 / maxCoord) - 20;
-                newVec.x = (vec.z + 300) / (600 / maxCoord) - maxCoord/2 - 20;
+                newVec.x = (vec.z + 300) / (600 / maxCoord) - 20;
                 return true;
             }
             return false;
