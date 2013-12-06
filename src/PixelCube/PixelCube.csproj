@@ -58,6 +58,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="LeapMotion\CoordinatesTrans.cs" />
+    <Compile Include="LeapMotion\LeapController.cs" />
     <Compile Include="LeapMotion\PreChangeColorOperationEventArgs.cs" />
     <Compile Include="LeapMotion\PreDragOperationEventArgs.cs" />
     <Compile Include="LeapMotion\PreEraseOperationEventArgs.cs" />

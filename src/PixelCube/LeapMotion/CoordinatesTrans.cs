@@ -4,17 +4,55 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Leap;
+using PixelCube.ThreeDimensional;
+
 namespace PixelCube.LeapMotion
 {
     class CoordinatesTrans
     {
-        
         /// <summary>
-        /// 构造函数
+        /// 转换后的新坐标
         /// </summary>
-        public CoordinatesTrans()
+        private Vector newVec;
+
+        /// <summary>
+        /// 小方块边长
+        /// </summary>
+        private double cubea;
+
+        /// <summary>
+        /// 每行小方块数目
+        /// </summary>
+        private int cuben;
+
+        /// <summary>
+        /// 世界坐标的最大范围
+        /// </summary>
+        private float maxCoord;
+
+        /// <summary>
+        /// 带参构造
+        /// </summary>
+        /// <param name="art">Artwork 的对象</param>
+        public CoordinatesTrans(Artwork art)
         {
+            newVec = new Vector(0, 0, 0);
+            ConfigProvider cp = ConfigProvider.Instance;
+            cubea = cp.CubeA;       //获取小方块边长
+
+            cuben = (int)Math.Pow(art.Cubes.Count, 1 / 3);      //获取每行小方块数目
+            maxCoord =(float) cubea * cuben + 40;
         }
+
+        /// <summary>
+        /// 获取转换后的坐标
+        /// </summary>
+        /// <returns>返回转换后得到的世界坐标</returns>
+        public Vector getNewVec()
+        {
+            return newVec;
+        }
+
         /// <summary>
         /// 将LeapMotion坐标转换为世界坐标
         /// </summary>
@@ -23,10 +61,17 @@ namespace PixelCube.LeapMotion
         /// <param name="maxY">世界坐标Y轴最大值</param>
         /// <param name="maxZ">世界坐标Z轴最大值</param>
         /// <returns>变换后的坐标</returns>
-        public void Trans(Vector vec, int maxX, int maxY, int maxZ)
+        public bool Trans(Vector vec)
         {
-
+            if (vec.x >= -300 && vec.x <= 300 && vec.y >= 30 && vec.y <= 630 && vec.z >= -300 && vec.z <= 300)
+            {
+                //operations:
+                newVec.x = (vec.x + 300) / (600 / maxCoord) - 20;
+                newVec.y = (vec.y - 30) / (600 / maxCoord) - 20;
+                newVec.x = (vec.z + 300) / (600 / maxCoord) - 20;
+                return true;
+            }
+            return false;
         }
-
     }
 }
