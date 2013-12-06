@@ -8,6 +8,7 @@ using System.Windows.Media.Media3D;
 using Leap;
 using PixelCube.LeapMotion;
 using PixelCube.Scene3D;
+using PixelCube.Utils;
 
 
 namespace PixelCube.OpCore
@@ -44,11 +45,15 @@ namespace PixelCube.OpCore
 
         private int mcubea;//小方块的边长
         private ISceneControler msceneController;
+        private MatrixTransform3D mcurmt;//当前所有变换累计的变换矩阵
+        private IArtwork martwork;
 
         #endregion
 
         public OpCore()
         {
+            //初始化变换矩阵
+            mcurmt = new MatrixTransform3D();
         }
         #region 成员方法
 
@@ -58,6 +63,7 @@ namespace PixelCube.OpCore
         /// <param name="win">框架实例</param>
         public void DoInit(MainWindow win)
         {
+            martwork = win.CurrentArt;
             msceneController = win.SceneControler;
             //获取小方块的边长
             mcubea = (int)win.FindResource("cubeA");
@@ -71,19 +77,36 @@ namespace PixelCube.OpCore
         /// <param name="e">事件参数</param>
         public void OnPreFocusOperation(object sender, PreFocusOperationEventArgs e)
         {
-            Vector curPosition = e.FocusPosition;
+            Vector curLPPosition = e.FocusPosition;
+            Point3D curPosition = new Point3D(curLPPosition.x, curLPPosition.y, curLPPosition.z);
+            //获取当前累计变换矩阵的逆矩阵
+            GeneralTransform3D transform = mcurmt.Inverse;
+            //对当前坐标进行逆变换
+            transform.Transform(curPosition);
             //x,y,z为小方块的绝对三维坐标
-            int x = (int)curPosition.x;
-            int y = (int)curPosition.y;
-            int z = (int)curPosition.z;
-
+            int x = (int)curPosition.X;
+            int y = (int)curPosition.Y;
+            int z = (int)curPosition.Z;
+            
             //i,j,k为小方块的三维位置索引
             int i = x / mcubea;
             int j = y / mcubea;
             int k = z / mcubea;
+
+            //判断当前坐标是否越界
+            if (i < martwork.SceneSize.X
+                && j < martwork.SceneSize.Y
+                && k < martwork.SceneSize.Z)
+            {
+                //通知视图控制类
+                msceneController.SetFocus(i, j, k);
+            }
+            else
+            {
+                //去除焦点
+                msceneController.SetFocus(-1, -1, -1);
+            }
             
-            //通知视图控制类
-            msceneController.SetFocus(i, j, k);
             
         }
 
@@ -127,6 +150,9 @@ namespace PixelCube.OpCore
             RotateTransform3D rotateTransform = new RotateTransform3D(axisAngelRotation);
             //传递给视图控制类
             msceneController.WorldTransform = rotateTransform;
+
+            //把本次旋转的矩阵加入到累计变换矩阵中
+            mcurmt.Merge(rotateTransform);
             //发出事件
             if (PostRotateOperationEvent != null)
             {

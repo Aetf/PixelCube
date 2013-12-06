@@ -19,7 +19,7 @@ namespace PixelCube.Scene3D
         Color BackgroundFill { get; set; }
 
         /// <summary>
-        /// 画布的大小
+        /// 画布的大小,SceneSize.X\Y\Z表示每行的小方块数量
         /// </summary>
         Vector3D SceneSize { get; set; }
 
