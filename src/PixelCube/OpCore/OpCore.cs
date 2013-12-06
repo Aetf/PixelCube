@@ -100,19 +100,12 @@ namespace PixelCube.OpCore
             int j = (int)drawPosition.y / mcubea;
             int k = (int)drawPosition.z / mcubea;
 
-            //计算小方块在链表中的索引
-            int index = i + (int)martwork.SceneSize.X * j + (int)martwork.SceneSize.Y * k;
-
-            //获取要图画的小方块
-            ICube cube = martwork.Cubes[index];
+            Color c ;
 
             //修改小方块上色的颜色
-            //...
+            msceneController.SetColor(i, j, k, c);
 
-            //发出要图画事件
-            if (PostDrawOperationEvent != null) {
-                PostDrawOperationEvent(this, new PostDrawOperationEventArgs(index));
-            }
+            //发出上色效果音触发事件
         }
 
         /// <summary>
@@ -148,6 +141,12 @@ namespace PixelCube.OpCore
         /// <param name="e">事件参数</param>
         public void OnPreScaleOperation(object sender, PreScaleOperationEventArgs e)
         {
+            //从事件参数中获取缩放程度参数
+            float scaleFactor = e.ScaleFactor;
+            
+            //完成世界矩阵的缩放
+            
+
         }
 
         /// <summary>
