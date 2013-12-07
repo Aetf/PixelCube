@@ -1,7 +1,8 @@
 ﻿<Window x:Class="PixelCube.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525" Loaded="Window_Loaded" Closing="Window_Closing">
+        xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
+        Title="MainWindow" Height="480" Width="600" Loaded="Window_Loaded" Closing="Window_Closing">
     <Window.Resources>
     </Window.Resources>
     <Grid>
@@ -18,36 +19,30 @@
                 <MenuItem Header="关于 (_A)" />
             </MenuItem>
         </Menu>
-        <Viewport3D x:Name="sceneViewport" Grid.Row="1">
-            <Viewport3D.Camera>
-                <!--
-                <PerspectiveCamera FieldOfView="45"
-                                   NearPlaneDistance="0.125" FarPlaneDistance="Infinity"
-                                   Position="105.806557269459,60.5493825969932,6.89378113550509"
-                                   LookDirection="-0.881580007869342,-0.388273275933859,-0.268440967292029"
-                                   UpDirection="-0.371435170765064,0.921544281733433,-0.113101948361369"/>
-                -->
-                <PerspectiveCamera 
-						FarPlaneDistance="100" 
-						LookDirection="0,0,1" 
-						UpDirection="0,1,0" 
+        <h:HelixViewport3D x:Name="sceneViewport" Grid.Row="1"
+                           CameraRotationMode="Turntable" ModelUpDirection="0,1,0" ShowCoordinateSystem="True">
+            <h:HelixViewport3D.Camera>
+                <PerspectiveCamera x:Name="mCamera"
+						FarPlaneDistance="1000" 
+						LookDirection="0,-0.5,-1" 
+						UpDirection="0,1,0"
 						NearPlaneDistance="1" 
-						Position="0,0,-9"
+						Position="5,10,20"
 						FieldOfView="60" />
-            </Viewport3D.Camera>
+            </h:HelixViewport3D.Camera>
 
-            <Viewport3D.Children>
-                <ModelVisual3D >
-                    <ModelVisual3D.Content>
-                        <Model3DGroup x:Name="cubeGroup">
-                            <Model3DGroup.Children>
-                                <!-- Lights, MeshGeometry3D and DiffuseMaterial objects are added to the ModelVisual3D. -->
-                                <DirectionalLight Direction="-0.881580007869342,-0.388273275933859,-0.268440967292029" Color="White"/>
-                            </Model3DGroup.Children>
-                        </Model3DGroup>
-                    </ModelVisual3D.Content>
-                </ModelVisual3D>
-            </Viewport3D.Children>
-        </Viewport3D>
+            <h:CoordinateSystemVisual3D ArrowLengths="1"/>
+            <h:GridLinesVisual3D Normal="0,1,0" LengthDirection="1,0,0"/>
+
+            <ModelVisual3D >
+                <ModelVisual3D.Content>
+                    <Model3DGroup x:Name="cubeGroup">
+                        <!-- Lights, MeshGeometry3D and DiffuseMaterial objects are added to the ModelVisual3D. -->
+                        <AmbientLight Color="#666666" />
+                        <DirectionalLight Direction=" 1,-1,-1" Color="Gray"/>
+                    </Model3DGroup>
+                </ModelVisual3D.Content>
+            </ModelVisual3D>
+        </h:HelixViewport3D>
     </Grid>
 </Window>
