@@ -82,9 +82,9 @@
     <Compile Include="LeapMotion\PreDragOperationEventArgs.cs" />
     <Compile Include="LeapMotion\PreEraseOperationEventArgs.cs" />
     <Compile Include="LoadAndSave\LSDocu.cs" />
-    <Compile Include="OpCore\PostChangeColorOperationEventArgs.cs" />
-    <Compile Include="OpCore\PostDragOperationEventArgs.cs" />
-    <Compile Include="OpCore\PostEraseOperationEventArgs.cs" />
+    <Compile Include="Operations\PostChangeColorOperationEventArgs.cs" />
+    <Compile Include="Operations\PostDragOperationEventArgs.cs" />
+    <Compile Include="Operations\PostEraseOperationEventArgs.cs" />
     <Compile Include="Scene3D\CubeSceneControler.cs" />
     <Compile Include="ThreeDimensional\Artwork.cs" />
     <Compile Include="ThreeDimensional\Cube.cs" />
@@ -117,11 +117,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="OpCore\OpCore.cs" />
-    <Compile Include="OpCore\PostDrawOperationEventArgs.cs" />
-    <Compile Include="OpCore\PostFocusOperationEventArgs.cs" />
-    <Compile Include="OpCore\PostRotateOperationEventArgs.cs" />
-    <Compile Include="OpCore\PostScaleOperationEventArgs.cs" />
+    <Compile Include="Operations\OpCore.cs" />
+    <Compile Include="Operations\PostDrawOperationEventArgs.cs" />
+    <Compile Include="Operations\PostFocusOperationEventArgs.cs" />
+    <Compile Include="Operations\PostRotateOperationEventArgs.cs" />
+    <Compile Include="Operations\PostScaleOperationEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
