@@ -65,6 +65,7 @@
     <Compile Include="LeapMotion\PreChangeColorOperationEventArgs.cs" />
     <Compile Include="LeapMotion\PreDragOperationEventArgs.cs" />
     <Compile Include="LeapMotion\PreEraseOperationEventArgs.cs" />
+    <Compile Include="LoadAndSave\LSDocu.cs" />
     <Compile Include="OpCore\PostChangeColorOperationEventArgs.cs" />
     <Compile Include="OpCore\PostDragOperationEventArgs.cs" />
     <Compile Include="OpCore\PostEraseOperationEventArgs.cs" />
@@ -131,9 +132,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="LoadAndSave\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
