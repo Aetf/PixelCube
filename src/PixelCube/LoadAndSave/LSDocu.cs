@@ -9,49 +9,50 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using PixelCube.ThreeDimensional;
+using PixelCube.Scene3D;
+using System.Windows.Media;
+using System.Windows.Media.Media3D;
 
 
 namespace PixelCube.LoadAndSave
 {
-    class LSDocu
+    static class LSDocu
     {
-         public LSDocu()
-        {
-            
-        }
-
-         Artwork ArtworkDoc;
-
         /// <summary>
         /// 对工程文件的新建
         /// </summary>
+        static public IArtwork NewArtwork()
+        {
+            Artwork ArtworkDoc = new Artwork();
+            ArtworkDoc.DefaultValue();
+            for(int i = 0; i!= ArtworkDoc.SceneSize.X; i++)
+                for(int j = 0; j!= ArtworkDoc.SceneSize.Y; j++)
+                    for(int k = 0; k!= ArtworkDoc.SceneSize.Z; k++)
+                    {
+                        Cube cube1 = new Cube()
+                        {
+                            CubeColor = Colors.Blue,
+                            Position = new Vector3D(i, j, k)
+                        };
+                        ArtworkDoc.Cubes.Add(cube1);
+                    }
 
-         public void NewArtwork()
-         {
-
-             ArtworkDoc = new Artwork();
-             for (int i = 0; i < 27; i++) {
-                 Cube cube1=new Cube();
-                 ArtworkDoc.Cubes.Add(cube1);
-             }
-                 
-
-         }
-
+            return ArtworkDoc;
+        }
 
 
         /// <summary>
-        /// 文件的加载
+        /// 文件的加载, 可能返回null
         /// </summary>
-         public void LoadArtworkDoc()
+        static public IArtwork LoadArtworkDoc()
         {
-            ArtworkDoc = new Artwork();
+            IArtwork ArtworkDoc = null;
             try
             {
                 //打开文件对话框选取pd文件
                 OpenFileDialog openFileDialog2;
                 openFileDialog2 = new OpenFileDialog();
-                openFileDialog2.Title = "情选择要打开的文件";
+                openFileDialog2.Title = "请选择要打开的文件";
                 openFileDialog2.Filter = "PixcelCube Documents(*.pd)|*.pd";
                 openFileDialog2.ShowDialog();
                 //将数据载入Document
@@ -63,7 +64,6 @@ namespace PixelCube.LoadAndSave
                     if (!File.Exists(fileName))
                     {
                         MessageBox.Show("文件不存在");
-                        return;
                     }
                     else
                     {
@@ -78,46 +78,46 @@ namespace PixelCube.LoadAndSave
             {
                 MessageBox.Show(ex.ToString());
             }
-          
+
+            return ArtworkDoc;
         }
 
         /// <summary>
         /// 文件保存
         /// </summary>
         /// <param name="ArtworkDoc"></param>
-         public void SaveDocument(Artwork ArtworkDoc)
+        static public void SaveDocument(IArtwork ArtworkDoc)
         {
             //check that the document is not read only
             string str = Serialize(ArtworkDoc);
-                 try
-                    {
-                        String fileName = ArtworkDoc.FileName;                    
-                        Stream stream = File.OpenWrite(fileName);
-                        using (StreamWriter writer = new StreamWriter(stream))
-                        {
-                            writer.BaseStream.Flush();
-                            writer.Write(str);
-                        }
-                    }
-                    catch (IOException ex)
-                    {
-                        MessageBox.Show(ex.Message, "Simple Editor", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    }
-  
+            try
+            {
+                String fileName = ArtworkDoc.FileName;
+                Stream stream = File.OpenWrite(fileName);
+                using (StreamWriter writer = new StreamWriter(stream))
+                {
+                    writer.BaseStream.Flush();
+                    writer.Write(str);
+                }
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show(ex.Message, "Simple Editor", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
         }
-       
+
         /// <summary>
         /// 文件另存为
         /// </summary>
         /// <param name="ArtworkDoc"></param>
-         public void SaveAsDocument(Artwork ArtworkDoc)
+        static public void SaveAsDocument(IArtwork ArtworkDoc)
         {
             //open a file dialog for saving document
-            SaveFileDialog SaveFileDialog1= new SaveFileDialog();
+            SaveFileDialog SaveFileDialog1 = new SaveFileDialog();
             SaveFileDialog1.Title = "将文件另存于";
             SaveFileDialog1.Filter = "Map Documents(*.pd)|*.pd";
             SaveFileDialog1.ShowDialog();
-            string str=Serialize(ArtworkDoc);
+            string str = Serialize(ArtworkDoc);
             if (SaveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 string fileName = SaveFileDialog1.FileName;
@@ -148,7 +148,7 @@ namespace PixelCube.LoadAndSave
         /// </summary>
         /// <param name="dt"> Artwork的实体对象</param>
         /// <returns>相对应的字符串</returns>
-        public static string Serialize(PixelCube.ThreeDimensional.Artwork dt)
+        public static string Serialize(IArtwork dt)
         {
             System.Xml.Serialization.XmlSerializer ser = new System.Xml.Serialization.XmlSerializer(dt.GetType());
 
@@ -160,6 +160,7 @@ namespace PixelCube.LoadAndSave
 
             return sb.ToString();
         }
+
         /// <summary>
         /// 逆序列化
         /// </summary>
