@@ -66,8 +66,7 @@ namespace PixelCube.LeapMotion
             state = State.focusing;
             lastFrame = null;
             currentFrame = null;
-            controller = null;
-            
+            this.controller = controller;
             base.OnInit(controller);
         }
 
