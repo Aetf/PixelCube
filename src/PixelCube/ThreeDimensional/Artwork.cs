@@ -19,6 +19,9 @@ namespace PixelCube.ThreeDimensional
         }
         public void init()
         {
+            BackgroundFill = Color.FromArgb(100, 200, 200, 200);
+            SceneSize = new Vector3D(20, 30, 40);
+            FileName = "新文件";
         }
 
         /// <summary>

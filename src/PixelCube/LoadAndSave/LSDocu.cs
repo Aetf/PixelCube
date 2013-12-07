@@ -21,11 +21,29 @@ namespace PixelCube.LoadAndSave
         }
 
          Artwork ArtworkDoc;
-        
+
+        /// <summary>
+        /// 对工程文件的新建
+        /// </summary>
+
+         public void NewArtwork()
+         {
+
+             ArtworkDoc = new Artwork();
+             for (int i = 0; i < 27; i++) {
+                 Cube cube1=new Cube();
+                 ArtworkDoc.Cubes.Add(cube1);
+             }
+                 
+
+         }
+
+
+
         /// <summary>
         /// 文件的加载
         /// </summary>
-         private void LoadArtworkDoc()
+         public void LoadArtworkDoc()
         {
             ArtworkDoc = new Artwork();
             try
@@ -67,7 +85,7 @@ namespace PixelCube.LoadAndSave
         /// 文件保存
         /// </summary>
         /// <param name="ArtworkDoc"></param>
-         private void SaveDocument(Artwork ArtworkDoc)
+         public void SaveDocument(Artwork ArtworkDoc)
         {
             //check that the document is not read only
             string str = Serialize(ArtworkDoc);
@@ -92,7 +110,7 @@ namespace PixelCube.LoadAndSave
         /// 文件另存为
         /// </summary>
         /// <param name="ArtworkDoc"></param>
-         private void SaveAsDocument(Artwork ArtworkDoc)
+         public void SaveAsDocument(Artwork ArtworkDoc)
         {
             //open a file dialog for saving document
             SaveFileDialog SaveFileDialog1= new SaveFileDialog();
