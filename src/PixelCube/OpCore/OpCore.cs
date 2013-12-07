@@ -126,7 +126,7 @@ namespace PixelCube.OpCore
             Point3D inCameraPosition = new Point3D(drawPosition.x,drawPosition.y,drawPosition.z);
 
             //将摄像机看到的坐标转换为小方块的绝对三维坐标
-            GeneralTransform3D transform = mcurmt.Inverse;
+            GeneralTransform3D transform = msceneController.WorldTransform.Inverse;
             //进行转换
             transform.Transform(inCameraPosition);
 
@@ -201,7 +201,14 @@ namespace PixelCube.OpCore
             float inCameraScaleFactor = 1 / scaleFactor;
 
             //完成世界矩阵的缩放,改变摄像机的变换矩阵实现缩放，并且以当前显示场景的坐标原点为中心
-            msceneController.WorldTransform = new ScaleTransform3D(new Vector3D(inCameraScaleFactor, inCameraScaleFactor, inCameraScaleFactor), msceneController.WorldTransform.Transform(new Point3D(0,0,0)));
+            //建立新的临时累计矩阵
+            MatrixTransform3D worldTransform = new MatrixTransform3D(msceneController.WorldTransform.Value);
+
+            //将缩放转换矩阵融入累计变换矩阵
+            worldTransform.Merge(new ScaleTransform3D(new Vector3D(inCameraScaleFactor, inCameraScaleFactor, inCameraScaleFactor), msceneController.WorldTransform.Transform(new Point3D(0,0,0))));
+
+            //更新累计变换矩阵
+            msceneController.WorldTransform = worldTransform;
 
             //触发缩放完成事件，播放效果音
             if (PostScaleOperationEvent != null) {
@@ -234,7 +241,14 @@ namespace PixelCube.OpCore
             Vector3D transVector = new Vector3D(-vector[0],-vector[1],-vector[2]);
 
             //完成摄像机的转换矩阵的转换，实现场景的平移
-            msceneController.WorldTransform = new TranslateTransform3D(transVector);
+            //建立新的临时累计矩阵
+            MatrixTransform3D worldTransform = new MatrixTransform3D(msceneController.WorldTransform.Value);
+
+            //将缩放转换矩阵融入累计变换矩阵
+            worldTransform.Merge(new TranslateTransform3D(transVector));
+
+            //更新累计变换矩阵
+            msceneController.WorldTransform = worldTransform;
 
             //触发完成平移事件，发出效果音
             if (PostDragOperationEvent != null) {
