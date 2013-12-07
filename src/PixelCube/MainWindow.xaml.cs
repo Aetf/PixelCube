@@ -46,8 +46,8 @@ namespace PixelCube
             // FIXME: need to change LeapController constructor to use
             // IArtwork interface instead of Artwork class.
             ILeapMotion leap = null;
-            //leap = new LeapController(CurrentArt);
-            //leap.Initialize();
+            leap = new LeapController(CurrentArt);
+            leap.Initialize();
             return leap;
         }
         #endregion
