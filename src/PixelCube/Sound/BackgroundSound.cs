@@ -7,20 +7,17 @@ using System.Media;
 
 namespace PixelCube.Sound
 {
+     /// <summary>
+     /// 背景音设置
+     /// </summary>
     public class BackgroundSound
     {
         public bool StatusChanged;
-        public bool GetStatus
-        {
-            get;
-            set;
 
-
-        }
         public void PlaySound(bool play)
         {
             play = StatusChanged;
-            SoundPlayer Sound = new SoundPlayer("");
+            SoundPlayer Sound = new SoundPlayer("../../Sound/909.wav");
             if (play == true)
                 Sound.Play();
             else

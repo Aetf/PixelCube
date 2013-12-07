@@ -15,7 +15,7 @@ namespace PixelCube.Sound
         public bool isOpen;
         public void PlayMusic(bool open)
         {
-            System.Media.SoundPlayer Mu = new System.Media.SoundPlayer("f:\\song.wav");
+            System.Media.SoundPlayer Mu = new System.Media.SoundPlayer("../../Sound/April.wav");
             open = isOpen;
             if (open == true)
                 Mu.PlayLooping();
