@@ -10,9 +10,9 @@ namespace PixelCube.Sound
      /// <summary>
      /// 背景音设置
      /// </summary>
-    public class BackgroundSound
+    public class BackgroundSound:EventArgs
     {
-        public bool StatusChanged;
+        public bool StatusChanged{set;get;}
 
         public void PlaySound(bool play)
         {
