@@ -4,6 +4,7 @@ using System.Windows.Media.Media3D;
 using PixelCube.LeapMotion;
 using PixelCube.Scene3D;
 using HelixToolkit.Wpf;
+using PixelCube.LoadAndSave;
 
 namespace PixelCube
 {
@@ -42,15 +43,20 @@ namespace PixelCube
 
         private ILeapMotion CreateLeapMotion()
         {
-            return null;
+            // FIXME: need to change LeapController constructor to use
+            // IArtwork interface instead of Artwork class.
+            ILeapMotion leap = null;
+            //leap = new LeapController(CurrentArt);
+            //leap.Initialize();
+            return leap;
         }
         #endregion
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            CurrentArt = LSDocu.NewArtwork();
             Leap = CreateLeapMotion();
             SceneControler = CreateSceneControler();
-            
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
