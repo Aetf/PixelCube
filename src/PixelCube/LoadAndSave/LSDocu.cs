@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using System.Windows.Forms.TextBox;
 using System.IO;
 using PixelCube.ThreeDimensional;
-using PixelCube.ThreeDimensional.Artwork;
+
 
 namespace PixelCube.LoadAndSave
 {
@@ -51,7 +49,7 @@ namespace PixelCube.LoadAndSave
                         StreamReader reader = new StreamReader(stream);
                         string str = reader.ReadToEnd();
                         ArtworkDoc = Deserialize(str);
-                        ArtworkDoc.FileName1 = fileName;
+                        ArtworkDoc.FileName = fileName;
                     }
                 }
             }
@@ -69,7 +67,7 @@ namespace PixelCube.LoadAndSave
             string str = Serialize(ArtworkDoc);
                  try
                     {
-                        String fileName = ArtworkDoc.FileName1;                    
+                        String fileName = ArtworkDoc.FileName;                    
                         Stream stream = File.OpenWrite(fileName);
                         using (StreamWriter writer = new StreamWriter(stream))
                         {
