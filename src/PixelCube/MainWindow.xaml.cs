@@ -5,6 +5,7 @@ using PixelCube.LeapMotion;
 using PixelCube.Scene3D;
 using HelixToolkit.Wpf;
 using PixelCube.LoadAndSave;
+using PixelCube.Operations;
 
 namespace PixelCube
 {
@@ -16,6 +17,8 @@ namespace PixelCube
         public ISceneControler SceneControler;
         public IArtwork CurrentArt;
         public ILeapMotion Leap;
+
+        internal OpCore kernel;
 
         public HelixViewport3D getViewport()
         {
@@ -36,19 +39,32 @@ namespace PixelCube
         #region Modules Initializatoin
         private ISceneControler CreateSceneControler()
         {
-            ISceneControler isc = new CubeSceneControler();
+            var isc = new CubeSceneControler();
             isc.DoInit(this);
             return isc;
         }
 
         private ILeapMotion CreateLeapMotion()
         {
-            // FIXME: need to change LeapController constructor to use
-            // IArtwork interface instead of Artwork class.
-            ILeapMotion leap = null;
-            leap = new LeapController(CurrentArt);
+            var leap = new LeapController(CurrentArt);
             leap.Initialize();
             return leap;
+        }
+
+        private OpCore CreateOpCore()
+        {
+            var c = new OpCore();
+            c.DoInit(this);
+
+            // Link all the event listeners.
+            Leap.PreChangeColorOperationEvent += c.OnChangeColorOperation;
+            Leap.PreDragOperationEvent += c.OnDragOperation;
+            Leap.PreDrawOperationEvent += c.OnPreDrawOperation;
+            Leap.PreEraseOperationEvent += c.OnEraseOperation;
+            Leap.PreRotateOperationEvent += c.OnPreRotateOperation;
+            Leap.PreScaleOperationEvent += c.OnPreScaleOperation;
+
+            return c;
         }
         #endregion
 
@@ -57,6 +73,8 @@ namespace PixelCube
             CurrentArt = LSDocu.NewArtwork();
             Leap = CreateLeapMotion();
             SceneControler = CreateSceneControler();
+
+            kernel = CreateOpCore();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

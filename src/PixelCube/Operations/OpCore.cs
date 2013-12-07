@@ -48,7 +48,7 @@ namespace PixelCube.Operations
 
         #endregion
 
-        private int mcubea;//小方块的边长
+        private double mcubea;//小方块的边长
         private ISceneControler msceneController;
         private IArtwork martwork;
 
@@ -68,7 +68,7 @@ namespace PixelCube.Operations
             martwork = win.CurrentArt;
             msceneController = win.SceneControler;
             //获取小方块的边长
-            mcubea = (int)win.FindResource("cubeA");
+            mcubea = (double)win.FindResource("cubeA");
         }
 
         #region 事件响应函数
@@ -86,14 +86,14 @@ namespace PixelCube.Operations
             //对当前坐标进行逆变换
             transform.Transform(curPosition);
             //x,y,z为小方块的绝对三维坐标
-            int x = (int)curPosition.X;
-            int y = (int)curPosition.Y;
-            int z = (int)curPosition.Z;
+            //int x = (int);
+            //int y = (int);
+            //int z = (int);
             
             //i,j,k为小方块的三维位置索引
-            int i = x / mcubea;
-            int j = y / mcubea;
-            int k = z / mcubea;
+            int i = (int) (curPosition.X / mcubea);
+            int j = (int) (curPosition.Y / mcubea);
+            int k = (int) (curPosition.Z / mcubea);
 
             //判断当前坐标是否越界
             if (i < martwork.SceneSize.X
@@ -131,9 +131,9 @@ namespace PixelCube.Operations
             transform.Transform(inCameraPosition);
 
             //i,j,k为小方块的三维位置索引
-            int i = (int)inCameraPosition.X / mcubea;
-            int j = (int)inCameraPosition.Y / mcubea;
-            int k = (int)inCameraPosition.Z / mcubea;
+            int i = (int) (inCameraPosition.X / mcubea);
+            int j = (int) (inCameraPosition.Y / mcubea);
+            int k = (int) (inCameraPosition.Z / mcubea);
 
             //设置小方块上色的颜色，目前为默认值
             Color c = new Color() ;
@@ -270,14 +270,14 @@ namespace PixelCube.Operations
             //对当前坐标进行逆变换
             transform.Transform(curPosition);
             //x,y,z为小方块的绝对三维坐标
-            int x = (int)curPosition.X;
-            int y = (int)curPosition.Y;
-            int z = (int)curPosition.Z;
+            //int x = (int);
+            //int y = (int);
+            //int z = (int);
 
             //i,j,k为小方块的三维位置索引
-            int i = x / mcubea;
-            int j = y / mcubea;
-            int k = z / mcubea;
+            int i = (int)(curPosition.X / mcubea);
+            int j = (int)(curPosition.Y / mcubea);
+            int k = (int)(curPosition.Z / mcubea);
 
             //判断当前坐标是否越界
             if (i < martwork.SceneSize.X
