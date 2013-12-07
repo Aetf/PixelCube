@@ -21,7 +21,10 @@ namespace PixelCube.LoadAndSave
         }
 
          Artwork ArtworkDoc;
-        //openFileDialog
+        
+        /// <summary>
+        /// 文件的加载
+        /// </summary>
          private void LoadArtworkDoc()
         {
             ArtworkDoc = new Artwork();
@@ -60,7 +63,10 @@ namespace PixelCube.LoadAndSave
           
         }
 
-        //save 
+        /// <summary>
+        /// 文件保存
+        /// </summary>
+        /// <param name="ArtworkDoc"></param>
          private void SaveDocument(Artwork ArtworkDoc)
         {
             //check that the document is not read only
@@ -81,10 +87,14 @@ namespace PixelCube.LoadAndSave
                     }
   
         }
-        //saveas
+       
+        /// <summary>
+        /// 文件另存为
+        /// </summary>
+        /// <param name="ArtworkDoc"></param>
          private void SaveAsDocument(Artwork ArtworkDoc)
         {
-            //open a file dialog for saving map document
+            //open a file dialog for saving document
             SaveFileDialog SaveFileDialog1= new SaveFileDialog();
             SaveFileDialog1.Title = "将文件另存于";
             SaveFileDialog1.Filter = "Map Documents(*.pd)|*.pd";
