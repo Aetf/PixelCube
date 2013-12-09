@@ -53,6 +53,7 @@ namespace PixelCube.Operations
         private ISceneControler msceneController;
         private MainWindow mwin;
         private IArtwork martwork;
+        private int[] dragFactor = { 0, 0, 0 };//记录累计平移的向量，判断用户是否平移太远
 
         #endregion
 
@@ -254,25 +255,46 @@ namespace PixelCube.Operations
             mwin.Dispatcher.BeginInvoke(new Action(() =>
             {
                 //从事件参数中获取平移向量参数
-                float[] vector = e.TransVector.ToFloatArray();
+                Vector transVector = e.TransVector;
 
-                //封装为三维向量,并转换为对摄像机的转换矩阵的平移向量参数，即对原平移向量坐标取反
-                Vector3D transVector = new Vector3D(-vector[0], -vector[1], -vector[2]);
+                //i,j,k为小方块的三维位置索引,用来与画布中小方块个数比较，判断是否平移太远，若是，则取消此次平移
+                int i = (int)(transVector.x / mcubea);
+                int j = (int)(transVector.y / mcubea);
+                int k = (int)(transVector.z / mcubea);
 
-                //完成摄像机的转换矩阵的转换，实现场景的平移
-                //建立新的临时累计矩阵
-                MatrixTransform3D worldTransform = new MatrixTransform3D(msceneController.WorldTransform.Value);
+                //假设能够平移，更新累计向量
+                dragFactor[0] += i;
+                dragFactor[1] += j;
+                dragFactor[2] += k;
 
-                //将缩放转换矩阵融入累计变换矩阵
-                worldTransform.Merge(new TranslateTransform3D(transVector));
-
-                //更新累计变换矩阵
-                msceneController.WorldTransform = worldTransform;
-
-                //触发完成平移事件，发出效果音
-                if (PostDragOperationEvent != null)
+                //比较累计平移向量与画布大小，判断平移是否离开画布区域，若否则进行平移，若是则取消平移，取消累计平移向量的更新
+                if (dragFactor[0] < martwork.SceneSize.X && dragFactor[1] < martwork.SceneSize.Y && dragFactor[2] < martwork.SceneSize.Z && dragFactor[0] > -martwork.SceneSize.X && dragFactor[1] > -martwork.SceneSize.Y && dragFactor[2] > -martwork.SceneSize.Z)
                 {
-                    PostDragOperationEvent(this, new PostDragOperationEventArgs());
+
+                    //封装为三维向量,并转换为对摄像机的转换矩阵的平移向量参数，即对原平移向量坐标取反
+                    Vector3D inCameraTransVector = new Vector3D(-transVector.x, -transVector.y, -transVector.z);
+
+                    //完成摄像机的转换矩阵的转换，实现场景的平移
+                    //建立新的临时累计矩阵
+                    MatrixTransform3D worldTransform = new MatrixTransform3D(msceneController.WorldTransform.Value);
+
+                    //将缩放转换矩阵融入累计变换矩阵
+                    worldTransform.Merge(new TranslateTransform3D(inCameraTransVector));
+
+                    //更新累计变换矩阵
+                    msceneController.WorldTransform = worldTransform;
+
+                    //触发完成平移事件，发出效果音
+                    if (PostDragOperationEvent != null)
+                    {
+                        PostDragOperationEvent(this, new PostDragOperationEventArgs());
+                    }
+                }
+                else {
+                    //取消累计平移向量的更新
+                    dragFactor[0] -= i;
+                    dragFactor[1] -= j;
+                    dragFactor[2] -= k;
                 }
             }), null);
         }
