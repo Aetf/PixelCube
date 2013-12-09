@@ -1,12 +1,13 @@
-﻿using Leap;
-using System;
+﻿using System;
+using Leap;
+using PixelCube.Scene3D;
 using PixelCube.ThreeDimensional;
 
 namespace PixelCube.LeapMotion
 {
     class LeapController:ILeapMotion
     {
-        internal Artwork artWork;
+        internal IArtwork artWork;
         private Controller controller;
         private LeapListener listener;
 
@@ -61,7 +62,7 @@ namespace PixelCube.LeapMotion
         /// <summary>
         ///     Constructor
         /// </summary>
-        public LeapController(Artwork artWork)
+        public LeapController(IArtwork artWork)
         {
             this.artWork = artWork;
             listener = new LeapListener();
@@ -82,7 +83,5 @@ namespace PixelCube.LeapMotion
         }
         
         #endregion
-
-
     }
 }
