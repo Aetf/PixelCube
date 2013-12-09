@@ -19,12 +19,7 @@ namespace PixelCube.Scene3D
             }
             set
             {
-                mView.Dispatcher.BeginInvoke(new Action(
-                    () => 
-                    {
-                        mView.Camera.Transform = value;
-                    })
-                    , null);
+                mView.Camera.Transform = value;
             }
         }
 
