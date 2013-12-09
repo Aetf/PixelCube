@@ -144,57 +144,63 @@ namespace PixelCube.LeapMotion
                 // Scale Action
                 #region Scale
                 // Suppose it is playing a scale action when the number of fingers greater than 7
-                if (currentFrame.Fingers.Count >= 7)
+                if (currentFrame.Fingers.Count >= 9)
                 {
                     
                     EventHandler<PreScaleOperationEventArgs> scale = PreScaleOperationEvent;
                     if (scale != null)
                     {
-                        Debug.WriteLine("ScaleEvent");
                         scale(this, new PreScaleOperationEventArgs(currentFrame.ScaleFactor(lastFrame)));
                     }
                 }
                 #endregion
                 // Get left hand
-                Hand h = currentFrame.Hands.Leftmost;
-                
+
+                Hand leftHand = currentFrame.Hands.Leftmost;
                 // Rotate Action
-               
-                if (h.Fingers.Count > 4)
+
+                if (leftHand.Fingers.Count > 3)
                 {
                     #region Rotate
                     EventHandler<PreRotateOperationEventArgs> rotate = PreRotateOperationEvent;
                     if (rotate != null)
                     {
-                        rotate(this, new PreRotateOperationEventArgs(h.RotationAxis(lastFrame),
-                            h.RotationAngle(lastFrame)));
+                        rotate(this, new PreRotateOperationEventArgs(leftHand.RotationAxis(lastFrame),
+                            leftHand.RotationAngle(lastFrame)));
                     }
                     #endregion
-
-                    // Drag Action
-                    //#region Drag
-                    //// One hand without any fingers is regarded as drag
-                    //Vector transVector = h.Translation(lastFrame);
-                    //if (trans.TransVector(transVector))
-                    //{
-                    //    EventHandler<PreDragOperationEventArgs> drag = PreDragOperationEvent;
-                    //    if (drag != null)
-                    //    {
-                    //        drag(this, new PreDragOperationEventArgs(trans.getNewVec()));
-                    //    }
-                    //}
-                    //#endregion
                 }
-
             }
+           
+            // Just one hand and above 4 fingers
+            if (lastFrame.Hands.Count == 1 && currentFrame.Hands.Count == 1)
+            {
+                Hand hand = currentFrame.Hands[0];
+                #region Drag
+                if (hand.Fingers.Count > 3)
+                {
+                    
+                    EventHandler<PreDragOperationEventArgs> drag = PreDragOperationEvent;
+                    if (drag != null)
+                    {
+                        Vector transVector = hand.PalmPosition - lastFrame.Hands[0].PalmPosition;
+                        transVector.z = 0;
+                        trans.TransVector(transVector);
+                        drag(this, new PreDragOperationEventArgs(transVector));
+                    }
+
+                }
+                #endregion
+            }
+            
 
             // These two actions can be perfermed with only one hand or two hands
-           
-
             #region Gestures
             GestureList gestures = currentFrame.Gestures();
             foreach (Gesture gesture in gestures)
             {
+//                HandList hands = gesture.Hands;
+                
                 switch (gesture.Type)
                 {
                     // draw one pixel

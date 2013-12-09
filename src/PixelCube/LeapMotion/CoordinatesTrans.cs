@@ -39,7 +39,7 @@ namespace PixelCube.LeapMotion
             ConfigProvider cp = ConfigProvider.Instance;
             cubea = cp.CubeA;       //获取小方块边长
 
-            cuben = (int)Math.Pow(art.Cubes.Count, 1 / 3);      //获取每行小方块数目
+            cuben = (int)art.SceneSize.X;    //获取每行小方块数目
             maxCoord =(float) cubea * cuben + 40;
         }
 
@@ -80,9 +80,9 @@ namespace PixelCube.LeapMotion
         /// <returns>true</returns>
         public bool TransVector(Vector vec)
         {
-            newVec.x = vec.x / 600 * maxCoord;
-            newVec.y = vec.y / 600 * maxCoord;
-            newVec.z = 0;
+            vec.x = vec.x / 200 * maxCoord;
+            vec.y = vec.y / 200 * maxCoord;
+            vec.z = vec.z / 200 * maxCoord;
             return true;
         }
     }

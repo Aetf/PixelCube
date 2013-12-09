@@ -39,8 +39,8 @@ namespace PixelCube.Scene3D
             
             var cubeseed = (GeometryModel3D)win.FindResource("cubeSeed");
             var cubea = (double)win.FindResource("cubeA");
-            //var sceneSize = win.CurrentArt.SceneSize;
-            Vector3D sceneSize = new Vector3D(4, 4, 4);
+            var sceneSize = win.CurrentArt.SceneSize;
+            //Vector3D sceneSize = new Vector3D(4, 4, 4);
 
             NameScope.SetNameScope(win, new NameScope());
             for(int i = 0; i!= sceneSize.X; i++)
