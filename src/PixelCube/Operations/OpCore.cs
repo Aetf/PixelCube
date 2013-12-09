@@ -54,6 +54,7 @@ namespace PixelCube.Operations
         private MainWindow mwin;
         private IArtwork martwork;
         private int[] dragFactor = { 0, 0, 0 };//记录累计平移的向量，判断用户是否平移太远
+        private MatrixTransform3D mrotateTransform;//记录累计的旋转矩阵
 
         #endregion
 
@@ -73,6 +74,7 @@ namespace PixelCube.Operations
             msceneController = win.SceneControler;
             //获取小方块的边长
             mcubea = (double)win.FindResource("cubeA");
+            mrotateTransform = new MatrixTransform3D();
         }
 
         #region 事件响应函数
@@ -189,11 +191,13 @@ namespace PixelCube.Operations
                 RotateTransform3D rotateTransform = new RotateTransform3D(axisAngelRotation);
                 //从试图控制类中获取当前累计变换矩阵
                 MatrixTransform3D mt = new MatrixTransform3D(msceneController.WorldTransform.Value);
-                //把本次旋转的矩阵加入到累计变换矩阵中
+                //把本次旋转的矩阵加入到全局累计变换矩阵中
                 mt.Merge(rotateTransform);
                 //传递给视图控制类
                 msceneController.WorldTransform = mt;
 
+                //把本次旋转的矩阵加入到记录旋转的变换矩阵中
+                mrotateTransform.Merge(rotateTransform);
                 //发出事件
                 if (PostRotateOperationEvent != null)
                 {
