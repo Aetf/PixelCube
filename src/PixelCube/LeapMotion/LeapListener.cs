@@ -41,7 +41,8 @@ namespace PixelCube.LeapMotion
            drawing,
            focusing,
            erasing,
-           colorChanging
+           colorChanging,
+           menuSelecting
        }
 
 
@@ -154,45 +155,41 @@ namespace PixelCube.LeapMotion
                     }
                 }
                 #endregion
-            }
-
-            // These two actions can be perfermed with only one hand or two hands
-            if (currentFrame.Hands.Count > 0)
-            {
                 // Get left hand
                 Hand h = currentFrame.Hands.Leftmost;
+                
                 // Rotate Action
-                #region Rotate
-                if (h.Fingers.Count > 4 && h.Fingers.Count < 7)
+               
+                if (h.Fingers.Count > 4)
                 {
+                    #region Rotate
                     EventHandler<PreRotateOperationEventArgs> rotate = PreRotateOperationEvent;
                     if (rotate != null)
                     {
-                        Debug.WriteLine("RotateEvent");
                         rotate(this, new PreRotateOperationEventArgs(h.RotationAxis(lastFrame),
                             h.RotationAngle(lastFrame)));
                     }
+                    #endregion
+
+                    // Drag Action
+                    //#region Drag
+                    //// One hand without any fingers is regarded as drag
+                    //Vector transVector = h.Translation(lastFrame);
+                    //if (trans.TransVector(transVector))
+                    //{
+                    //    EventHandler<PreDragOperationEventArgs> drag = PreDragOperationEvent;
+                    //    if (drag != null)
+                    //    {
+                    //        drag(this, new PreDragOperationEventArgs(trans.getNewVec()));
+                    //    }
+                    //}
+                    //#endregion
                 }
-                #endregion
-                
-                // Drag Action
-                #region Drag
-                // One hand without any fingers is regarded as drag
-                if (h.Fingers.Count < 1)
-                {
-                    Vector transVector = h.Translation(lastFrame);
-                    if (trans.TransVector(transVector))
-                    {
-                        EventHandler<PreDragOperationEventArgs> drag = PreDragOperationEvent;
-                        if (drag != null)
-                        {
-                            Debug.WriteLine("DragEvent");
-                            drag(this, new PreDragOperationEventArgs(trans.getNewVec()));
-                        }
-                    }
-                }
-                #endregion
+
             }
+
+            // These two actions can be perfermed with only one hand or two hands
+           
 
             #region Gestures
             GestureList gestures = currentFrame.Gestures();
@@ -205,7 +202,6 @@ namespace PixelCube.LeapMotion
                         EventHandler<PreDrawOperationEventArgs> draw = PreDrawOperationEvent;
                         if (draw != null)
                         {
-                            Debug.WriteLine("drawEvent");
                             ScreenTapGesture screenTapGesture = new ScreenTapGesture(gesture);
                             if(trans.TransPoint(screenTapGesture.Position))
                                 draw(this, new PreDrawOperationEventArgs(trans.getNewVec()));
@@ -258,7 +254,6 @@ namespace PixelCube.LeapMotion
                             EventHandler<PreFocusOperationEventArgs> focus = PreFocusOperationEvent;
                             if (focus != null)
                             {
-                                Debug.WriteLine("Focus Event");
                                 focus(this, new PreFocusOperationEventArgs(trans.getNewVec()));
                             }
                             break;
@@ -267,7 +262,6 @@ namespace PixelCube.LeapMotion
                             EventHandler<PreEraseOperationEventArgs> erase = PreEraseOperationEvent;
                             if (erase != null)
                             {
-                                Debug.WriteLine("Erase Event");
                                 erase(this, new PreEraseOperationEventArgs(trans.getNewVec()));
                             }
                             break;
@@ -276,7 +270,6 @@ namespace PixelCube.LeapMotion
                             EventHandler<PreDrawOperationEventArgs> drawLine = PreDrawOperationEvent;
                             if (drawLine != null)
                             {
-                                Debug.WriteLine("DrawLine Event");
                                 drawLine(this, new PreDrawOperationEventArgs(trans.getNewVec()));
                             }
                             break;
@@ -285,7 +278,6 @@ namespace PixelCube.LeapMotion
                             EventHandler<PreChangeColorOperationEventArgs> changeColor = PreChangeColorOperationEvent;
                             if (changeColor != null)
                             {
-                                Debug.WriteLine("ColorChange Event");
                                 changeColor(this, new PreChangeColorOperationEventArgs(trans.getNewVec()));
                             }
                             break;

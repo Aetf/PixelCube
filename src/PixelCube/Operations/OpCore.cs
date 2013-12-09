@@ -84,7 +84,6 @@ namespace PixelCube.Operations
         {
             mwin.Dispatcher.BeginInvoke(new Action(() =>
             {
-                Debug.WriteLine("Focus handle");
                 Vector curLPPosition = e.FocusPosition;
                 Point3D curPosition = new Point3D(curLPPosition.x, curLPPosition.y, curLPPosition.z);
                 //获取当前累计变换矩阵的逆矩阵
@@ -174,7 +173,6 @@ namespace PixelCube.Operations
         {
             mwin.Dispatcher.BeginInvoke(new Action(() =>
             {
-                Debug.WriteLine("Rotate Handler");
                 //从事件参数中获取旋转轴向量
                 float[] vector = e.RotationAxis.ToFloatArray();
                 //转化为用C#提供的向量类型表示

@@ -82,7 +82,7 @@ namespace PixelCube.LeapMotion
         {
             newVec.x = vec.x / 600 * maxCoord;
             newVec.y = vec.y / 600 * maxCoord;
-            newVec.z = vec.z / 600 * maxCoord;
+            newVec.z = 0;
             return true;
         }
     }
