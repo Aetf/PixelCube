@@ -28,14 +28,14 @@ namespace PixelCube.LeapMotion
        /// <summary>
        /// All events this class will offer
        /// </summary>
-       internal EventHandler<LeapStatusChangeEventArgs> LeapStatusChangeEvent;
-       internal event EventHandler<PreDrawOperationEventArgs> PreDrawOperationEvent;
-       internal event EventHandler<PreFocusOperationEventArgs> PreFocusOperationEvent;
-       internal event EventHandler<PreRotateOperationEventArgs> PreRotateOperationEvent;
-       internal event EventHandler<PreScaleOperationEventArgs> PreScaleOperationEvent;
-       internal event EventHandler<PreDragOperationEventArgs> PreDragOperationEvent;
-       internal event EventHandler<PreEraseOperationEventArgs> PreEraseOperationEvent;
-       internal event EventHandler<PreChangeColorOperationEventArgs> PreChangeColorOperationEvent;
+      static internal EventHandler<LeapStatusChangeEventArgs> LeapStatusChangeEvent;
+       internal EventHandler<PreDrawOperationEventArgs> PreDrawOperationEvent;
+       internal EventHandler<PreFocusOperationEventArgs> PreFocusOperationEvent;
+       internal EventHandler<PreRotateOperationEventArgs> PreRotateOperationEvent;
+       internal EventHandler<PreScaleOperationEventArgs> PreScaleOperationEvent;
+       internal EventHandler<PreDragOperationEventArgs> PreDragOperationEvent;
+       internal EventHandler<PreEraseOperationEventArgs> PreEraseOperationEvent;
+       internal EventHandler<PreChangeColorOperationEventArgs> PreChangeColorOperationEvent;
        #endregion   
 
        #region Attributes
@@ -54,7 +54,14 @@ namespace PixelCube.LeapMotion
        private Frame lastFrame;         // Record the lastFrame
        private Frame currentFrame;      // Represent the current frame
        private Controller controller;   // Refer to the Leap controller
+       private CoordinatesTrans trans;
        #endregion
+
+       public LeapListener(CoordinatesTrans trans)
+       {
+           this.trans = trans;
+       }
+
 
         /// <summary>
         ///     Initialize the private attributes
@@ -64,9 +71,11 @@ namespace PixelCube.LeapMotion
         {
             pointableID = -1;
             state = State.focusing;
-            lastFrame = null;
+            
             currentFrame = null;
+            lastFrame = null;
             this.controller = controller;
+
             base.OnInit(controller);
         }
 
@@ -84,9 +93,10 @@ namespace PixelCube.LeapMotion
             controller.EnableGesture(Gesture.GestureType.TYPESCREENTAP);
             controller.EnableGesture(Gesture.GestureType.TYPESWIPE);
 
-            Debug.WriteLine("LeapConnected");
+          
             if (leapStatusChangeEvent != null)
             {
+                Debug.WriteLine("LeapConnected");
                 LeapStatusChangeEventArgs leapStatusChangeEventArgs = new LeapStatusChangeEventArgs();
                 leapStatusChangeEventArgs.isConnected = true;
                 leapStatusChangeEvent(this, leapStatusChangeEventArgs);
@@ -130,7 +140,8 @@ namespace PixelCube.LeapMotion
         public override void OnFrame(Controller controller)
         {
             currentFrame = controller.Frame();
-
+            if (lastFrame == null)
+                lastFrame = currentFrame;
             // If has two hands, suppose it will has a scale operation soon.
             if (currentFrame.Hands.Count >= 2)
             {
@@ -143,6 +154,7 @@ namespace PixelCube.LeapMotion
                     EventHandler<PreScaleOperationEventArgs> scale = PreScaleOperationEvent;
                     if (scale != null)
                     {
+                        Debug.WriteLine("ScaleEvent");
                         scale(this, new PreScaleOperationEventArgs(currentFrame.ScaleFactor(lastFrame)));
                     }
                 }
@@ -155,6 +167,7 @@ namespace PixelCube.LeapMotion
                     EventHandler<PreRotateOperationEventArgs> rotate = PreRotateOperationEvent;
                     if (rotate != null)
                     {
+                        Debug.WriteLine("RotateEvent");
                         rotate(this, new PreRotateOperationEventArgs(currentFrame.RotationAxis(lastFrame),
                             currentFrame.RotationAngle(lastFrame)));
                     }
@@ -174,15 +187,20 @@ namespace PixelCube.LeapMotion
                 if (currentFrame.Fingers.Count < 1)
                 {
                     Vector transVector = currentFrame.Translation(lastFrame);
-                    EventHandler<PreDragOperationEventArgs> drag = PreDragOperationEvent;
-                    if (drag != null)
+                    if (trans.Trans(transVector))
                     {
-                        drag(this, new PreDragOperationEventArgs(transVector));
+                        EventHandler<PreDragOperationEventArgs> drag = PreDragOperationEvent;
+                        if (drag != null)
+                        {
+                            Debug.WriteLine("DragEvent");
+                            drag(this, new PreDragOperationEventArgs(trans.getNewVec()));
+                        }
                     }
                 }
             }
             #endregion
 
+            #region Gestures
             GestureList gestures = currentFrame.Gestures();
             foreach (Gesture gesture in gestures)
             {
@@ -193,8 +211,10 @@ namespace PixelCube.LeapMotion
                         EventHandler<PreDrawOperationEventArgs> draw = PreDrawOperationEvent;
                         if (draw != null)
                         {
+                            Debug.WriteLine("drawEvent");
                             ScreenTapGesture screenTapGesture = new ScreenTapGesture(gesture);
-                            draw(this, new PreDrawOperationEventArgs(screenTapGesture.Position));
+                            if(trans.Trans(screenTapGesture.Position))
+                                draw(this, new PreDrawOperationEventArgs(trans.getNewVec()));
                         }
                         break;
 
@@ -214,13 +234,16 @@ namespace PixelCube.LeapMotion
 
                     // Enter erasing mode
                     case Gesture.GestureType.TYPESWIPE:
-                        state = State.erasing;
-                        Debug.WriteLine("EraseMode");
+                        if (currentFrame.Fingers.Count >= 4)
+                        {
+                            state = State.erasing;
+                            Debug.WriteLine("EraseMode");
+                        }
                         break;
     
                 }
             }
-
+            #endregion
 
             PointableList pointables = currentFrame.Pointables;
             if (!pointables.IsEmpty)
@@ -232,39 +255,47 @@ namespace PixelCube.LeapMotion
                     pointableID = pointable.Id;
                 }
 
-                switch (state)
+                // Ensure that this vector is valid
+                if (trans.Trans(pointable.TipPosition))
                 {
-                    case State.focusing:
-                        EventHandler<PreFocusOperationEventArgs> focus = PreFocusOperationEvent;
-                        if (focus != null)
-                        {
-                            focus(this, new PreFocusOperationEventArgs(pointable.TipPosition));
-                        }
-                        break;
+                    switch (state)
+                    {
+                        case State.focusing:
+                            EventHandler<PreFocusOperationEventArgs> focus = PreFocusOperationEvent;
+                            if (focus != null)
+                            {
+                                Debug.WriteLine("Focus Event");
+                                focus(this, new PreFocusOperationEventArgs(trans.getNewVec()));
+                            }
+                            break;
 
-                    case State.erasing:
-                        EventHandler<PreEraseOperationEventArgs> erase = PreEraseOperationEvent;
-                        if (erase != null)
-                        {
-                            erase(this, new PreEraseOperationEventArgs(pointable.TipPosition));
-                        }
-                        break;
+                        case State.erasing:
+                            EventHandler<PreEraseOperationEventArgs> erase = PreEraseOperationEvent;
+                            if (erase != null)
+                            {
+                                Debug.WriteLine("Erase Event");
+                                erase(this, new PreEraseOperationEventArgs(trans.getNewVec()));
+                            }
+                            break;
 
-                    case State.drawing:
-                        EventHandler<PreDrawOperationEventArgs> drawLine = PreDrawOperationEvent;
-                        if (drawLine != null)
-                        {
-                            drawLine(this, new PreDrawOperationEventArgs(pointable.TipPosition));
-                        }
-                        break;
-                    
-                    case State.colorChanging:
-                        EventHandler<PreChangeColorOperationEventArgs> changeColor = PreChangeColorOperationEvent;
-                        if (changeColor != null)
-                        {
-                            changeColor(this, new PreChangeColorOperationEventArgs(pointable.TipPosition));
-                        }
-                        break;
+                        case State.drawing:
+                            EventHandler<PreDrawOperationEventArgs> drawLine = PreDrawOperationEvent;
+                            if (drawLine != null)
+                            {
+                                Debug.WriteLine("DrawLine Event");
+                                drawLine(this, new PreDrawOperationEventArgs(trans.getNewVec()));
+                            }
+                            break;
+
+                        case State.colorChanging:
+                            EventHandler<PreChangeColorOperationEventArgs> changeColor = PreChangeColorOperationEvent;
+                            if (changeColor != null)
+                            {
+                                Debug.WriteLine("ColorChange Event");
+                                changeColor(this, new PreChangeColorOperationEventArgs(trans.getNewVec()));
+                            }
+                            break;
+                    }
                 }
 
 

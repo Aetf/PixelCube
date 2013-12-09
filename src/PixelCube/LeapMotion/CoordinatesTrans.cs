@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Leap;
-using PixelCube.ThreeDimensional;
-
+using PixelCube.Scene3D;
 namespace PixelCube.LeapMotion
 {
     class CoordinatesTrans
@@ -34,7 +33,7 @@ namespace PixelCube.LeapMotion
         /// 带参构造
         /// </summary>
         /// <param name="art">Artwork 的对象</param>
-        public CoordinatesTrans(Artwork art)
+        public CoordinatesTrans(IArtwork art)
         {
             newVec = new Vector(0, 0, 0);
             ConfigProvider cp = ConfigProvider.Instance;

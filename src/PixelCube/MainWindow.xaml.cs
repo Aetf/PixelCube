@@ -63,7 +63,8 @@ namespace PixelCube
             Leap.PreEraseOperationEvent += c.OnEraseOperation;
             Leap.PreRotateOperationEvent += c.OnPreRotateOperation;
             Leap.PreScaleOperationEvent += c.OnPreScaleOperation;
-
+            Leap.PreFocusOperationEvent += c.OnPreFocusOperation;
+           
             return c;
         }
         #endregion
@@ -73,8 +74,8 @@ namespace PixelCube
             CurrentArt = LSDocu.NewArtwork();
             Leap = CreateLeapMotion();
             SceneControler = CreateSceneControler();
-
             kernel = CreateOpCore();
+            Leap.LinkEvent();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

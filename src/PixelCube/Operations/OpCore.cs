@@ -9,6 +9,7 @@ using Leap;
 using PixelCube.LeapMotion;
 using PixelCube.Scene3D;
 using PixelCube.Utils;
+using System.Diagnostics;
 
 
 namespace PixelCube.Operations
@@ -79,6 +80,7 @@ namespace PixelCube.Operations
         /// <param name="e">事件参数</param>
         public void OnPreFocusOperation(object sender, PreFocusOperationEventArgs e)
         {
+            Debug.WriteLine("Focus handle");
             Vector curLPPosition = e.FocusPosition;
             Point3D curPosition = new Point3D(curLPPosition.x, curLPPosition.y, curLPPosition.z);
             //获取当前累计变换矩阵的逆矩阵
