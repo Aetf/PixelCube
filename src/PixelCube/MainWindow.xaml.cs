@@ -39,7 +39,7 @@ namespace PixelCube
         #region Modules Initializatoin
         private ISceneControler CreateSceneControler()
         {
-            var isc = new CubeSceneControler();
+            var isc = new CubeSceneController();
             isc.DoInit(this);
             return isc;
         }

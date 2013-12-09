@@ -7,7 +7,7 @@ using HelixToolkit.Wpf;
 
 namespace PixelCube.Scene3D
 {
-    class CubeSceneControler : ISceneControler
+    class CubeSceneController : ISceneControler
     {
         #region ISceneControler 成员
 
@@ -92,7 +92,7 @@ namespace PixelCube.Scene3D
         private HelixViewport3D mView;
         private MainWindow mWin;
 
-        public CubeSceneControler()
+        public CubeSceneController()
         {
             
         }

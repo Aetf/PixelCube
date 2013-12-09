@@ -85,7 +85,7 @@
     <Compile Include="Operations\PostChangeColorOperationEventArgs.cs" />
     <Compile Include="Operations\PostDragOperationEventArgs.cs" />
     <Compile Include="Operations\PostEraseOperationEventArgs.cs" />
-    <Compile Include="Scene3D\CubeSceneControler.cs" />
+    <Compile Include="Scene3D\CubeSceneController.cs" />
     <Compile Include="ThreeDimensional\Artwork.cs" />
     <Compile Include="Sound\BackgroundMusic.cs" />
     <Compile Include="ThreeDimensional\Cube.cs" />
