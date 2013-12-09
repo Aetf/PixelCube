@@ -174,12 +174,14 @@ namespace PixelCube.Operations
         {
             mwin.Dispatcher.BeginInvoke(new Action(() =>
             {
+                Debug.WriteLine("Rotate Handler");
                 //从事件参数中获取旋转轴向量
                 float[] vector = e.RotationAxis.ToFloatArray();
                 //转化为用C#提供的向量类型表示
                 Vector3D rotateAxis = new Vector3D(vector[0], vector[1], vector[2]);
                 //从事件参数中获取旋转角度
-                float rotateAngel = e.RotationAngle;
+                double rotateAngel = e.RotationAngle;
+                rotateAngel *= 180 / Math.PI; // from rad to deg
                 //定义绕轴旋转变换
                 AxisAngleRotation3D axisAngelRotation = new AxisAngleRotation3D(rotateAxis, rotateAngel);
                 //根据变换定义变换矩阵
