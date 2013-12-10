@@ -23,11 +23,11 @@
                            CameraRotationMode="Turntable" ModelUpDirection="0,1,0" ShowCoordinateSystem="True">
             <h:HelixViewport3D.Camera>
                 <PerspectiveCamera x:Name="mCamera"
-						FarPlaneDistance="1000" 
-						LookDirection="0,-0.5,-1" 
+						FarPlaneDistance="100" 
+						LookDirection="-1,-1,-2" 
 						UpDirection="0,1,0"
 						NearPlaneDistance="1" 
-						Position="5,10,20"
+						Position="20,20,40"
 						FieldOfView="60" />
             </h:HelixViewport3D.Camera>
 
@@ -38,8 +38,9 @@
                 <ModelVisual3D.Content>
                     <Model3DGroup x:Name="cubeGroup">
                         <!-- Lights, MeshGeometry3D and DiffuseMaterial objects are added to the ModelVisual3D. -->
-                        <AmbientLight Color="#666666" />
-                        <DirectionalLight Direction=" 1,-1,-1" Color="Gray"/>
+                        <AmbientLight Color="White" />
+                        <DirectionalLight Direction=" 1,-1,-1" Color="White"/>
+                        <!--<DirectionalLight Direction="-1, 1, 1" Color="Gray"/>-->
                     </Model3DGroup>
                 </ModelVisual3D.Content>
             </ModelVisual3D>

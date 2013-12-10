@@ -43,11 +43,11 @@ namespace PixelCube.Scene3D
             //Vector3D sceneSize = new Vector3D(4, 4, 4);
 
             NameScope.SetNameScope(win, new NameScope());
-            for(int i = 0; i!= sceneSize.X; i++)
+            for (int i = 0; i != sceneSize.X; i++)
             {
-                for(int j = 0; j!= sceneSize.Y; j++)
+                for (int j = 0; j != sceneSize.Y; j++)
                 {
-                    for(int k = 0; k!= sceneSize.Z; k++)
+                    for (int k = 0; k != sceneSize.Z; k++)
                     {
                         GeometryModel3D c = cubeseed.Clone();
                         mWin.RegisterName(NameForCubeModel(i, j, k), c);
@@ -56,12 +56,32 @@ namespace PixelCube.Scene3D
                     }
                 }
             }
-
-            SetColor(3, 3, 3, Colors.AntiqueWhite);
+            SetFocus(8, 8, 8);
+            //SetColor(3, 3, 3, Colors.AntiqueWhite);
         }
 
         public void SetFocus(int i, int j, int k)
         {
+            GradientStopCollection g = new GradientStopCollection();
+            Color c1 = new Color();
+            c1.ScB = 0;
+            c1.ScG = 0;
+            c1.ScR = 0;
+            c1.ScA = 0;
+            GradientStop gs1 = new GradientStop(c1, 0.9);
+            //Color c2 = new Color();
+            //c2.ScB = 244;
+            //c2.ScG = 73;
+            //c2.ScR = 23;
+            //c2.ScA = 200;
+            GradientStop gs2 = new GradientStop(Colors.MediumAquamarine, 1);
+            g.Add(gs1);
+            g.Add(gs2);
+            DiffuseMaterial a = new DiffuseMaterial(new RadialGradientBrush(g));
+
+            GeometryModel3D cube = CubeModelFromIdx(i, j, k);
+            cube.Material = a;
+
             return;
         }
 
@@ -75,7 +95,7 @@ namespace PixelCube.Scene3D
             GeometryModel3D cube = CubeModelFromIdx(i, j, k);
 
             // FIXME: Only for test.
-            //cube.Material = new DiffuseMaterial(Brushes.Red);
+            //cube.Material = new DiffuseMaterial(Brushes.BlueViolet);
         }
 
         #endregion
