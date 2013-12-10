@@ -162,7 +162,7 @@ namespace PixelCube.Operations
                 else
                 {
                     //不上色
-                    msceneController.SetColor(-1, -1, -1, c);
+                    //msceneController.SetColor(-1, -1, -1, c);
                 }
             }), null);
         }
