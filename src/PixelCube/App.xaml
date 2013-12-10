@@ -25,6 +25,19 @@
             </DiffuseMaterial.Brush>
         </DiffuseMaterial>
 
+        <MaterialGroup x:Key="focusMaterial">
+            <DiffuseMaterial>
+                <DiffuseMaterial.Brush>
+                    <RadialGradientBrush>
+                        <RadialGradientBrush.GradientStops>
+                            <GradientStop Color="#00000000" Offset="0.99"/>
+                            <GradientStop Color="MediumAquamarine" Offset="1"/>
+                        </RadialGradientBrush.GradientStops>
+                    </RadialGradientBrush>
+                </DiffuseMaterial.Brush>
+            </DiffuseMaterial>
+        </MaterialGroup>
+
         <GeometryModel3D x:Key="cubeSeed"
                          Geometry="{StaticResource cubeGeo}"
                          Material="{StaticResource whiteSmokeMaterial}" />

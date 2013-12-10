@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using HelixToolkit.Wpf;
+using System.Diagnostics;
 
 namespace PixelCube.Scene3D
 {
@@ -62,32 +63,13 @@ namespace PixelCube.Scene3D
             //SetColor(3, 3, 3, Colors.AntiqueWhite);
         }
 
-        Vector3D preFocus = default(Vector3D);
+        Vector3D preFocus = new Vector3D(-1, -1, -1);
         Material preMaterial = default(Material);
-
         public void SetFocus(int i, int j, int k)
         {
-            GradientStopCollection g = new GradientStopCollection();
-            Color c1 = new Color();
-            c1.ScB = 0;
-            c1.ScG = 0;
-            c1.ScR = 0;
-            c1.ScA = 0;
-            GradientStop gs1 = new GradientStop(c1, 0.9);
-            //Color c2 = new Color();
-            //c2.ScB = 244;
-            //c2.ScG = 73;
-            //c2.ScR = 23;
-            //c2.ScA = 200;
-            GradientStop gs2 = new GradientStop(Colors.MediumAquamarine, 1);
-            g.Add(gs1);
-            g.Add(gs2);
-            MaterialGroup mg = new MaterialGroup();
-            DiffuseMaterial a = new DiffuseMaterial(new RadialGradientBrush(g));
-            mg.Children.Add(a);
-            mg.Children.Add(new EmissiveMaterial(new RadialGradientBrush(g)));
-            
-            if (preFocus != default(Vector3D))
+            Debug.WriteLine("Set focus at: " + i + ", " + j + ", " + k);
+            // Clear previous focus
+            if (!preFocus.Equals(new Vector3D(-1, -1, -1)))
             {
                 int x = (int)preFocus.X;
                 int y = (int)preFocus.Y;
@@ -96,16 +78,14 @@ namespace PixelCube.Scene3D
                 preCube.Material = preMaterial;
                 preFocus = default(Vector3D);
             }
-
-            if (!(i == -1 || j == -1 || k == -1))
+            // Set focus
+            if (!(i < 0 || j < 0 || k < 0))
             {
                 GeometryModel3D cube = CubeModelFromIdx(i, j, k);
                 preFocus = new Vector3D(i, j, k);
                 preMaterial = cube.Material;
-                cube.Material = a;
+                cube.Material = mWin.FindResource("focusMaterial") as Material;
             }
-
-            return;
         }
 
         public void Erase(int i, int j, int k)
@@ -115,10 +95,14 @@ namespace PixelCube.Scene3D
         
         public void SetColor(int i, int j, int k, Color c)
         {
-            GeometryModel3D cube = CubeModelFromIdx(i, j, k);
+            if (i < 0 || j < 0 || k < 0)
+                return;
 
-            // FIXME: Only for test.
-            //cube.Material = new DiffuseMaterial(Brushes.BlueViolet);
+            GeometryModel3D cube = CubeModelFromIdx(i, j, k);
+            // FIXME: only debug propose here!! Should use c in release.
+            //cube.Material = new DiffuseMaterial(new SolidColorBrush(c));
+            cube.Material = new DiffuseMaterial(new SolidColorBrush(Colors.Blue));
+            
         }
 
         #endregion
@@ -142,6 +126,8 @@ namespace PixelCube.Scene3D
 
         private GeometryModel3D CubeModelFromIdx(int i, int j, int k)
         {
+            // FIXME: See issue 27.
+            // Maybe some debug info should be print here.
             return mWin.FindName(NameForCubeModel(i, j, k)) as GeometryModel3D;
         }
 
