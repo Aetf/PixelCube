@@ -6,6 +6,7 @@ using PixelCube.Scene3D;
 using HelixToolkit.Wpf;
 using PixelCube.LoadAndSave;
 using PixelCube.Operations;
+using System;
 
 namespace PixelCube
 {
@@ -75,6 +76,15 @@ namespace PixelCube
             Leap = CreateLeapMotion();
             SceneControler = CreateSceneControler();
             kernel = CreateOpCore();
+
+            Leap.PreFocusOperationEvent += new System.EventHandler<PreFocusOperationEventArgs>((obj, arg)=>
+            {
+                this.Dispatcher.BeginInvoke(new Action(()=>
+                {
+                    pointer.Center = new Point3D(arg.FocusPosition.x, arg.FocusPosition.y, arg.FocusPosition.z);
+                }));
+            });
+
             Leap.LinkEvent();
         }
 

@@ -34,6 +34,7 @@
             <h:CoordinateSystemVisual3D ArrowLengths="1"/>
             <h:GridLinesVisual3D Normal="0,1,0" LengthDirection="1,0,0"/>
 
+            <h:SphereVisual3D x:Name="pointer" Radius="0.2" Center="0, 0, 0" />
             <ModelVisual3D >
                 <ModelVisual3D.Content>
                     <Model3DGroup x:Name="cubeGroup">
