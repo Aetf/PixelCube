@@ -27,7 +27,7 @@
 						LookDirection="-1,-1,-2" 
 						UpDirection="0,1,0"
 						NearPlaneDistance="1" 
-						Position="20,20,40"
+						Position="10,10,20"
 						FieldOfView="60" />
             </h:HelixViewport3D.Camera>
 

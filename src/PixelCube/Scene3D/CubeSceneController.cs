@@ -56,9 +56,14 @@ namespace PixelCube.Scene3D
                     }
                 }
             }
-            SetFocus(8, 8, 8);
+            //SetFocus(2, 2, 2);
+            //SetFocus(3, 3, 3);
+            //SetFocus(-1, -1, -1);
             //SetColor(3, 3, 3, Colors.AntiqueWhite);
         }
+
+        Vector3D preFocus = default(Vector3D);
+        Material preMaterial = default(Material);
 
         public void SetFocus(int i, int j, int k)
         {
@@ -77,10 +82,28 @@ namespace PixelCube.Scene3D
             GradientStop gs2 = new GradientStop(Colors.MediumAquamarine, 1);
             g.Add(gs1);
             g.Add(gs2);
+            MaterialGroup mg = new MaterialGroup();
             DiffuseMaterial a = new DiffuseMaterial(new RadialGradientBrush(g));
+            mg.Children.Add(a);
+            mg.Children.Add(new EmissiveMaterial(new RadialGradientBrush(g)));
+            
+            if (preFocus != default(Vector3D))
+            {
+                int x = (int)preFocus.X;
+                int y = (int)preFocus.Y;
+                int z = (int)preFocus.Z;
+                GeometryModel3D preCube = CubeModelFromIdx(x, y, z);
+                preCube.Material = preMaterial;
+                preFocus = default(Vector3D);
+            }
 
-            GeometryModel3D cube = CubeModelFromIdx(i, j, k);
-            cube.Material = a;
+            if (!(i == -1 || j == -1 || k == -1))
+            {
+                GeometryModel3D cube = CubeModelFromIdx(i, j, k);
+                preFocus = new Vector3D(i, j, k);
+                preMaterial = cube.Material;
+                cube.Material = a;
+            }
 
             return;
         }
