@@ -282,8 +282,19 @@ namespace PixelCube.Operations
                     //建立新的临时累计矩阵
                     MatrixTransform3D worldTransform = new MatrixTransform3D(msceneController.WorldTransform.Value);
 
+                    //首先取消旋转效果
+                    //获取当前累计旋转变换的反矩阵
+                    MatrixTransform3D unRotateTransform = (MatrixTransform3D)mrotateTransform.Inverse;
+                    
+                    //将旋转变换反矩阵融入摄像机累计变换中
+                    worldTransform.Merge(unRotateTransform);
+                    
+                    //先进行平移变换
                     //将缩放转换矩阵融入累计变换矩阵
                     worldTransform.Merge(new TranslateTransform3D(inCameraTransVector));
+
+                    //然后进行旋转变换
+                    worldTransform.Merge(mrotateTransform);
 
                     //更新累计变换矩阵
                     msceneController.WorldTransform = worldTransform;
