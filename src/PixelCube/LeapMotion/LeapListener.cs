@@ -92,7 +92,6 @@ namespace PixelCube.LeapMotion
           
             if (leapStatusChangeEvent != null)
             {
-                Debug.WriteLine("LeapConnected");
                 LeapStatusChangeEventArgs leapStatusChangeEventArgs = new LeapStatusChangeEventArgs();
                 leapStatusChangeEventArgs.isConnected = true;
                 leapStatusChangeEvent(this, leapStatusChangeEventArgs);
