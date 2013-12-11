@@ -88,13 +88,14 @@ namespace PixelCube.Operations
         /// </summary>
         /// <param name="sender">事件源</param>
         /// <param name="e">事件参数</param>
+        Tuple<int, int, int> lastFocusIdx;
         public void OnPreFocusOperation(object sender, PreFocusOperationEventArgs e)
         {
             mwin.Dispatcher.BeginInvoke(new Action(() =>
             {
-               
+
                 Vector curLPPosition = e.FocusPosition;
-                
+
                 Point3D precurPosition = new Point3D(curLPPosition.x, curLPPosition.y, curLPPosition.z);
                 //对当前坐标进行逆变换
                 Point3D curPosition = msceneController.WorldTransform.Transform(precurPosition);
@@ -107,6 +108,15 @@ namespace PixelCube.Operations
                 int i = (int)(curPosition.X / mcubea);
                 int j = (int)(curPosition.Y / mcubea);
                 int k = (int)(curPosition.Z / mcubea);
+
+                // 是否与之前相同，是的话返回
+                var triIdx = Tuple.Create(i, j, k);
+                if (lastFocusIdx != null
+                    &&
+                    lastFocusIdx.Equals(triIdx))
+                    return;
+
+                lastFocusIdx = triIdx;
 
                 //判断当前坐标是否越界
                 if (i < martwork.SceneSize.X
@@ -130,8 +140,7 @@ namespace PixelCube.Operations
         /// </summary>
         /// <param name="sender">事件源</param>
         /// <param name="e">事件参数</param>
-        private DateTime lastCall;
-        private Tuple<int, int, int> lastIdx;
+        private Tuple<int, int, int> lastDrawIdx;
         public void OnPreDrawOperation(object sender, PreDrawOperationEventArgs e)
         {
             //通过事件参数获取上色小方块坐标
@@ -147,12 +156,12 @@ namespace PixelCube.Operations
 
             // 是否与之前相同，是的话返回
             var triIdx = Tuple.Create(i, j, k);
-            if (lastIdx != null
+            if (lastDrawIdx != null
                 &&
-                lastIdx.Equals(triIdx))
+                lastDrawIdx.Equals(triIdx))
                 return;
 
-            lastIdx = triIdx;
+            lastDrawIdx = triIdx;
 
             //设置小方块上色的颜色，目前为默认值
             Color c = new Color();
@@ -304,10 +313,10 @@ namespace PixelCube.Operations
                     //首先取消旋转效果
                     //获取当前累计旋转变换的反矩阵
                     MatrixTransform3D unRotateTransform = (MatrixTransform3D)mrotateTransform.Inverse;
-                    
+
                     //将旋转变换反矩阵融入摄像机累计变换中
                     worldTransform.Merge(unRotateTransform);
-                    
+
                     //先进行平移变换
                     //将缩放转换矩阵融入累计变换矩阵
                     worldTransform.Merge(new TranslateTransform3D(inCameraTransVector));
@@ -324,7 +333,8 @@ namespace PixelCube.Operations
                         PostDragOperationEvent(this, new PostDragOperationEventArgs());
                     }
                 }
-                else {
+                else
+                {
                     //取消累计平移向量的更新
                     dragFactor[0] -= i;
                     dragFactor[1] -= j;
