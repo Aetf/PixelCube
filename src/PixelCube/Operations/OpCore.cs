@@ -92,9 +92,9 @@ namespace PixelCube.Operations
                 
                 Point3D precurPosition = new Point3D(curLPPosition.x, curLPPosition.y, curLPPosition.z);
                 //获取当前累计变换矩阵的逆矩阵
-                GeneralTransform3D transform = msceneController.WorldTransform.Inverse;
+                //GeneralTransform3D transform = msceneController.WorldTransform.Inverse;
                 //对当前坐标进行逆变换
-                Point3D curPosition = transform.Transform(precurPosition);
+                Point3D curPosition = msceneController.WorldTransform.Transform(precurPosition);
                 //x,y,z为小方块的绝对三维坐标
                 //int x = (int);
                 //int y = (int);
