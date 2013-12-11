@@ -10,15 +10,18 @@ namespace PixelCube.Sound
     /// <summary>
     /// 背景音乐循环播放
     /// </summary>
-    public class BackgroundMusic:EventArgs
+    public class BackgroundMusic
     {
-        public bool isOpen
-        {set;get;}
-        public void PlayMusic(bool open)
+        public BackgroundMusic(bool open)
         {
-            System.Media.SoundPlayer Mu = new System.Media.SoundPlayer("../../Sound/April.wav");
-            open = isOpen;
-            if (open == true)
+            isOpen = open;
+        }
+        public bool isOpen;
+        public void PlayMusic()
+        {
+            System.Media.SoundPlayer Mu = new System.Media.SoundPlayer("../../Sound/etudeofwater.wav");
+            //open = isOpen;
+            if (isOpen == true)
                 Mu.PlayLooping();
             else
                 Mu.Stop();
