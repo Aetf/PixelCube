@@ -47,6 +47,11 @@ namespace PixelCube.Operations
         /// </summary>
         public event EventHandler<PostDragOperationEventArgs> PostDragOperationEvent;
 
+        /// <summary>
+        /// 擦除事件
+        /// </summary>
+        public event EventHandler<PostEraseOperationEventArgs> PostEraseOperationEvent;
+
         #endregion
 
         private double mcubea;//小方块的边长
@@ -348,6 +353,11 @@ namespace PixelCube.Operations
                     msceneController.SetFocus(i, j, k);
                     //通知试图控制类
                     msceneController.Erase(i, j, k);
+                    //发出事件
+                    if (PostEraseOperationEvent != null)
+                    {
+                        PostEraseOperationEvent(this, new PostEraseOperationEventArgs());
+                    }
                 }
             }), null);
         }
