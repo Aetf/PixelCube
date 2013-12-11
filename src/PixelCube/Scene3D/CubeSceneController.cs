@@ -63,11 +63,11 @@ namespace PixelCube.Scene3D
             //SetColor(3, 3, 3, Colors.AntiqueWhite);
         }
 
-        Vector3D preFocus = new Vector3D(-1, -1, -1);
+        static const Vector3D InvalidDefault = new Vector3D(-1, -1, -1);
+        Vector3D preFocus = InvalidDefault;
         Material preMaterial = default(Material);
         public void SetFocus(int i, int j, int k)
         {
-            Debug.WriteLine("Set focus at: " + i + ", " + j + ", " + k);
             // Clear previous focus
             if (!preFocus.Equals(new Vector3D(-1, -1, -1)))
             {
@@ -76,7 +76,7 @@ namespace PixelCube.Scene3D
                 int z = (int)preFocus.Z;
                 GeometryModel3D preCube = CubeModelFromIdx(x, y, z);
                 preCube.Material = preMaterial;
-                preFocus = default(Vector3D);
+                preFocus = InvalidDefault;
             }
             // Set focus
             if (!(i < 0 || j < 0 || k < 0))
@@ -90,19 +90,17 @@ namespace PixelCube.Scene3D
 
         public void Erase(int i, int j, int k)
         {
+            var cube = CubeModelFromIdx(i, j, k);
             return;
         }
         
         public void SetColor(int i, int j, int k, Color c)
         {
-            if (i < 0 || j < 0 || k < 0)
-                return;
+            var cube = CubeModelFromIdx(i, j, k);
 
-            GeometryModel3D cube = CubeModelFromIdx(i, j, k);
             // FIXME: only debug propose here!! Should use c in release.
             //cube.Material = new DiffuseMaterial(new SolidColorBrush(c));
             cube.Material = new DiffuseMaterial(new SolidColorBrush(Colors.Blue));
-            
         }
 
         #endregion
@@ -126,9 +124,10 @@ namespace PixelCube.Scene3D
 
         private GeometryModel3D CubeModelFromIdx(int i, int j, int k)
         {
-            // FIXME: See issue 27.
-            // Maybe some debug info should be print here.
-            return mWin.FindName(NameForCubeModel(i, j, k)) as GeometryModel3D;
+            var c = mWin.FindName(NameForCubeModel(i, j, k)) as GeometryModel3D;
+            if (c == null)
+                throw new ArgumentOutOfRangeException("(i, j, k)", new Vector3D(i, j, k), "Shoule be >=0 && < SceneSize.X/Y/Z");
+            return c;
         }
 
         private String NameForCubeModel(int i, int j, int k)
