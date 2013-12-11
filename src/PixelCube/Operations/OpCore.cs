@@ -142,12 +142,16 @@ namespace PixelCube.Operations
                 int j = (int)(inCameraPosition.Y / mcubea);
                 int k = (int)(inCameraPosition.Z / mcubea);
 
+                
                 //设置小方块上色的颜色，目前为默认值
                 Color c = new Color();
 
                 //判断小方块绝对三维坐标是否离开画布
                 if (i < martwork.SceneSize.X && j <= martwork.SceneSize.Y && k < martwork.SceneSize.Z)
                 {
+                    //设置当前焦点
+                    msceneController.SetFocus(i, j, k);
+
                     //修改小方块上色的颜色
                     msceneController.SetColor(i, j, k, c);
 
@@ -340,6 +344,8 @@ namespace PixelCube.Operations
                     && j < martwork.SceneSize.Y
                     && k < martwork.SceneSize.Z)
                 {
+                    //设置当前焦点
+                    msceneController.SetFocus(i, j, k);
                     //通知试图控制类
                     msceneController.Erase(i, j, k);
                 }
