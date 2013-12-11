@@ -21,6 +21,8 @@ namespace PixelCube
         public ILeapMotion Leap;
 
         internal OpCore kernel;
+        internal BackgroundMusic bgm;
+        internal BackgroundSound se;
 
         public HelixViewport3D getViewport()
         {
@@ -36,8 +38,6 @@ namespace PixelCube
         public MainWindow()
         {
             InitializeComponent();
-            BackgroundMusic bgm = new BackgroundMusic(true);
-            bgm.PlayMusic();
         }
 
         #region Modules Initializatoin
@@ -53,6 +53,32 @@ namespace PixelCube
             var leap = new LeapController(CurrentArt);
             leap.Initialize();
             return leap;
+        }
+
+        private BackgroundMusic CreateBGM()
+        {
+            var bgm = new BackgroundMusic();
+            bgm.DoInit(this, true);
+
+            return bgm;
+        }
+
+        /// <summary>
+        /// Must be called after kernel is initialized.
+        /// </summary>
+        /// <returns></returns>
+        private BackgroundSound CreateSE()
+        {
+            var se = new BackgroundSound();
+            se.DoInit(this);
+
+            kernel.PostDrawOperationEvent += se.DrawOperationSound;
+            kernel.PostFocusOperationEvent += se.FocusOperationSound;
+
+            // FIXME: OpCore donot have PostEraseOperationEvent.
+            //kernel.PostEraseOperationEvent += se.EraseOperationSound;
+
+            return se;
         }
 
         private OpCore CreateOpCore()
@@ -79,6 +105,8 @@ namespace PixelCube
             Leap = CreateLeapMotion();
             SceneControler = CreateSceneControler();
             kernel = CreateOpCore();
+            bgm = CreateBGM();
+            se = CreateSE();
 
             Leap.PreFocusOperationEvent += new System.EventHandler<PreFocusOperationEventArgs>((obj, arg)=>
             {
