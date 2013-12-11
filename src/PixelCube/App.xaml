@@ -5,7 +5,7 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <sys:Double x:Key="cubeA">2</sys:Double>
-        
+
         <MeshGeometry3D x:Key="cubeGeo" 
                         Normals="0,-1,0 0,-1,0 0,-1,0 0,-1,0 0,1,0 0,1,0 0,1,0 0,1,0 0,0,1 0,0,1 0,0,1 0,0,1 1,0,0
                                  1,0,0 1,0,0 1,0,0 0,0,-1 0,0,-1 0,0,-1 0,0,-1 -1,0,0 -1,0,0 -1,0,0 -1,0,0" 
@@ -25,21 +25,24 @@
             </DiffuseMaterial.Brush>
         </DiffuseMaterial>
 
-        <MaterialGroup x:Key="focusMaterial">
-            <DiffuseMaterial>
-                <DiffuseMaterial.Brush>
-                    <RadialGradientBrush>
-                        <RadialGradientBrush.GradientStops>
-                            <GradientStop Color="#00000000" Offset="0.99"/>
-                            <GradientStop Color="MediumAquamarine" Offset="1"/>
-                        </RadialGradientBrush.GradientStops>
-                    </RadialGradientBrush>
-                </DiffuseMaterial.Brush>
-            </DiffuseMaterial>
-        </MaterialGroup>
+        <EmissiveMaterial x:Key="focusMaterial">
+            <EmissiveMaterial.Brush>
+                <RadialGradientBrush>
+                    <RadialGradientBrush.GradientStops>
+                        <GradientStop Color="#00000000" Offset="0.99"/>
+                        <GradientStop Color="MediumAquamarine" Offset="1"/>
+                    </RadialGradientBrush.GradientStops>
+                </RadialGradientBrush>
+            </EmissiveMaterial.Brush>
+        </EmissiveMaterial>
 
         <GeometryModel3D x:Key="cubeSeed"
-                         Geometry="{StaticResource cubeGeo}"
-                         Material="{StaticResource whiteSmokeMaterial}" />
+                         Geometry="{StaticResource cubeGeo}">
+            <GeometryModel3D.Material>
+                <MaterialGroup>
+                    <StaticResource ResourceKey="whiteSmokeMaterial" />
+                </MaterialGroup>
+            </GeometryModel3D.Material>
+        </GeometryModel3D>
     </Application.Resources>
 </Application>

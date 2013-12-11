@@ -5,6 +5,7 @@ using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using HelixToolkit.Wpf;
 using System.Diagnostics;
+using System.Linq;
 
 namespace PixelCube.Scene3D
 {
@@ -57,34 +58,33 @@ namespace PixelCube.Scene3D
                     }
                 }
             }
-            //SetFocus(2, 2, 2);
-            //SetFocus(3, 3, 3);
+            SetColor(2, 2, 2, default(Color));
+            SetColor(3, 3, 3, default(Color));
+            SetFocus(2, 2, 2);
+            SetFocus(3, 3, 3);
             //SetFocus(-1, -1, -1);
             //SetColor(3, 3, 3, Colors.AntiqueWhite);
         }
 
-        static const Vector3D InvalidDefault = new Vector3D(-1, -1, -1);
-        Vector3D preFocus = InvalidDefault;
-        Material preMaterial = default(Material);
+        Tuple<int, int, int> preFocus = null;
         public void SetFocus(int i, int j, int k)
         {
             // Clear previous focus
-            if (!preFocus.Equals(new Vector3D(-1, -1, -1)))
+            if (preFocus != null)
             {
-                int x = (int)preFocus.X;
-                int y = (int)preFocus.Y;
-                int z = (int)preFocus.Z;
-                GeometryModel3D preCube = CubeModelFromIdx(x, y, z);
-                preCube.Material = preMaterial;
-                preFocus = InvalidDefault;
+                GeometryModel3D preCube = CubeModelFromIdx(preFocus.Item1, preFocus.Item2, preFocus.Item3);
+                var g = preCube.Material as MaterialGroup;
+                var focusmaterial = g.Children.OfType<EmissiveMaterial>().LastOrDefault();
+                g.Children.Remove(focusmaterial);
+                preFocus = null;
             }
             // Set focus
             if (!(i < 0 || j < 0 || k < 0))
             {
                 GeometryModel3D cube = CubeModelFromIdx(i, j, k);
-                preFocus = new Vector3D(i, j, k);
-                preMaterial = cube.Material;
-                cube.Material = mWin.FindResource("focusMaterial") as Material;
+                preFocus = Tuple.Create(i, j, k);
+                var g = cube.Material as MaterialGroup;
+                g.Children.Add(mWin.FindResource("focusMaterial") as Material);
             }
         }
 
@@ -98,9 +98,14 @@ namespace PixelCube.Scene3D
         {
             var cube = CubeModelFromIdx(i, j, k);
 
+            var g = cube.Material as MaterialGroup;
+            var old = g.Children.OfType<DiffuseMaterial>().First();
+            g.Children.Remove(old);
+
             // FIXME: only debug propose here!! Should use c in release.
-            //cube.Material = new DiffuseMaterial(new SolidColorBrush(c));
-            cube.Material = new DiffuseMaterial(new SolidColorBrush(Colors.Blue));
+            //var n = new DiffuseMaterial(new SolidColorBrush(c));
+            var n = new DiffuseMaterial(new SolidColorBrush(Colors.Blue));
+            g.Children.Insert(0, n);
         }
 
         #endregion
