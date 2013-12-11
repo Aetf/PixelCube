@@ -91,8 +91,6 @@ namespace PixelCube.Operations
                 Vector curLPPosition = e.FocusPosition;
                 
                 Point3D precurPosition = new Point3D(curLPPosition.x, curLPPosition.y, curLPPosition.z);
-                //获取当前累计变换矩阵的逆矩阵
-                //GeneralTransform3D transform = msceneController.WorldTransform.Inverse;
                 //对当前坐标进行逆变换
                 Point3D curPosition = msceneController.WorldTransform.Transform(precurPosition);
                 //x,y,z为小方块的绝对三维坐标
@@ -136,10 +134,8 @@ namespace PixelCube.Operations
                 //将leapmotion捕捉到的小方块坐标封装
                 Point3D inCameraPosition = new Point3D(drawPosition.x, drawPosition.y, drawPosition.z);
 
-                //将摄像机看到的坐标转换为小方块的绝对三维坐标
-                GeneralTransform3D transform = msceneController.WorldTransform.Inverse;
                 //进行转换
-                transform.Transform(inCameraPosition);
+                msceneController.WorldTransform.Transform(inCameraPosition);
 
                 //i,j,k为小方块的三维位置索引
                 int i = (int)(inCameraPosition.X / mcubea);
@@ -327,10 +323,8 @@ namespace PixelCube.Operations
             {
                 Vector curLPPosition = e.Position;
                 Point3D precurPosition = new Point3D(curLPPosition.x, curLPPosition.y, curLPPosition.z);
-                //获取当前累计变换矩阵的逆矩阵
-                GeneralTransform3D transform = msceneController.WorldTransform.Inverse;
                 //对当前坐标进行逆变换
-                Point3D curPosition = transform.Transform(precurPosition);
+                Point3D curPosition = msceneController.WorldTransform.Transform(precurPosition);
                 //x,y,z为小方块的绝对三维坐标
                 //int x = (int);
                 //int y = (int);
