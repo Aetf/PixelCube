@@ -87,7 +87,9 @@ namespace PixelCube.Operations
         {
             mwin.Dispatcher.BeginInvoke(new Action(() =>
             {
+               
                 Vector curLPPosition = e.FocusPosition;
+                
                 Point3D curPosition = new Point3D(curLPPosition.x, curLPPosition.y, curLPPosition.z);
                 //获取当前累计变换矩阵的逆矩阵
                 GeneralTransform3D transform = msceneController.WorldTransform.Inverse;
