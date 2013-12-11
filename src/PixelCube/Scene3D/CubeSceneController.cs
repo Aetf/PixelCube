@@ -6,22 +6,40 @@ using System.Windows.Media.Media3D;
 using HelixToolkit.Wpf;
 using System.Diagnostics;
 using System.Linq;
+using PixelCube.Utils;
 
 namespace PixelCube.Scene3D
 {
     class CubeSceneController : ISceneControler
     {
+        public void TranslateCamera(Vector3D offset)
+        {
+            mView.Camera.Position = Point3D.Add(mView.Camera.Position, offset);
+        }
+
+        public void RotateCamera(RotateTransform3D rotation)
+        {
+            mView.Camera.Position = rotation.Transform(mView.Camera.Position);
+            mView.Camera.UpDirection = rotation.Transform(mView.Camera.UpDirection);
+            mView.Camera.LookDirection = rotation.Transform(mView.Camera.LookDirection);
+        }
+
         #region ISceneControler 成员
 
+        private Transform3D worldTransform = Transform3D.Identity;
         public Transform3D WorldTransform
         {
             get
             {
-                return mView.Camera.Transform;
+                return worldTransform;
             }
             set
             {
-                mView.Camera.Transform = value;
+                worldTransform = value;
+                //mView.Camera.Transform = worldTransform;
+                //mView.Camera.LookDirection = value.Transform(mView.Camera.LookDirection);
+                mView.Camera.Position = value.Transform(mView.Camera.Position);
+                //mView.Camera.UpDirection = value.Transform(mView.Camera.UpDirection);
             }
         }
 
@@ -58,10 +76,10 @@ namespace PixelCube.Scene3D
                     }
                 }
             }
-            SetColor(2, 2, 2, default(Color));
-            SetColor(3, 3, 3, default(Color));
-            SetFocus(2, 2, 2);
-            SetFocus(3, 3, 3);
+            //SetColor(2, 2, 2, default(Color));
+            //SetColor(3, 3, 3, default(Color));
+            //SetFocus(2, 2, 2);
+            //SetFocus(3, 3, 3);
             //SetFocus(-1, -1, -1);
             //SetColor(3, 3, 3, Colors.AntiqueWhite);
         }
@@ -81,6 +99,8 @@ namespace PixelCube.Scene3D
             // Set focus
             if (!(i < 0 || j < 0 || k < 0))
             {
+                Debug.WriteLine(String.Format("Focus: {0}, {1}, {2}", i, j, k));
+
                 GeometryModel3D cube = CubeModelFromIdx(i, j, k);
                 preFocus = Tuple.Create(i, j, k);
                 var g = cube.Material as MaterialGroup;

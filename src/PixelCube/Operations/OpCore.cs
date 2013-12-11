@@ -215,15 +215,8 @@ namespace PixelCube.Operations
                 AxisAngleRotation3D axisAngelRotation = new AxisAngleRotation3D(rotateAxis, rotateAngel);
                 //根据变换定义变换矩阵
                 RotateTransform3D rotateTransform = new RotateTransform3D(axisAngelRotation);
-                //从试图控制类中获取当前累计变换矩阵
-                MatrixTransform3D mt = new MatrixTransform3D(msceneController.WorldTransform.Value);
-                //把本次旋转的矩阵加入到全局累计变换矩阵中
-                mt.Merge(rotateTransform);
-                //传递给视图控制类
-                msceneController.WorldTransform = mt;
-
-                //把本次旋转的矩阵加入到记录旋转的变换矩阵中
-                mrotateTransform.Merge(rotateTransform);
+                var controller = msceneController as PixelCube.Scene3D.CubeSceneController;
+                controller.RotateCamera(rotateTransform);
                 //发出事件
                 if (PostRotateOperationEvent != null)
                 {
@@ -239,30 +232,32 @@ namespace PixelCube.Operations
         /// <param name="e">事件参数</param>
         public void OnPreScaleOperation(object sender, PreScaleOperationEventArgs e)
         {
-            mwin.Dispatcher.BeginInvoke(new Action(() =>
-            {
-                //从事件参数中获取缩放程度参数
-                float scaleFactor = e.ScaleFactor;
+            // 已经过时，缩放手势没有了
+            //mwin.Dispatcher.BeginInvoke(new Action(() =>
+            //{
+            //    //从事件参数中获取缩放程度参数
+            //    float scaleFactor = e.ScaleFactor;
 
-                //计算出摄像机变换矩阵缩放的参数，即取需要缩放大小的倒数
-                float inCameraScaleFactor = 1 / scaleFactor;
+            //    //计算出摄像机变换矩阵缩放的参数，即取需要缩放大小的倒数
+            //    float inCameraScaleFactor = 1 / scaleFactor;
 
-                //完成世界矩阵的缩放,改变摄像机的变换矩阵实现缩放，并且以当前显示场景的坐标原点为中心
-                //建立新的临时累计矩阵
-                MatrixTransform3D worldTransform = new MatrixTransform3D(msceneController.WorldTransform.Value);
+            //    //完成世界矩阵的缩放,改变摄像机的变换矩阵实现缩放，并且以当前显示场景的坐标原点为中心
+            //    //建立新的临时累计矩阵
+            //    MatrixTransform3D worldTransform = new MatrixTransform3D(msceneController.WorldTransform.Value);
 
-                //将缩放转换矩阵融入累计变换矩阵
-                worldTransform.Merge(new ScaleTransform3D(new Vector3D(inCameraScaleFactor, inCameraScaleFactor, inCameraScaleFactor), msceneController.WorldTransform.Transform(new Point3D(0, 0, 0))));
+            //    //将缩放转换矩阵融入累计变换矩阵
+            //    //worldTransform.Merge(new ScaleTransform3D(new Vector3D(inCameraScaleFactor, inCameraScaleFactor, inCameraScaleFactor), msceneController.WorldTransform.Transform(new Point3D(0, 0, 0))));
+            //    //worldTransform.Merge(new ScaleTransform3D(new Vector3D(inCameraScaleFactor, inCameraScaleFactor, inCameraScaleFactor), new Point3D(0, 0, 0)));
 
-                //更新累计变换矩阵
-                msceneController.WorldTransform = worldTransform;
+            //    //更新累计变换矩阵
+            //    msceneController.WorldTransform = worldTransform;
 
-                //触发缩放完成事件，播放效果音
-                if (PostScaleOperationEvent != null)
-                {
-                    PostScaleOperationEvent(this, new PostScaleOperationEventArgs());
-                }
-            }), null);
+            //    //触发缩放完成事件，播放效果音
+            //    if (PostScaleOperationEvent != null)
+            //    {
+            //        PostScaleOperationEvent(this, new PostScaleOperationEventArgs());
+            //    }
+            //}), null);
         }
 
         /// <summary>
@@ -306,27 +301,8 @@ namespace PixelCube.Operations
                     //封装为三维向量,并转换为对摄像机的转换矩阵的平移向量参数，即对原平移向量坐标取反
                     Vector3D inCameraTransVector = new Vector3D(-transVector.x, -transVector.y, -transVector.z);
 
-                    //完成摄像机的转换矩阵的转换，实现场景的平移
-                    //建立新的临时累计矩阵
-                    MatrixTransform3D worldTransform = new MatrixTransform3D(msceneController.WorldTransform.Value);
-
-                    //首先取消旋转效果
-                    //获取当前累计旋转变换的反矩阵
-                    MatrixTransform3D unRotateTransform = (MatrixTransform3D)mrotateTransform.Inverse;
-
-                    //将旋转变换反矩阵融入摄像机累计变换中
-                    worldTransform.Merge(unRotateTransform);
-
-                    //先进行平移变换
-                    //将缩放转换矩阵融入累计变换矩阵
-                    worldTransform.Merge(new TranslateTransform3D(inCameraTransVector));
-
-                    //然后进行旋转变换
-                    worldTransform.Merge(mrotateTransform);
-
-                    //更新累计变换矩阵
-                    msceneController.WorldTransform = worldTransform;
-
+                    var controller = msceneController as PixelCube.Scene3D.CubeSceneController;
+                    controller.TranslateCamera(inCameraTransVector);
                     //触发完成平移事件，发出效果音
                     if (PostDragOperationEvent != null)
                     {
