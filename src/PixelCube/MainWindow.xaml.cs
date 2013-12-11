@@ -6,6 +6,7 @@ using PixelCube.Scene3D;
 using HelixToolkit.Wpf;
 using PixelCube.LoadAndSave;
 using PixelCube.Operations;
+using PixelCube.Sound;
 using System;
 
 namespace PixelCube
@@ -35,6 +36,8 @@ namespace PixelCube
         public MainWindow()
         {
             InitializeComponent();
+            BackgroundMusic bgm = new BackgroundMusic(true);
+            bgm.PlayMusic();
         }
 
         #region Modules Initializatoin

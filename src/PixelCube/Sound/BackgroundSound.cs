@@ -31,11 +31,8 @@ namespace PixelCube.Sound
         public void FocusOperationSound(object sender, PostFocusOperationEventArgs e)
         {
             SoundPlayer Sound = new SoundPlayer("../../Sound/focussound.wav");
+            Sound.Play();
 
-            if (PostFocusOperationEvent != null)
-                Sound.Play();
-            else
-                Sound.Dispose();
         }
 
         /// <summary>
@@ -46,10 +43,7 @@ namespace PixelCube.Sound
         public void DrawOperationSound(object sender, PostDrawOperationEventArgs e)
         {
             SoundPlayer Sound = new SoundPlayer("../../Sound/drawsound.wav");
-            if (PostDrawOperationEvent != null)
                 Sound.Play();
-            else
-                Sound.Dispose();
 
         }
         /// <summary>
@@ -60,11 +54,9 @@ namespace PixelCube.Sound
         public void EraseOperationSound(object sender, PostEraseOperationEventArgs e)
         {
             SoundPlayer Sound = new SoundPlayer("../../Sound/erasesound.wav");
-            if (PostEraseOperationEvent != null)
+            
                 Sound.Play();
-            else
-                Sound.Dispose();
-
+            
         }
 
         //void opcore_PostDrawOperationEvent(object sender, PostDrawOperationEventArgs e)
