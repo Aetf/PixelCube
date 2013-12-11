@@ -111,7 +111,8 @@ namespace PixelCube.Operations
                 //判断当前坐标是否越界
                 if (i < martwork.SceneSize.X
                     && j < martwork.SceneSize.Y
-                    && k < martwork.SceneSize.Z)
+                    && k < martwork.SceneSize.Z
+                    && i > 0 && j > 0 && k > 0)
                 {
                     //通知视图控制类
                     msceneController.SetFocus(i, j, k);
@@ -152,7 +153,8 @@ namespace PixelCube.Operations
                 Color c = new Color();
 
                 //判断小方块绝对三维坐标是否离开画布
-                if (i < martwork.SceneSize.X && j <= martwork.SceneSize.Y && k < martwork.SceneSize.Z)
+                if (i < martwork.SceneSize.X && j <= martwork.SceneSize.Y && k < martwork.SceneSize.Z
+                    && i > 0 && j > 0 && k > 0 )
                 {
                     //设置当前焦点
                     msceneController.SetFocus(i, j, k);
@@ -347,7 +349,8 @@ namespace PixelCube.Operations
                 //判断当前坐标是否越界
                 if (i < martwork.SceneSize.X
                     && j < martwork.SceneSize.Y
-                    && k < martwork.SceneSize.Z)
+                    && k < martwork.SceneSize.Z
+                    && i > 0 && j > 0 && k > 0)
                 {
                     //设置当前焦点
                     msceneController.SetFocus(i, j, k);
