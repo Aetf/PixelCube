@@ -23,6 +23,7 @@ namespace PixelCube
         internal OpCore kernel;
         internal BackgroundMusic bgm;
         internal BackgroundSound se;
+        internal WatchDog wd;
 
         public HelixViewport3D getViewport()
         {
@@ -81,6 +82,13 @@ namespace PixelCube
             return se;
         }
 
+        private WatchDog CreateWatchDog()
+        {
+            var w = new WatchDog();
+            w.DoInit(this);
+            return w;
+        }
+
         private OpCore CreateOpCore()
         {
             var c = new OpCore();
@@ -107,15 +115,8 @@ namespace PixelCube
             kernel = CreateOpCore();
             bgm = CreateBGM();
             se = CreateSE();
-
-            Leap.PreFocusOperationEvent += new System.EventHandler<PreFocusOperationEventArgs>((obj, arg)=>
-            {
-                this.Dispatcher.BeginInvoke(new Action(()=>
-                {
-                    pointer.Center = new Point3D(arg.FocusPosition.x, arg.FocusPosition.y, arg.FocusPosition.z);
-                }));
-            });
-
+            wd = CreateWatchDog();
+            
             Leap.LinkEvent();
         }
 
