@@ -19,27 +19,36 @@
                 <MenuItem Header="关于 (_A)" />
             </MenuItem>
         </Menu>
-        <h:HelixViewport3D x:Name="sceneViewport" Grid.Row="1"
+        <TextBlock x:Name="infoPanel" Grid.Row="1" Margin="5 5 0 0" />
+        <h:HelixViewport3D x:Name="sceneViewport" Grid.Row="1" ShowCameraInfo="False"
                            CameraRotationMode="Turntable" ModelUpDirection="0,1,0" ShowCoordinateSystem="True">
             <h:HelixViewport3D.Camera>
                 <PerspectiveCamera x:Name="mCamera"
-						FarPlaneDistance="1000" 
-						LookDirection="0,-0.5,-1" 
+						FarPlaneDistance="100" 
+						LookDirection="-1,-1,-2" 
 						UpDirection="0,1,0"
 						NearPlaneDistance="1" 
-						Position="5,10,20"
+						Position="20,20,40"
 						FieldOfView="60" />
             </h:HelixViewport3D.Camera>
 
             <h:CoordinateSystemVisual3D ArrowLengths="1"/>
             <h:GridLinesVisual3D Normal="0,1,0" LengthDirection="1,0,0"/>
 
+            <h:SphereVisual3D x:Name="pointer" Fill="Red"  Radius="0.2" Center="0, 0, 0" />
+            <h:LinesVisual3D x:Name="linez" Color="Red" />
+            <h:LinesVisual3D x:Name="liney" Color="Red" />
+            <h:LinesVisual3D x:Name="linex" Color="Red" />
+            <h:SphereVisual3D x:Name="pointerxy" Fill="Red" Radius="0.2" Center="0, 0, 0" />
+            <h:SphereVisual3D x:Name="pointeryz" Fill="Red" Radius="0.2" Center="0, 0, 0" />
+            <h:SphereVisual3D x:Name="pointerzx" Fill="Red" Radius="0.2" Center="0, 0, 0" />
             <ModelVisual3D >
                 <ModelVisual3D.Content>
                     <Model3DGroup x:Name="cubeGroup">
                         <!-- Lights, MeshGeometry3D and DiffuseMaterial objects are added to the ModelVisual3D. -->
-                        <AmbientLight Color="#666666" />
-                        <DirectionalLight Direction=" 1,-1,-1" Color="Gray"/>
+                        <AmbientLight Color="White" />
+                        <DirectionalLight Direction=" 1,-1,-1" Color="White"/>
+                        <!--<DirectionalLight Direction="-1, 1, 1" Color="Gray"/>-->
                     </Model3DGroup>
                 </ModelVisual3D.Content>
             </ModelVisual3D>

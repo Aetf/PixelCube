@@ -9,77 +9,34 @@ using PixelCube.Scene3D;
 
 namespace PixelCube.ThreeDimensional
 {
-    class Cube:ICube
+    class Cube : ICube
     {
-        
-        /// <summary>
-        /// 构造小方块及初始化
-        /// </summary>
         public Cube()
         {
-            Init();
-        }
-        public void Init()
-        {
-            
+            Visible = false;
+            Hasfocus = true;
         }
 
         /// <summary>
         /// 小方块相对场景的位置。
         /// 比如在4x4x4的场景中，某个角即为(0, 0, 0)
         /// </summary>
-
-
-
-        public Vector3D Position
-        {
-            get;
-            set;
-        }
-
-
-
+        public Vector3D Position { get; set; } 
 
         /// <summary>
         /// 小方块的颜色
         /// </summary>
-
-
-
-        public Color CubeColor
-        {
-            get;
-            set;
-        }
-
-   
-
+        public Color CubeColor { get; set; }
 
         /// <summary>
         /// 是否可见
         /// </summary>
-
-        public bool Visible
-        {
-            get;
-            set;
-        }
-
-
-
+        public bool Visible { get; set; }
 
         /// <summary>
         /// 是否拥有焦点
         /// </summary>
-
-
-        public bool Hasfocus
-        {
-            get;
-            set;
-        }
-
-  
+        public bool Hasfocus { get; set; }
 
         /// <summary>
         /// 序列化
@@ -98,6 +55,7 @@ namespace PixelCube.ThreeDimensional
 
             return sb.ToString();
         }
+
         /// <summary>
         /// 逆序列化
         /// </summary>
@@ -114,6 +72,5 @@ namespace PixelCube.ThreeDimensional
 
             return obj as PixelCube.ThreeDimensional.Cube;
         }
-
     }
 }

@@ -8,77 +8,43 @@ using System.Windows.Media.Media3D;
 using PixelCube.Scene3D;
 namespace PixelCube.ThreeDimensional
 {
-    class Artwork:IArtwork
+    class Artwork : IArtwork
     {
         /// <summary>
         /// 构造函数
         /// </summary>
         public Artwork()
         {
-            init();
+            Cubes = new List<ICube>();
         }
-        public void init()
+
+        public void DefaultValue()
         {
             BackgroundFill = Color.FromArgb(100, 200, 200, 200);
-            SceneSize = new Vector3D(20, 30, 40);
-            FileName = "新文件";
+            SceneSize = new Vector3D(9, 9, 9);
+            FileName = "新文件.ps";
         }
+
 
         /// <summary>
         /// 背景颜色
         /// </summary>
-
-
-        public Color BackgroundFill
-        {
-            get;
-            set;
-        }
-
-
-
+        public Color BackgroundFill { get; set; }
 
         /// <summary>
         /// 画布的大小
         /// </summary>
-
-
-        public Vector3D SceneSize
-        {
-            get;
-            set;
-        }
-
-  
-
+        public Vector3D SceneSize { get; set; }
 
         /// <summary>
         /// 返回场景中所有的小方块，位于(i, j, k)的小方块的索引为 i+SceneSize.x*j+SceneSize.y*k
         /// </summary>
-
-
-        public List<ICube> Cubes
-        {
-            get;
-            set;
-        }
-
- 
+        public List<ICube> Cubes { get; set; }
 
         /// <summary>
         /// 文件目录字符串
         /// </summary>
-
-
-
-        public string FileName
-        {
-            get;
-            set;
-        }
-
-
-
+        public string FileName { get; set; }
 
         /// <summary>
         /// 序列化
@@ -97,6 +63,7 @@ namespace PixelCube.ThreeDimensional
 
             return sb.ToString();
         }
+
         /// <summary>
         /// 逆序列化
         /// </summary>

@@ -24,7 +24,6 @@ namespace PixelCube.Scene3D
         /// </summary>
         Vector3D Position { get; set; }
 
-
         /// <summary>
         /// 是否可见
         /// </summary>

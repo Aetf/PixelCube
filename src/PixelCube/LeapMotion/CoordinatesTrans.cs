@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Leap;
-using PixelCube.ThreeDimensional;
-
+using PixelCube.Scene3D;
 namespace PixelCube.LeapMotion
 {
     class CoordinatesTrans
@@ -34,13 +33,13 @@ namespace PixelCube.LeapMotion
         /// 带参构造
         /// </summary>
         /// <param name="art">Artwork 的对象</param>
-        public CoordinatesTrans(Artwork art)
+        public CoordinatesTrans(IArtwork art)
         {
             newVec = new Vector(0, 0, 0);
             ConfigProvider cp = ConfigProvider.Instance;
             cubea = cp.CubeA;       //获取小方块边长
 
-            cuben = (int)Math.Pow(art.Cubes.Count, 1 / 3);      //获取每行小方块数目
+            cuben = (int)art.SceneSize.X;    //获取每行小方块数目
             maxCoord =(float) cubea * cuben + 40;
         }
 
@@ -54,24 +53,37 @@ namespace PixelCube.LeapMotion
         }
 
         /// <summary>
-        /// 将LeapMotion坐标转换为世界坐标
+        /// 将LeapMotion坐标点转换为世界坐标点
         /// </summary>
-        /// <param name="vec">LeapMotion坐标</param>
+        /// <param name="vec">LeapMotion坐标点</param>
         /// <param name="maxX">世界坐标X轴最大值</param>
         /// <param name="maxY">世界坐标Y轴最大值</param>
         /// <param name="maxZ">世界坐标Z轴最大值</param>
-        /// <returns>变换后的坐标</returns>
-        public bool Trans(Vector vec)
+        /// <returns>变换是否成功</returns>
+        public bool TransPoint(Vector vec)
         {
             if (vec.x >= -300 && vec.x <= 300 && vec.y >= 30 && vec.y <= 630 && vec.z >= -300 && vec.z <= 300)
             {
                 //operations:
                 newVec.x = (vec.x + 300) / (600 / maxCoord) - 20;
                 newVec.y = (vec.y - 30) / (600 / maxCoord) - 20;
-                newVec.x = (vec.z + 300) / (600 / maxCoord) - 20;
+                newVec.z = (vec.z + 300) / (600 / maxCoord) - 20;
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// 将LeapMotion坐标偏移量转换为世界坐标偏移量
+        /// </summary>
+        /// <param name="vec"></param>
+        /// <returns>true</returns>
+        public bool TransVector(Vector vec)
+        {
+            vec.x = vec.x / 200 * maxCoord;
+            vec.y = vec.y / 200 * maxCoord;
+            vec.z = vec.z / 200 * maxCoord;
+            return true;
         }
     }
 }
