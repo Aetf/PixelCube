@@ -111,7 +111,13 @@ namespace PixelCube.Scene3D
         public void Erase(int i, int j, int k)
         {
             var cube = CubeModelFromIdx(i, j, k);
-            return;
+
+            var g = cube.Material as MaterialGroup;
+            var old = g.Children.OfType<DiffuseMaterial>().First();
+            g.Children.Remove(old);
+
+            var n = mWin.FindResource("whiteSmokeMaterial") as Material;
+            g.Children.Insert(0, n);
         }
         
         public void SetColor(int i, int j, int k, Color c)
