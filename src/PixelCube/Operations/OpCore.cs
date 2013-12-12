@@ -208,17 +208,26 @@ namespace PixelCube.Operations
                 float[] vector = e.RotationAxis.ToFloatArray();
                 //转化为用C#提供的向量类型表示
                 Vector3D prerotateAxis = new Vector3D(vector[0], vector[1], vector[2]);
+                //获取当前摄像机坐标
+                Point3D curCameraOrig = ((MatrixTransform3D)mrotateTransform.Inverse).Transform(msceneController.CameraOrig);
                 //将旋转轴逆旋转
-                Vector3D rotateAxis = msceneController.WorldTransform.Transform(prerotateAxis);
+                Vector3D rotateAxis = mrotateTransform.Transform(prerotateAxis);
                 //从事件参数中获取旋转角度
                 double rotateAngel = e.RotationAngle;
-                rotateAngel *= 180 / Math.PI; // from rad to deg
-                ////判断传递来的轴中是否存在负数
-                //if (rotateAxis.X < 0 && rotateAxis.Y < 0 && rotateAxis.Z < 0)
-                //{
-                //    //将角度反转，实现手势与摄像机同步
-                //    rotateAngel = -rotateAngel;
-                //}
+                rotateAngel *= 100 / Math.PI; // from rad to deg
+                //判断传递来的轴中是否存在负数
+                if (curCameraOrig.X < 0 )
+                {
+                    rotateAxis.X = -rotateAxis.X;
+                }
+                if(curCameraOrig.Y < 0 )
+                {
+                    rotateAxis.Y = -rotateAxis.Y;
+                }
+                if(curCameraOrig.Z < 0)
+                {
+                    rotateAxis.Z = -rotateAxis.Z;
+                }
                 //定义绕轴旋转变换
                 AxisAngleRotation3D axisAngelRotation = new AxisAngleRotation3D(rotateAxis, rotateAngel);
                 //根据变换定义变换矩阵
