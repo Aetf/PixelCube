@@ -25,7 +25,7 @@ namespace PixelCube.LeapMotion
        /// <summary>
        /// All events this class will offer
        /// </summary>
-      static internal EventHandler<LeapModeChangeEventArgs> LeapModeChangeEvent;
+       internal EventHandler<LeapModeChangeEventArgs> LeapModeChangeEvent;
        internal EventHandler<PreDrawOperationEventArgs> PreDrawOperationEvent;
        internal EventHandler<PreFocusOperationEventArgs> PreFocusOperationEvent;
        internal EventHandler<PreRotateOperationEventArgs> PreRotateOperationEvent;

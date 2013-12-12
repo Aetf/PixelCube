@@ -78,6 +78,7 @@ namespace PixelCube.LeapMotion
             listener.PreFocusOperationEvent += PreFocusOperationEvent;
             listener.PreRotateOperationEvent += PreRotateOperationEvent;
             listener.PreScaleOperationEvent += PreScaleOperationEvent;
+            listener.LeapModeChangeEvent += LeapModeChangeEvent;
         }
 
         public void Uninitialize()
