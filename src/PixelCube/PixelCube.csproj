@@ -91,6 +91,7 @@
     <Compile Include="ThreeDimensional\Artwork.cs" />
     <Compile Include="Sound\BackgroundMusic.cs" />
     <Compile Include="ThreeDimensional\Cube.cs" />
+    <Compile Include="Utils\FreqLimitUtil.cs" />
     <Compile Include="Utils\MatixTransform3DExtension.cs" />
     <Compile Include="Sound\BackgroundSound.cs" />
     <Page Include="MainWindow.xaml">

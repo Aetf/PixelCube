@@ -88,7 +88,6 @@ namespace PixelCube.Operations
         /// </summary>
         /// <param name="sender">事件源</param>
         /// <param name="e">事件参数</param>
-        Tuple<int, int, int> lastFocusIdx;
         public void OnPreFocusOperation(object sender, PreFocusOperationEventArgs e)
         {
             mwin.Dispatcher.BeginInvoke(new Action(() =>
@@ -110,13 +109,8 @@ namespace PixelCube.Operations
                 int k = (int)(curPosition.Z / mcubea);
 
                 // 是否与之前相同，是的话返回
-                var triIdx = Tuple.Create(i, j, k);
-                if (lastFocusIdx != null
-                    &&
-                    lastFocusIdx.Equals(triIdx))
+                if (FreqLimitUtil.CheckFreq("OnPreFocusOperation", Tuple.Create(i, j, k)))
                     return;
-
-                lastFocusIdx = triIdx;
 
                 //判断当前坐标是否越界
                 if (i < martwork.SceneSize.X
@@ -140,7 +134,6 @@ namespace PixelCube.Operations
         /// </summary>
         /// <param name="sender">事件源</param>
         /// <param name="e">事件参数</param>
-        private Tuple<int, int, int> lastDrawIdx;
         public void OnPreDrawOperation(object sender, PreDrawOperationEventArgs e)
         {
             //通过事件参数获取上色小方块坐标
@@ -155,13 +148,8 @@ namespace PixelCube.Operations
             int k = (int)(inCameraPosition.Z / mcubea);
 
             // 是否与之前相同，是的话返回
-            var triIdx = Tuple.Create(i, j, k);
-            if (lastDrawIdx != null
-                &&
-                lastDrawIdx.Equals(triIdx))
+            if (FreqLimitUtil.CheckFreq("OnPreDrawOperation", Tuple.Create(i, j, k)))
                 return;
-
-            lastDrawIdx = triIdx;
 
             //设置小方块上色的颜色，目前为默认值
             Color c = new Color();
@@ -360,6 +348,10 @@ namespace PixelCube.Operations
                 int i = (int)(curPosition.X / mcubea);
                 int j = (int)(curPosition.Y / mcubea);
                 int k = (int)(curPosition.Z / mcubea);
+
+                // 是否与之前相同，是的话返回
+                if (FreqLimitUtil.CheckFreq("OnPreFocusOperation", Tuple.Create(i, j, k)))
+                    return;
 
                 //判断当前坐标是否越界
                 if (i < martwork.SceneSize.X
