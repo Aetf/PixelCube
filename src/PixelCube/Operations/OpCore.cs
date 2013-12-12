@@ -346,7 +346,7 @@ namespace PixelCube.Operations
                 if (i < martwork.SceneSize.X
                     && j < martwork.SceneSize.Y
                     && k < martwork.SceneSize.Z
-                    && i > 0 && j > 0 && k > 0)
+                    && i >= 0 && j >= 0 && k >= 0)
                 {
                     //设置当前焦点
                     msceneController.SetFocus(i, j, k);
