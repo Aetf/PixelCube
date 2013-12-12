@@ -26,7 +26,7 @@
         <TextBlock x:Name="infoPanel" Grid.Row="1" Margin="5 5 0 0" />
         <TextBlock x:Name="modePanel"
                    Grid.Row="1" Grid.Column="1" Margin="0 0 5 5"
-                   HorizontalAlignment="Right" Text="Normal" />
+                   HorizontalAlignment="Right" />
                    
         <h:HelixViewport3D x:Name="sceneViewport" Grid.Row="1" Grid.ColumnSpan="2"
                            ShowCameraInfo="False" ShowCoordinateSystem="True"
