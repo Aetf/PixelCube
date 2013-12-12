@@ -44,7 +44,7 @@ namespace PixelCube.LeapMotion
         //#endregion
 
 
-        public event EventHandler<LeapModeChangeEventArgs> LeapStatusChangeEvent;
+        public event EventHandler<LeapModeChangeEventArgs> LeapModeChangeEvent;
         public event EventHandler<PreDrawOperationEventArgs> PreDrawOperationEvent;
         public event EventHandler<PreFocusOperationEventArgs> PreFocusOperationEvent;
         public event EventHandler<PreRotateOperationEventArgs> PreRotateOperationEvent;
