@@ -56,5 +56,10 @@ namespace PixelCube.Scene3D
         /// </summary>
         /// <param name="win">应用主窗口</param>
         void DoInit(MainWindow win);
+
+        /// <summary>
+        /// 将对小方块的操作数据同步到Artwork中，保存时调用。
+        /// </summary>
+        void Flush();
     }
 }

@@ -5,84 +5,57 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
 using System.Windows.Media;
+using PixelCube.ThreeDimensional;
 
 namespace PixelCube.Scene3D
 {
-    class SerializeHepler
+    static class SerializeHepler
     {
-        static List<ICube> outputList = new List<ICube>();
-        static List<GeometryModel3D> inputList = new List<GeometryModel3D>();
-        static GeometryModel3D cubeSeed;
-        static int cubeNum;
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="cubeseed">立方体原型</param>
-        /// <param name="cubenum">总立方体数(用于从空文件中初始化cube列表)</param>
-        public SerializeHepler(GeometryModel3D cubeseed, int cubenum)
-        {
-            cubeSeed = cubeseed.Clone();
-            cubeNum = cubenum;
-        }
-
         #region 主要序列化操作
         /// <summary>
         /// 输出序列化列表
         /// </summary>
         /// <param name="cubeListIn3D">3D实例立方体列表</param>
         /// <returns></returns>
-        public List<ICube> cubeOutput(List<GeometryModel3D> cubeListIn3D)
+        public static List<Cube> cubeOutput(GeometryModel3D[] cubeListIn3D)
         {
-            cubeListIn3D.ForEach(cubeOutAction);
-            return outputList;
-        }
-        /// <summary>
-        /// 输出列表的具体实现
-        /// </summary>
-        /// <param name="curCube"></param>
-        private static void cubeOutAction(GeometryModel3D curCube)
-        {
-            cubeForSer tempCube = new cubeForSer(curCube.Material);
-            outputList.Add(tempCube);
+            List<Cube> cubeList = new List<Cube>();
+            Array.ForEach(cubeListIn3D, new Action<GeometryModel3D>(cm =>
+                {
+                    Cube c = new Cube();
+                    var group = cm.Material as MaterialGroup;
+                    var brush = group.Children.OfType<DiffuseMaterial>().First().Brush as SolidColorBrush;
+                    c.CubeColor = brush.Color;
+                    cubeList.Add(c);
+                }));
+            return cubeList;
         }
 
         /// <summary>
         /// 读入列表
         /// </summary>
+        /// <param name="seed">立方体原型</param>
         /// <param name="cubeListInFile"></param>
         /// <returns>一维方块列表，顺序与绘制顺序一致</returns>
-        public List<GeometryModel3D> cubeInput(List<ICube> cubeListInFile)
+        public static List<GeometryModel3D> cubeInput(GeometryModel3D seed, IArtwork artwork)
         {
+            var cubeListInFile = artwork.Cubes;
+            List<GeometryModel3D> models = new List<GeometryModel3D>();
             if (cubeListInFile.Count != 0)
-                cubeListInFile.ForEach(cubeInAction);
+                cubeListInFile.ForEach(new Action<ICube>(cb =>
+                {
+                    GeometryModel3D m = seed.Clone();
+                    m.Material = new MaterialGroup();
+                    (m.Material as MaterialGroup).Children.Add(
+                        new DiffuseMaterial(new SolidColorBrush(cb.CubeColor)));
+                    models.Add(m);
+                }));
             else
-                for(int i = 0; i<cubeNum; i++)
-                    inputList.Add(cubeSeed.Clone());
-            return inputList;
-        }
+                for(int i = 0; i<artwork.SceneSize.X * artwork.SceneSize.Y * artwork.SceneSize.Z; i++)
+                    models.Add(seed.Clone());
 
-        /// <summary>
-        /// 读入列表的具体实现
-        /// </summary>
-        /// <param name="curCube"></param>
-        private static void cubeInAction(ICube curCube)
-        {
-            GeometryModel3D tempCube = cubeSeed.Clone();
-            tempCube.Material = curCube.CubeMaterial;
+            return models;
         }
         #endregion
-    }
-
-    /// <summary>
-    /// 序列化输出类
-    /// </summary>
-    class cubeForSer : ICube
-    {
-        public cubeForSer(Material m)
-        {
-            CubeMaterial = m;
-        }
-
-        Material CubeMaterial { get; set; }
     }
 }
