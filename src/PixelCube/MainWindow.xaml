@@ -19,7 +19,8 @@
                 <MenuItem Header="关于 (_A)" />
             </MenuItem>
         </Menu>
-        <h:HelixViewport3D x:Name="sceneViewport" Grid.Row="1"
+        <TextBlock x:Name="infoPanel" Grid.Row="1" Margin="5 5 0 0" />
+        <h:HelixViewport3D x:Name="sceneViewport" Grid.Row="1" ShowCameraInfo="False"
                            CameraRotationMode="Turntable" ModelUpDirection="0,1,0" ShowCoordinateSystem="True">
             <h:HelixViewport3D.Camera>
                 <PerspectiveCamera x:Name="mCamera"
@@ -27,14 +28,20 @@
 						LookDirection="-1,-1,-2" 
 						UpDirection="0,1,0"
 						NearPlaneDistance="1" 
-						Position="10,10,20"
+						Position="20,20,40"
 						FieldOfView="60" />
             </h:HelixViewport3D.Camera>
 
             <h:CoordinateSystemVisual3D ArrowLengths="1"/>
             <h:GridLinesVisual3D Normal="0,1,0" LengthDirection="1,0,0"/>
 
-            <h:SphereVisual3D x:Name="pointer" Radius="0.2" Center="0, 0, 0" />
+            <h:SphereVisual3D x:Name="pointer" Fill="Red"  Radius="0.2" Center="0, 0, 0" />
+            <h:LinesVisual3D x:Name="linez" Color="Red" />
+            <h:LinesVisual3D x:Name="liney" Color="Red" />
+            <h:LinesVisual3D x:Name="linex" Color="Red" />
+            <h:SphereVisual3D x:Name="pointerxy" Fill="Red" Radius="0.2" Center="0, 0, 0" />
+            <h:SphereVisual3D x:Name="pointeryz" Fill="Red" Radius="0.2" Center="0, 0, 0" />
+            <h:SphereVisual3D x:Name="pointerzx" Fill="Red" Radius="0.2" Center="0, 0, 0" />
             <ModelVisual3D >
                 <ModelVisual3D.Content>
                     <Model3DGroup x:Name="cubeGroup">

@@ -21,7 +21,7 @@ namespace PixelCube.ThreeDimensional
         public void DefaultValue()
         {
             BackgroundFill = Color.FromArgb(100, 200, 200, 200);
-            SceneSize = new Vector3D(4, 4, 4);
+            SceneSize = new Vector3D(9, 9, 9);
             FileName = "新文件.ps";
         }
 

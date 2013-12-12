@@ -10,18 +10,20 @@ using PixelCube.Operations;
 namespace PixelCube.Sound
 {
      /// <summary>
-     /// 背景音设置
+     /// 音效控制
      /// </summary>
     public class BackgroundSound
     {
+        SoundPlayer focus = new SoundPlayer("../../Sound/focussound.wav");
+        SoundPlayer erase = new SoundPlayer("../../Sound/erasesound.wav");
+        SoundPlayer draw = new SoundPlayer("../../Sound/drawsound.wav");
 
-        public BackgroundSound()
+        public void DoInit(MainWindow win)
         {
-            //opcore.PostFocusOperationEvent += opcore_PostFocusOperationEvent;
-            //opcore.PostDrawOperationEvent += opcore_PostDrawOperationEvent; 
+            focus.Load();
+            draw.Load();
+            erase.Load();
         }
-        OpCore opcore = new OpCore();
-
 
         /// <summary>
         /// 焦点变化时音效处理程序
@@ -30,9 +32,7 @@ namespace PixelCube.Sound
         /// <param name="e"></param>
         public void FocusOperationSound(object sender, PostFocusOperationEventArgs e)
         {
-            SoundPlayer Sound = new SoundPlayer("../../Sound/focussound.wav");
-            Sound.Play();
-
+            focus.Play();
         }
 
         /// <summary>
@@ -42,10 +42,9 @@ namespace PixelCube.Sound
         /// <param name="e"></param>
         public void DrawOperationSound(object sender, PostDrawOperationEventArgs e)
         {
-            SoundPlayer Sound = new SoundPlayer("../../Sound/drawsound.wav");
-                Sound.Play();
-
+            draw.Play();
         }
+
         /// <summary>
         /// 擦除小方块时音效处理程序
         /// </summary>
@@ -53,23 +52,7 @@ namespace PixelCube.Sound
         /// <param name="e"></param>
         public void EraseOperationSound(object sender, PostEraseOperationEventArgs e)
         {
-            SoundPlayer Sound = new SoundPlayer("../../Sound/erasesound.wav");
-            
-                Sound.Play();
-            
+            erase.Play();
         }
-
-        //void opcore_PostDrawOperationEvent(object sender, PostDrawOperationEventArgs e)
-        //{
-        //    SoundPlayer Sound=new SoundPlayer("../../Sound/drawsound.wav");
-        //    Sound.Play();
-        //    throw new NotImplementedException();
-        //}
-        //private void opcore_PostFocusOperationEvent(object sender, PostFocusOperationEventArgs e)
-        //{
-        //    SoundPlayer Sound=new SoundPlayer("../../Sound/focussound.wav");
-        //    Sound.Play();
-        //    throw new NotImplementedException();
-        //}
     }
 }

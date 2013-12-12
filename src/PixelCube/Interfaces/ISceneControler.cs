@@ -24,27 +24,30 @@ namespace PixelCube.Scene3D
         Point3D CameraOrig { get; }
 
         /// <summary>
-        /// 将(i, j, k)的小方块设置为焦点方块
+        /// 将(i, j, k)的小方块设置为焦点方块。
+        /// 非法坐标表示清除焦点。
         /// </summary>
-        /// <param name="i"></param>
-        /// <param name="j"></param>
-        /// <param name="k"></param>
+        /// <param name="i">i >= 0 && i < SceneSize.X</param>
+        /// <param name="j">j >= 0 && j < SceneSize.X</param>
+        /// <param name="k">k >= 0 && k < SceneSize.X</param>
         void SetFocus(int i, int j, int k);
 
         /// <summary>
-        /// 擦除(i, j, k)的小方块
+        /// 擦除(i, j, k)的小方块.
+        /// 非法坐标将导致异常。
         /// </summary>
-        /// <param name="i"></param>
-        /// <param name="j"></param>
-        /// <param name="k"></param>
+        /// <param name="i">i >= 0 && i < SceneSize.X</param>
+        /// <param name="j">j >= 0 && j < SceneSize.X</param>
+        /// <param name="k">k >= 0 && k < SceneSize.X</param>
         void Erase(int i, int j, int k);
 
         /// <summary>
         /// 设置(i, j, k)的小方块的颜色。
+        /// 非法坐标将抛出ArgumentOutofRangeException
         /// </summary>
-        /// <param name="i"></param>
-        /// <param name="j"></param>
-        /// <param name="k"></param>
+        /// <param name="i">i >= 0 && i < SceneSize.X</param>
+        /// <param name="j">j >= 0 && j < SceneSize.X</param>
+        /// <param name="k">k >= 0 && k < SceneSize.X</param>
         /// <param name="c">为了以后的扩展性，现在传null就好</param>
         void SetColor(int i, int j, int k, Color c);
 

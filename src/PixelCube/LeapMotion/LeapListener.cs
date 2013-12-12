@@ -183,7 +183,7 @@ namespace PixelCube.LeapMotion
                     if (drag != null)
                     {
                         Vector transVector = hand.PalmPosition - lastFrame.Hands[0].PalmPosition;
-                        transVector.z = 0;
+                        //transVector.z = 0;
                         trans.TransVector(transVector);
                         drag(this, new PreDragOperationEventArgs(transVector));
                     }
