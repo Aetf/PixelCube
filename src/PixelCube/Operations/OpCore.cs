@@ -207,16 +207,35 @@ namespace PixelCube.Operations
                 //从事件参数中获取旋转轴向量
                 float[] vector = e.RotationAxis.ToFloatArray();
                 //转化为用C#提供的向量类型表示
-                Vector3D rotateAxis = new Vector3D(vector[0], vector[1], vector[2]);
+                Vector3D prerotateAxis = new Vector3D(vector[0], vector[1], vector[2]);
+                //获取当前摄像机坐标
+                Point3D curCameraOrig = mrotateTransform.Transform(msceneController.CameraOrig);
+                //将旋转轴逆旋转
+                Vector3D rotateAxis = mrotateTransform.Transform(prerotateAxis);
                 //从事件参数中获取旋转角度
                 double rotateAngel = e.RotationAngle;
                 rotateAngel *= 180 / Math.PI; // from rad to deg
+                //判断传递来的轴中是否存在负数
+                //if (curCameraOrig.X < 0 )
+                //{
+                //    rotateAxis.X = -rotateAxis.X;
+                //}
+                //if(curCameraOrig.Y < 0 )
+                //{
+                //    rotateAxis.Y = -rotateAxis.Y;
+                //}
+                //if(curCameraOrig.Z < 0)
+                //{
+                //    rotateAxis.Z = -rotateAxis.Z;
+                //}
                 //定义绕轴旋转变换
                 AxisAngleRotation3D axisAngelRotation = new AxisAngleRotation3D(rotateAxis, rotateAngel);
                 //根据变换定义变换矩阵
                 RotateTransform3D rotateTransform = new RotateTransform3D(axisAngelRotation);
                 var controller = msceneController as PixelCube.Scene3D.CubeSceneController;
                 controller.RotateCamera(rotateTransform);
+                //将本次旋转添加到本地累计矩阵
+                mrotateTransform.Merge(rotateTransform);
                 //发出事件
                 if (PostRotateOperationEvent != null)
                 {
@@ -346,7 +365,7 @@ namespace PixelCube.Operations
                 if (i < martwork.SceneSize.X
                     && j < martwork.SceneSize.Y
                     && k < martwork.SceneSize.Z
-                    && i > 0 && j > 0 && k > 0)
+                    && i >= 0 && j >= 0 && k >= 0)
                 {
                     //设置当前焦点
                     msceneController.SetFocus(i, j, k);
