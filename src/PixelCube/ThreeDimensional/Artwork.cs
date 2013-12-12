@@ -8,14 +8,14 @@ using System.Windows.Media.Media3D;
 using PixelCube.Scene3D;
 namespace PixelCube.ThreeDimensional
 {
-    class Artwork : IArtwork
+    public class Artwork : IArtwork
     {
         /// <summary>
         /// 构造函数
         /// </summary>
         public Artwork()
         {
-            Cubes = new List<ICube>();
+            Cubes = new List<Cube>();
         }
 
         public void DefaultValue()
@@ -39,7 +39,7 @@ namespace PixelCube.ThreeDimensional
         /// <summary>
         /// 返回场景中所有的小方块，位于(i, j, k)的小方块的索引为 i+SceneSize.x*j+SceneSize.y*k
         /// </summary>
-        public List<ICube> Cubes { get; set; }
+        public List<Cube> Cubes { get; set; }
 
         /// <summary>
         /// 文件目录字符串
