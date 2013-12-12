@@ -11,6 +11,7 @@ using System.Diagnostics;
 
 
 
+
 namespace PixelCube.LeapMotion
 {
     /// <summary>
@@ -24,7 +25,7 @@ namespace PixelCube.LeapMotion
        /// <summary>
        /// All events this class will offer
        /// </summary>
-      static internal EventHandler<LeapStatusChangeEventArgs> LeapStatusChangeEvent;
+      static internal EventHandler<LeapModeChangeEventArgs> LeapModeChangeEvent;
        internal EventHandler<PreDrawOperationEventArgs> PreDrawOperationEvent;
        internal EventHandler<PreFocusOperationEventArgs> PreFocusOperationEvent;
        internal EventHandler<PreRotateOperationEventArgs> PreRotateOperationEvent;
@@ -34,16 +35,16 @@ namespace PixelCube.LeapMotion
        internal EventHandler<PreChangeColorOperationEventArgs> PreChangeColorOperationEvent;
        #endregion   
 
-       #region Attributes
+       #region Private Attributes
        /* Attributes */
-       private enum State
-       {
-           drawing,
-           focusing,
-           erasing,
-           colorChanging,
-           menuSelecting
-       }
+       //private enum State
+       //{
+       //    drawing,
+       //    focusing,
+       //    erasing,
+       //    colorChanging,
+       //    menuSelecting
+       //}
 
 
        private int pointableID;         // Used to track the pointable object
@@ -83,19 +84,19 @@ namespace PixelCube.LeapMotion
         /// </param>
         public override void OnConnect(Controller controller)
         {
-            EventHandler<LeapStatusChangeEventArgs> leapStatusChangeEvent = LeapStatusChangeEvent;
+            EventHandler<LeapModeChangeEventArgs> leapStatusChangeEvent = LeapModeChangeEvent;
             //controller.EnableGesture(Gesture.GestureType.TYPECIRCLE);
             controller.EnableGesture(Gesture.GestureType.TYPEKEYTAP);
             controller.EnableGesture(Gesture.GestureType.TYPESCREENTAP);
             controller.EnableGesture(Gesture.GestureType.TYPESWIPE);
 
           
-            if (leapStatusChangeEvent != null)
-            {
-                LeapStatusChangeEventArgs leapStatusChangeEventArgs = new LeapStatusChangeEventArgs();
-                leapStatusChangeEventArgs.isConnected = true;
-                leapStatusChangeEvent(this, leapStatusChangeEventArgs);
-            }
+            //if (leapStatusChangeEvent != null)
+            //{
+            //    LeapModeChangeEventArgs leapStatusChangeEventArgs = new LeapModeChangeEventArgs();
+            //    leapStatusChangeEventArgs.isConnected = true;
+            //    leapStatusChangeEvent(this, leapStatusChangeEventArgs);
+            //}
 
             base.OnConnect(controller);
 
@@ -107,14 +108,14 @@ namespace PixelCube.LeapMotion
         /// <param name="controller"> Leap Controller </param>
         public override void OnDisconnect(Controller controller)
         {
-            Debug.WriteLine("LeapDisconnected");
-            EventHandler<LeapStatusChangeEventArgs> leapStatusChangeEvent = LeapStatusChangeEvent;
-            if (leapStatusChangeEvent != null)
-            {
-                LeapStatusChangeEventArgs deviceInfoArg = new LeapStatusChangeEventArgs();
-                deviceInfoArg.isConnected = false;
-                leapStatusChangeEvent(this, deviceInfoArg);
-            }
+            //Debug.WriteLine("LeapDisconnected");
+            //EventHandler<LeapModeChangeEventArgs> leapStatusChangeEvent = LeapModeChangeEvent;
+            //if (leapStatusChangeEvent != null)
+            //{
+            //    LeapModeChangeEventArgs deviceInfoArg = new LeapModeChangeEventArgs();
+            //    deviceInfoArg.isConnected = false;
+            //    leapStatusChangeEvent(this, deviceInfoArg);
+            //}
             base.OnDisconnect(controller);
         }
 
@@ -208,23 +209,33 @@ namespace PixelCube.LeapMotion
                         if (draw != null)
                         {
                             ScreenTapGesture screenTapGesture = new ScreenTapGesture(gesture);
-                            if(trans.TransPoint(screenTapGesture.Position))
-                                draw(this, new PreDrawOperationEventArgs(trans.getNewVec()));
+                            if (trans.TransPoint(screenTapGesture.Position))
+                            {
+                                Vector tempVec = trans.getNewVec();
+                                tempVec.z += 8;
+                                draw(this, new PreDrawOperationEventArgs(tempVec));
+                            }
                         }
                         break;
 
                     // return to focus mode/draw mode
                     case Gesture.GestureType.TYPEKEYTAP:
+                       
                         if (state != State.focusing)
                         {
-                            Debug.WriteLine("FocusMode");
                             state = State.focusing;
                         }
                         else
                         {
-                            Debug.WriteLine("DrawMode");
                             state = State.drawing;
                         }
+                    
+                        EventHandler<LeapModeChangeEventArgs> mode = LeapModeChangeEvent;
+                        if (mode != null)
+                        {
+                            mode(this, new LeapModeChangeEventArgs(state));
+                        }
+
                         break;
 
                     // Enter erasing mode
@@ -232,7 +243,11 @@ namespace PixelCube.LeapMotion
                         if (currentFrame.Fingers.Count >= 4)
                         {
                             state = State.erasing;
-                            Debug.WriteLine("EraseMode");
+                        }
+                        EventHandler<LeapModeChangeEventArgs> mode2 = LeapModeChangeEvent;
+                        if (mode2 != null)
+                        {
+                            mode2(this, new LeapModeChangeEventArgs(state));
                         }
                         break;
     
