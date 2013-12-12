@@ -68,11 +68,11 @@ namespace PixelCube.LeapMotion
         {
             pointableID = -1;
             state = State.focusing;
-            
             currentFrame = null;
             lastFrame = null;
             this.controller = controller;
 
+            Debug.WriteLine("Init");
             base.OnInit(controller);
         }
 
@@ -84,7 +84,7 @@ namespace PixelCube.LeapMotion
         /// </param>
         public override void OnConnect(Controller controller)
         {
-            EventHandler<LeapModeChangeEventArgs> leapStatusChangeEvent = LeapModeChangeEvent;
+            //EventHandler<LeapModeChangeEventArgs> leapStatusChangeEvent = LeapModeChangeEvent;
             //controller.EnableGesture(Gesture.GestureType.TYPECIRCLE);
             controller.EnableGesture(Gesture.GestureType.TYPEKEYTAP);
             controller.EnableGesture(Gesture.GestureType.TYPESCREENTAP);
@@ -97,6 +97,13 @@ namespace PixelCube.LeapMotion
             //    leapStatusChangeEventArgs.isConnected = true;
             //    leapStatusChangeEvent(this, leapStatusChangeEventArgs);
             //}
+            EventHandler<LeapModeChangeEventArgs> mode = LeapModeChangeEvent;
+            if (mode != null)
+            {
+                mode(this, new LeapModeChangeEventArgs(state));
+            }
+
+            Debug.WriteLine("connect");
 
             base.OnConnect(controller);
 
