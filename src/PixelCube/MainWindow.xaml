@@ -10,18 +10,27 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Menu Grid.Row="0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Menu Grid.Row="0" Grid.ColumnSpan="2">
             <MenuItem Header="文件 (_F)">
-                <MenuItem Header="打开 (_O)" />
-                <MenuItem Header="保存 (_S)" />
+                <MenuItem Header="打开 (_O)" Click="MenuItem_Open"/>
+                <MenuItem Header="保存 (_S)" Click="MenuItem_Save"/>
             </MenuItem>
             <MenuItem Header="帮助 (_H)">
                 <MenuItem Header="关于 (_A)" />
             </MenuItem>
         </Menu>
         <TextBlock x:Name="infoPanel" Grid.Row="1" Margin="5 5 0 0" />
-        <h:HelixViewport3D x:Name="sceneViewport" Grid.Row="1" ShowCameraInfo="False"
-                           CameraRotationMode="Turntable" ModelUpDirection="0,1,0" ShowCoordinateSystem="True">
+        <TextBlock x:Name="modePanel"
+                   Grid.Row="1" Grid.Column="1" Margin="0 0 5 5"
+                   HorizontalAlignment="Right" />
+                   
+        <h:HelixViewport3D x:Name="sceneViewport" Grid.Row="1" Grid.ColumnSpan="2"
+                           ShowCameraInfo="False" ShowCoordinateSystem="True"
+                           CameraRotationMode="Turntable" ModelUpDirection="0,1,0">
             <h:HelixViewport3D.Camera>
                 <PerspectiveCamera x:Name="mCamera"
 						FarPlaneDistance="100" 

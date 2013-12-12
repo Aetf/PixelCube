@@ -14,9 +14,9 @@ namespace PixelCube.Scene3D
     public interface ICube
     {
         /// <summary>
-        /// 获取和设置小方块的材质
+        /// 获取和设置小方块的颜色
         /// </summary>
-        Material CubeMaterial { get; set; }
+        Color CubeColor { get; set; }
 
         ///// <summary>
         ///// 获取和设置小方块相对场景的位置。

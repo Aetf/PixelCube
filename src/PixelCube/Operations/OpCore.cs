@@ -88,7 +88,6 @@ namespace PixelCube.Operations
         /// </summary>
         /// <param name="sender">事件源</param>
         /// <param name="e">事件参数</param>
-        Tuple<int, int, int> lastFocusIdx;
         public void OnPreFocusOperation(object sender, PreFocusOperationEventArgs e)
         {
             mwin.Dispatcher.BeginInvoke(new Action(() =>
@@ -110,13 +109,8 @@ namespace PixelCube.Operations
                 int k = (int)(curPosition.Z / mcubea);
 
                 // 是否与之前相同，是的话返回
-                var triIdx = Tuple.Create(i, j, k);
-                if (lastFocusIdx != null
-                    &&
-                    lastFocusIdx.Equals(triIdx))
+                if (FreqLimitUtil.CheckFreq("OnPreFocusOperation", Tuple.Create(i, j, k)))
                     return;
-
-                lastFocusIdx = triIdx;
 
                 //判断当前坐标是否越界
                 if (i < martwork.SceneSize.X
@@ -140,7 +134,6 @@ namespace PixelCube.Operations
         /// </summary>
         /// <param name="sender">事件源</param>
         /// <param name="e">事件参数</param>
-        private Tuple<int, int, int> lastDrawIdx;
         public void OnPreDrawOperation(object sender, PreDrawOperationEventArgs e)
         {
             //通过事件参数获取上色小方块坐标
@@ -155,22 +148,14 @@ namespace PixelCube.Operations
             int k = (int)(inCameraPosition.Z / mcubea);
 
             // 是否与之前相同，是的话返回
-            var triIdx = Tuple.Create(i, j, k);
-            if (lastDrawIdx != null
-                &&
-                lastDrawIdx.Equals(triIdx))
+            if (FreqLimitUtil.CheckFreq("OnPreDrawOperation", Tuple.Create(i, j, k)))
                 return;
-
-            lastDrawIdx = triIdx;
 
             //设置小方块上色的颜色，目前为默认值
             Color c = new Color();
 
             mwin.Dispatcher.BeginInvoke(new Action(() =>
             {
-                //进行转换
-                msceneController.WorldTransform.Transform(inCameraPosition);
-
                 //判断小方块绝对三维坐标是否离开画布
                 if (i < martwork.SceneSize.X && j < martwork.SceneSize.Y && k < martwork.SceneSize.Z
                     && i >= 0 && j >= 0 && k >= 0 )
@@ -186,11 +171,6 @@ namespace PixelCube.Operations
                     {
                         PostDrawOperationEvent(this, new PostDrawOperationEventArgs(0));
                     }
-                }
-                else
-                {
-                    //不上色
-                    //msceneController.SetColor(-1, -1, -1, c);
                 }
             }), null);
         }
@@ -318,7 +298,10 @@ namespace PixelCube.Operations
                 {
 
                     //封装为三维向量,并转换为对摄像机的转换矩阵的平移向量参数，即对原平移向量坐标取反
-                    Vector3D inCameraTransVector = new Vector3D(-transVector.x, -transVector.y, -transVector.z);
+                    Vector3D preinCameraTransVector = new Vector3D(-transVector.x, -transVector.y, -transVector.z);
+
+                    // 使用累计转换矩阵转换向量坐标
+                    Vector3D inCameraTransVector = msceneController.WorldTransform.Transform(preinCameraTransVector);
 
                     var controller = msceneController as PixelCube.Scene3D.CubeSceneController;
                     controller.TranslateCamera(inCameraTransVector);
@@ -345,22 +328,23 @@ namespace PixelCube.Operations
         /// <param name="e">事件参数</param>
         public void OnEraseOperation(object sender, PreEraseOperationEventArgs e)
         {
+            //通过事件参数获取上色小方块坐标
+            Vector erasePosition = e.Position;
+
+            //将leapmotion捕捉到的小方块坐标封装
+            Point3D inCameraPosition = new Point3D(erasePosition.x, erasePosition.y, erasePosition.z);
+
+            //i,j,k为小方块的三维位置索引
+            int i = (int)(inCameraPosition.X / mcubea);
+            int j = (int)(inCameraPosition.Y / mcubea);
+            int k = (int)(inCameraPosition.Z / mcubea);
+
+            // 是否与之前相同，是的话返回
+            if (FreqLimitUtil.CheckFreq("OnPreFocusOperation", Tuple.Create(i, j, k)))
+                return;
+
             mwin.Dispatcher.BeginInvoke(new Action(() =>
             {
-                Vector curLPPosition = e.Position;
-                Point3D precurPosition = new Point3D(curLPPosition.x, curLPPosition.y, curLPPosition.z);
-                //对当前坐标进行逆变换
-                Point3D curPosition = msceneController.WorldTransform.Transform(precurPosition);
-                //x,y,z为小方块的绝对三维坐标
-                //int x = (int);
-                //int y = (int);
-                //int z = (int);
-
-                //i,j,k为小方块的三维位置索引
-                int i = (int)(curPosition.X / mcubea);
-                int j = (int)(curPosition.Y / mcubea);
-                int k = (int)(curPosition.Z / mcubea);
-
                 //判断当前坐标是否越界
                 if (i < martwork.SceneSize.X
                     && j < martwork.SceneSize.Y

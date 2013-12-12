@@ -21,7 +21,7 @@
 
         <DiffuseMaterial x:Key="whiteSmokeMaterial">
             <DiffuseMaterial.Brush>
-                <SolidColorBrush Color="#666666" Opacity="0.1"/>
+                <SolidColorBrush Color="#19666666"/>
             </DiffuseMaterial.Brush>
         </DiffuseMaterial>
 

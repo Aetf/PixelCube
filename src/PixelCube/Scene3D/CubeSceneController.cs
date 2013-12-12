@@ -12,9 +12,13 @@ namespace PixelCube.Scene3D
 {
     class CubeSceneController : ISceneControler
     {
+        
+
+        #region ISceneControler 成员
         public void TranslateCamera(Vector3D offset)
         {
             mView.Camera.Position = Point3D.Add(mView.Camera.Position, offset);
+            WorldTransform.Merge(new TranslateTransform3D(offset));
         }
 
         public void RotateCamera(RotateTransform3D rotation)
@@ -22,26 +26,11 @@ namespace PixelCube.Scene3D
             mView.Camera.Position = rotation.Transform(mView.Camera.Position);
             mView.Camera.UpDirection = rotation.Transform(mView.Camera.UpDirection);
             mView.Camera.LookDirection = rotation.Transform(mView.Camera.LookDirection);
+
+            WorldTransform.Merge(rotation);
         }
 
-        #region ISceneControler 成员
-
-        private Transform3D worldTransform = Transform3D.Identity;
-        public Transform3D WorldTransform
-        {
-            get
-            {
-                return worldTransform;
-            }
-            set
-            {
-                worldTransform = value;
-                //mView.Camera.Transform = worldTransform;
-                //mView.Camera.LookDirection = value.Transform(mView.Camera.LookDirection);
-                mView.Camera.Position = value.Transform(mView.Camera.Position);
-                //mView.Camera.UpDirection = value.Transform(mView.Camera.UpDirection);
-            }
-        }
+        public MatrixTransform3D WorldTransform { get; set; }
 
         public Point3D CameraOrig
         {
@@ -53,6 +42,8 @@ namespace PixelCube.Scene3D
 
         public void DoInit(MainWindow win)
         {
+            WorldTransform = new MatrixTransform3D(Matrix3D.Identity);
+
             mWin = win;
             mView = win.getViewport();
             Model3DGroup group = win.getCubeGroup();
@@ -60,7 +51,9 @@ namespace PixelCube.Scene3D
             var cubeseed = (GeometryModel3D)win.FindResource("cubeSeed");
             var cubea = (double)win.FindResource("cubeA");
             var sceneSize = win.CurrentArt.SceneSize;
-            //Vector3D sceneSize = new Vector3D(4, 4, 4);
+
+            // Read cube list from artwork
+            cubeModels = SerializeHepler.cubeInput(cubeseed, win.CurrentArt).ToArray();
 
             NameScope.SetNameScope(win, new NameScope());
             for (int i = 0; i != sceneSize.X; i++)
@@ -69,19 +62,13 @@ namespace PixelCube.Scene3D
                 {
                     for (int k = 0; k != sceneSize.Z; k++)
                     {
-                        GeometryModel3D c = cubeseed.Clone();
+                        GeometryModel3D c = cubeModels[(int)(i + sceneSize.X * j + sceneSize.X * sceneSize.Y * k)];
                         mWin.RegisterName(NameForCubeModel(i, j, k), c);
                         c.Transform = new TranslateTransform3D(cubea*i, cubea*j, cubea*k);
                         group.Children.Add(c);
                     }
                 }
             }
-            //SetColor(2, 2, 2, default(Color));
-            //SetColor(3, 3, 3, default(Color));
-            //SetFocus(2, 2, 2);
-            //SetFocus(3, 3, 3);
-            //SetFocus(-1, -1, -1);
-            //SetColor(3, 3, 3, Colors.AntiqueWhite);
         }
 
         Tuple<int, int, int> preFocus = null;
@@ -134,6 +121,11 @@ namespace PixelCube.Scene3D
             g.Children.Insert(0, n);
         }
 
+        public void Flush()
+        {
+            mWin.CurrentArt.Cubes = SerializeHepler.cubeOutput(cubeModels);
+        }
+
         #endregion
 
         #region IDisposable 成员
@@ -147,6 +139,7 @@ namespace PixelCube.Scene3D
 
         private HelixViewport3D mView;
         private MainWindow mWin;
+        private GeometryModel3D[] cubeModels;
 
         public CubeSceneController()
         {

@@ -91,6 +91,7 @@
     <Compile Include="ThreeDimensional\Artwork.cs" />
     <Compile Include="Sound\BackgroundMusic.cs" />
     <Compile Include="ThreeDimensional\Cube.cs" />
+    <Compile Include="Utils\FreqLimitUtil.cs" />
     <Compile Include="Utils\MatixTransform3DExtension.cs" />
     <Compile Include="Sound\BackgroundSound.cs" />
     <Page Include="MainWindow.xaml">
@@ -109,7 +110,7 @@
     <Compile Include="Interfaces\ILeapMotion.cs" />
     <Compile Include="Interfaces\ISceneControler.cs" />
     <Compile Include="Interfaces\IVolume.cs" />
-    <Compile Include="LeapMotion\LeapStatusChangeEventArgs.cs" />
+    <Compile Include="LeapMotion\LeapModeChangeEventArgs.cs" />
     <Compile Include="LeapMotion\LeapListener.cs" />
     <Compile Include="LeapMotion\PreDrawOperationEventArgs.cs" />
     <Compile Include="LeapMotion\PreFocusOperationEventArgs.cs" />

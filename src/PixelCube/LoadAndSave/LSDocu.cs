@@ -25,17 +25,6 @@ namespace PixelCube.LoadAndSave
         {
             Artwork ArtworkDoc = new Artwork();
             ArtworkDoc.DefaultValue();
-            for(int i = 0; i!= ArtworkDoc.SceneSize.X; i++)
-                for(int j = 0; j!= ArtworkDoc.SceneSize.Y; j++)
-                    for(int k = 0; k!= ArtworkDoc.SceneSize.Z; k++)
-                    {
-                        Cube cube1 = new Cube()
-                        {
-                            CubeColor = Colors.Blue,
-                            Position = new Vector3D(i, j, k)
-                        };
-                        ArtworkDoc.Cubes.Add(cube1);
-                    }
 
             return ArtworkDoc;
         }

@@ -38,6 +38,14 @@ namespace PixelCube.Scene3D
                     win.liney.Points = list;
                 }));
             });
+
+            win.Leap.LeapModeChangeEvent += new System.EventHandler<LeapModeChangeEventArgs>((obj, arg) =>
+            {
+                win.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    win.modePanel.Text = arg.state.ToString();
+                }));
+            });
         }
     }
 }
