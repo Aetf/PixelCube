@@ -16,7 +16,7 @@ namespace PixelCube.Scene3D
         /// <summary>
         /// 获取和设置对于整个世界坐标的变换
         /// </summary>
-        Transform3D WorldTransform { get; set; }
+        MatrixTransform3D WorldTransform { get; set; }
 
         /// <summary>
         /// 摄像机的原始坐标

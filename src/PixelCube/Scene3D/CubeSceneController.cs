@@ -15,6 +15,7 @@ namespace PixelCube.Scene3D
         public void TranslateCamera(Vector3D offset)
         {
             mView.Camera.Position = Point3D.Add(mView.Camera.Position, offset);
+            worldTransform.Merge(new TranslateTransform3D(offset));
         }
 
         public void RotateCamera(RotateTransform3D rotation)
@@ -22,12 +23,14 @@ namespace PixelCube.Scene3D
             mView.Camera.Position = rotation.Transform(mView.Camera.Position);
             mView.Camera.UpDirection = rotation.Transform(mView.Camera.UpDirection);
             mView.Camera.LookDirection = rotation.Transform(mView.Camera.LookDirection);
+
+            worldTransform.Merge(rotation);
         }
 
         #region ISceneControler 成员
 
-        private Transform3D worldTransform = Transform3D.Identity;
-        public Transform3D WorldTransform
+        private MatrixTransform3D worldTransform = new MatrixTransform3D(Matrix3D.Identity);
+        public MatrixTransform3D WorldTransform
         {
             get
             {
@@ -36,10 +39,6 @@ namespace PixelCube.Scene3D
             set
             {
                 worldTransform = value;
-                //mView.Camera.Transform = worldTransform;
-                //mView.Camera.LookDirection = value.Transform(mView.Camera.LookDirection);
-                mView.Camera.Position = value.Transform(mView.Camera.Position);
-                //mView.Camera.UpDirection = value.Transform(mView.Camera.UpDirection);
             }
         }
 
