@@ -60,6 +60,7 @@ namespace PixelCube.Scene3D
                 MajorDistance = framea,
                 MinorDistance = framea,
                 Center = new Point3D(framea / 2, framea, framea / 2),
+                //Center = new Point3D(0, framea, 0),
                 Length = framea,
                 LengthDirection = new Vector3D(1, 0, 0),
                 Width = framea
@@ -71,6 +72,7 @@ namespace PixelCube.Scene3D
                 MajorDistance = framea,
                 MinorDistance = framea,
                 Center = new Point3D(framea / 2, 0, framea / 2),
+                //Center = new Point3D(0, framea, 0),
                 Length = framea,
                 LengthDirection = new Vector3D(1, 0, 0),
                 Width = framea
@@ -82,6 +84,7 @@ namespace PixelCube.Scene3D
                 MajorDistance = framea,
                 MinorDistance = framea,
                 Center = new Point3D(framea / 2, framea / 2, framea),
+                //Center = new Point3D(0, framea / 2, framea / 2),
                 Length = framea,
                 LengthDirection = new Vector3D(1, 0, 0),
                 Width = framea
@@ -93,6 +96,7 @@ namespace PixelCube.Scene3D
                 MajorDistance = framea,
                 MinorDistance = framea,
                 Center = new Point3D(framea / 2, framea / 2, 0),
+                //Center = new Point3D(0, framea / 2, -framea / 2),
                 Length = framea,
                 LengthDirection = new Vector3D(1, 0, 0),
                 Width = framea
@@ -104,6 +108,7 @@ namespace PixelCube.Scene3D
                 MajorDistance = framea,
                 MinorDistance = framea,
                 Center = new Point3D(0, framea / 2, framea / 2),
+                //Center = new Point3D(-framea / 2, framea / 2, 0),
                 Length = framea,
                 LengthDirection = new Vector3D(0, 0, 1),
                 Width = framea
@@ -115,6 +120,7 @@ namespace PixelCube.Scene3D
                 MajorDistance = framea,
                 MinorDistance = framea,
                 Center = new Point3D(framea, framea / 2, framea / 2),
+                //Center = new Point3D(framea / 2, framea / 2, 0),
                 Length = framea,
                 LengthDirection = new Vector3D(0, 0, 1),
                 Width = framea
@@ -133,7 +139,8 @@ namespace PixelCube.Scene3D
                         GeometryModel3D c = cubeseed.Clone();
                         cubeModels[TupleToIdx(i, j, k)] = c;
                         mWin.RegisterName(NameForCubeModel(i, j, k), c);
-                        c.Transform = new TranslateTransform3D(cubea*i, cubea*j, cubea*k);
+                        //c.Transform = new TranslateTransform3D(cubea * i - sceneSize.Item1, cubea * j, cubea * k - sceneSize.Item1);
+                        c.Transform = new TranslateTransform3D(cubea * i, cubea * j, cubea * k);
                     }
                 }
             }

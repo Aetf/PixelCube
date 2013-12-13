@@ -34,10 +34,10 @@
             <h:HelixViewport3D.Camera>
                 <PerspectiveCamera x:Name="mCamera"
 						FarPlaneDistance="300" 
-						LookDirection="-1,-1,-2" 
+						LookDirection="0,0,-1" 
 						UpDirection="0,1,0"
 						NearPlaneDistance="1" 
-						Position="20,20,40"
+						Position="20,20,110"
 						FieldOfView="60" />
             </h:HelixViewport3D.Camera>
 

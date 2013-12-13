@@ -47,7 +47,7 @@
                         Normals="-1,-1,1 -1,1,1 1,1,1 1,-1,1 -1,-1,-1 -1,1,-1 1,1,-1 1,-1,-1"
                         TriangleIndices="4,6,7 4,5,6 0,2,1 0,3,2 0,5,4 0,1,5 7,2,3 7,6,2 5,1,2 5,2,6 0,4,7 0,7,3" />-->
 
-        <Color x:Key="whiteSmokeColor" A="25" R="70" G="70" B="70"/>
+        <Color x:Key="whiteSmokeColor" R="70" G="70" B="70"/>
         <DiffuseMaterial x:Key="whiteSmokeMaterial">
             <DiffuseMaterial.Brush>
                 <SolidColorBrush Color="{StaticResource whiteSmokeColor}"/>
