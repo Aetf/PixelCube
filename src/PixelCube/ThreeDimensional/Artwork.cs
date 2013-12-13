@@ -13,7 +13,7 @@ namespace PixelCube.ThreeDimensional
         public void DefaultValue()
         {
             BackgroundFill = Color.FromArgb(100, 200, 200, 200);
-            SceneSize = Tuple.Create(9, 9, 9);
+            SceneSize = Tuple.Create(20, 20, 20);
             FileName = "新文件.ps";
 
             Cubes = new List<Cube>();
