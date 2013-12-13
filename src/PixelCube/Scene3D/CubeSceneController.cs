@@ -117,7 +117,7 @@ namespace PixelCube.Scene3D
 
             // FIXME: only debug propose here!! Should use c in release.
             //var n = new DiffuseMaterial(new SolidColorBrush(c));
-            var n = new DiffuseMaterial(new SolidColorBrush(Colors.Blue));
+            var n = new DiffuseMaterial(new SolidColorBrush(Colors.WhiteSmoke));
             g.Children.Insert(0, n);
         }
 
