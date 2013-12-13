@@ -137,13 +137,16 @@ namespace PixelCube
 
         private void MenuItem_Open(object sender, RoutedEventArgs e)
         {
-            CurrentArt = LSDocu.LoadArtworkDoc();
-            InitModules();
+            var tmp = LSDocu.LoadArtworkDoc();
+            if(tmp != null)
+            {
+                CurrentArt = tmp;
+                InitModules();
+            }
         }
 
         private void MenuItem_Save(object sender, RoutedEventArgs e)
         {
-            SceneControler.Flush();
             LSDocu.SaveAsDocument(CurrentArt);
         }
     }

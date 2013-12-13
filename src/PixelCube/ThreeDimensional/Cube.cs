@@ -13,6 +13,7 @@ namespace PixelCube.ThreeDimensional
     {
         public Cube()
         {
+            Visible = false;
         }
 
         ///// <summary>
@@ -26,10 +27,10 @@ namespace PixelCube.ThreeDimensional
         /// </summary>
         public Color CubeColor { get; set; }
 
-        ///// <summary>
-        ///// 是否可见
-        ///// </summary>
-        //public bool Visible { get; set; }
+        /// <summary>
+        /// 是否可见
+        /// </summary>
+        public bool Visible { get; set; }
 
         ///// <summary>
         ///// 是否拥有焦点

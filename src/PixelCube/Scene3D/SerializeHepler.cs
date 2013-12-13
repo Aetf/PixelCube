@@ -51,7 +51,7 @@ namespace PixelCube.Scene3D
                     models.Add(m);
                 }));
             else
-                for(int i = 0; i<artwork.SceneSize.X * artwork.SceneSize.Y * artwork.SceneSize.Z; i++)
+                for(int i = 0; i<artwork.SceneSize.Item1 * artwork.SceneSize.Item2 * artwork.SceneSize.Item3; i++)
                     models.Add(seed.Clone());
 
             return models;
