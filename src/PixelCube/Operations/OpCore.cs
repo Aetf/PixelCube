@@ -90,14 +90,13 @@ namespace PixelCube.Operations
         /// <param name="e">事件参数</param>
         public void OnPreFocusOperation(object sender, PreFocusOperationEventArgs e)
         {
-            //获取事件参数中的坐标
-            Vector curLPPosition = e.FocusPosition;
-            //封装成C#坐标
-            Point3D precurPosition = new Point3D(curLPPosition.x, curLPPosition.y, curLPPosition.z);
-
             //触发试图控制类的相关操作
             mwin.Dispatcher.BeginInvoke(new Action(() =>
             {
+                //获取事件参数中的坐标
+                Vector curLPPosition = e.FocusPosition;
+                //封装成C#坐标
+                Point3D precurPosition = new Point3D(curLPPosition.x, curLPPosition.y, curLPPosition.z);
                 //对当前坐标进行逆变换
                 Point3D curPosition = msceneController.WorldTransform.Transform(precurPosition);
                 //x,y,z为小方块的绝对三维坐标
@@ -137,15 +136,14 @@ namespace PixelCube.Operations
         /// <param name="e">事件参数</param>
         public void OnPreDrawOperation(object sender, PreDrawOperationEventArgs e)
         {
-            //通过事件参数获取上色小方块坐标
-            Vector drawPosition = e.DrawPosition;
-
-            //将leapmotion捕捉到的小方块坐标封装
-            Point3D preinCameraPosition = new Point3D(drawPosition.x, drawPosition.y, drawPosition.z);
-
             //触发试图控制类的操作
             mwin.Dispatcher.BeginInvoke(new Action(() =>
             {
+                //通过事件参数获取上色小方块坐标
+                Vector drawPosition = e.DrawPosition;
+
+                //将leapmotion捕捉到的小方块坐标封装
+                Point3D preinCameraPosition = new Point3D(drawPosition.x, drawPosition.y, drawPosition.z);
                 //获取当前坐标相对摄像机的坐标
                 Point3D inCameraPosition = msceneController.WorldTransform.Transform(preinCameraPosition);
 
@@ -333,23 +331,24 @@ namespace PixelCube.Operations
         /// <param name="e">事件参数</param>
         public void OnEraseOperation(object sender, PreEraseOperationEventArgs e)
         {
-            //通过事件参数获取上色小方块坐标
-            Vector erasePosition = e.Position;
-
-            //将leapmotion捕捉到的小方块坐标封装
-            Point3D inCameraPosition = new Point3D(erasePosition.x, erasePosition.y, erasePosition.z);
-
-            //i,j,k为小方块的三维位置索引
-            int i = (int)(inCameraPosition.X / mcubea);
-            int j = (int)(inCameraPosition.Y / mcubea);
-            int k = (int)(inCameraPosition.Z / mcubea);
-
-            // 是否与之前相同，是的话返回
-            if (FreqLimitUtil.CheckFreq("OnPreFocusOperation", Tuple.Create(i, j, k)))
-                return;
 
             mwin.Dispatcher.BeginInvoke(new Action(() =>
             {
+                //通过事件参数获取上色小方块坐标
+                Vector erasePosition = e.Position;
+
+                //将leapmotion捕捉到的小方块坐标封装
+                Point3D inCameraPosition = new Point3D(erasePosition.x, erasePosition.y, erasePosition.z);
+
+                //i,j,k为小方块的三维位置索引
+                int i = (int)(inCameraPosition.X / mcubea);
+                int j = (int)(inCameraPosition.Y / mcubea);
+                int k = (int)(inCameraPosition.Z / mcubea);
+
+                // 是否与之前相同，是的话返回
+                if (FreqLimitUtil.CheckFreq("OnPreFocusOperation", Tuple.Create(i, j, k)))
+                    return;
+
                 //判断当前坐标是否越界
                 if (i < martwork.SceneSize.Item1
                     && j < martwork.SceneSize.Item2
