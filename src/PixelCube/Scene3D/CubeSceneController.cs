@@ -12,8 +12,6 @@ namespace PixelCube.Scene3D
 {
     class CubeSceneController : ISceneControler
     {
-        
-
         #region ISceneControler 成员
         public void TranslateCamera(Vector3D offset)
         {
@@ -30,7 +28,7 @@ namespace PixelCube.Scene3D
             WorldTransform.Merge(rotation);
         }
 
-        public MatrixTransform3D WorldTransform { get; set; }
+        public MatrixTransform3D WorldTransform { get; private set; }
 
         public Point3D CameraOrig
         {
@@ -46,26 +44,15 @@ namespace PixelCube.Scene3D
 
             mWin = win;
             mView = win.getViewport();
-            Model3DGroup group = win.getCubeGroup();
+            mCubeGroup = win.getCubeGroup();
             
             var cubeseed = (GeometryModel3D)win.FindResource("cubeSeed");
-            var cubea = (double)win.FindResource("cubeA");
             var sceneSize = win.CurrentArt.SceneSize;
+            var cubea = (double)win.FindResource("cubeA");
+            var framea = sceneSize.X * cubea;
 
-            // Read cube list from artwork
-            cubeModels = SerializeHepler.cubeInput(cubeseed, win.CurrentArt).ToArray();
-
-            // Calc frame a
-            double framea = sceneSize.X * cubea;
+            #region Draw outter frame
             // Draw a outter frame
-            var p000 = new Point3D(0, 0, 0);
-            var p001 = new Point3D(0, 0, sceneSize.Z * cubea);
-            var p010 = new Point3D(0, sceneSize.Y * cubea, 0);
-            var p011 = new Point3D(0, sceneSize.Y * cubea, sceneSize.Z * cubea);
-            var p100 = new Point3D(sceneSize.X * cubea, 0, 0);
-            var p101 = new Point3D(sceneSize.X * cubea, 0, sceneSize.Z * cubea);
-            var p110 = new Point3D(sceneSize.X * cubea, sceneSize.Y * cubea, 0);
-            var p111 = new Point3D(sceneSize.X * cubea, sceneSize.Y * cubea, sceneSize.Z * cubea);
             // Up
             mView.Children.Add(new GridLinesVisual3D()
             {
@@ -132,7 +119,10 @@ namespace PixelCube.Scene3D
                 LengthDirection = new Vector3D(0, 0, 1),
                 Width = framea
             });
+            #endregion
 
+            // Pre-create all models.
+            cubeModels = new GeometryModel3D[(int)(sceneSize.X * sceneSize.Y * sceneSize.Z)];
             NameScope.SetNameScope(win, new NameScope());
             for (int i = 0; i != sceneSize.X; i++)
             {
@@ -140,13 +130,29 @@ namespace PixelCube.Scene3D
                 {
                     for (int k = 0; k != sceneSize.Z; k++)
                     {
-                        GeometryModel3D c = cubeModels[(int)(i + sceneSize.X * j + sceneSize.X * sceneSize.Y * k)];
+                        GeometryModel3D c = cubeseed.Clone();
+                        cubeModels[TupleToIdx(i, j, k)] = c;
                         mWin.RegisterName(NameForCubeModel(i, j, k), c);
                         c.Transform = new TranslateTransform3D(cubea*i, cubea*j, cubea*k);
-                        group.Children.Add(c);
                     }
                 }
             }
+
+            // Show cubes on screen
+            for (int i = 0; i != sceneSize.X; i++)
+                for (int j = 0; j != sceneSize.Y; j++)
+                    for (int k = 0; k != sceneSize.Z; k++)
+                    {
+                        var c = CubeFromIdx(i, j, k);
+                        var m = ModelFromIdx(i, j, k);
+                        if (c.Visible)
+                        {
+                            m.Material = new MaterialGroup();
+                            (m.Material as MaterialGroup).Children.Add(
+                                new DiffuseMaterial(new SolidColorBrush(c.CubeColor)));
+                            mCubeGroup.Children.Add(m);
+                        }
+                    }
         }
 
         Tuple<int, int, int> preFocus = null;
@@ -155,66 +161,76 @@ namespace PixelCube.Scene3D
             // Clear previous focus
             if (preFocus != null)
             {
-                GeometryModel3D preCube = CubeModelFromIdx(preFocus.Item1, preFocus.Item2, preFocus.Item3);
-                var g = preCube.Material as MaterialGroup;
+                GeometryModel3D preModel = ModelFromIdx(preFocus.Item1, preFocus.Item2, preFocus.Item3);
+                var g = preModel.Material as MaterialGroup;
                 var focusmaterial = g.Children.OfType<EmissiveMaterial>().LastOrDefault();
                 g.Children.Remove(focusmaterial);
+
+                var cube = CubeFromIdx(preFocus.Item1, preFocus.Item2, preFocus.Item3);
+                if (!cube.Visible)
+                {
+                    mCubeGroup.Children.Remove(preModel);
+                }
+                
                 preFocus = null;
             }
             // Set focus
             if (!(i < 0 || j < 0 || k < 0))
             {
-                Debug.WriteLine(String.Format("Focus: {0}, {1}, {2}", i, j, k));
-
-                GeometryModel3D cube = CubeModelFromIdx(i, j, k);
+                GeometryModel3D model = ModelFromIdx(i, j, k);
                 preFocus = Tuple.Create(i, j, k);
-                var g = cube.Material as MaterialGroup;
+                var g = model.Material as MaterialGroup;
                 g.Children.Add(mWin.FindResource("focusMaterial") as Material);
+
+                var cube = CubeFromIdx(preFocus.Item1, preFocus.Item2, preFocus.Item3);
+                if (!cube.Visible)
+                {
+                    mCubeGroup.Children.Add(model);
+                }
             }
         }
 
         public void Erase(int i, int j, int k)
         {
-            var cube = CubeModelFromIdx(i, j, k);
+            var cube = CubeFromIdx(i, j, k);
+            if (!cube.Visible)
+                return;
 
-            var g = cube.Material as MaterialGroup;
+            var model = ModelFromIdx(i, j, k);
+            var g = model.Material as MaterialGroup;
             var old = g.Children.OfType<DiffuseMaterial>().First();
             g.Children.Remove(old);
-
             var n = mWin.FindResource("whiteSmokeMaterial") as Material;
             g.Children.Insert(0, n);
+
+            cube.CubeColor = (Color) mWin.FindResource("whiteSmokeColor");
+            cube.Visible = false;
+            mCubeGroup.Children.Remove(model);
         }
         
         public void SetColor(int i, int j, int k, Color c)
         {
-            var cube = CubeModelFromIdx(i, j, k);
+            // FIXME: only debug propose here!! Should delete this line in release.
+            c = Colors.WhiteSmoke;
 
-            var g = cube.Material as MaterialGroup;
+            var model = ModelFromIdx(i, j, k);
+            var g = model.Material as MaterialGroup;
             var old = g.Children.OfType<DiffuseMaterial>().First();
             g.Children.Remove(old);
-
-            // FIXME: only debug propose here!! Should use c in release.
-            //var n = new DiffuseMaterial(new SolidColorBrush(c));
-            var n = new DiffuseMaterial(new SolidColorBrush(Colors.WhiteSmoke));
+            var n = new DiffuseMaterial(new SolidColorBrush(c));
             g.Children.Insert(0, n);
-        }
 
-        public void Flush()
-        {
-            mWin.CurrentArt.Cubes = SerializeHepler.cubeOutput(cubeModels);
+            var cube = CubeFromIdx(i, j, k);
+            if (!cube.Visible)
+            {
+                cube.Visible = true;
+                mCubeGroup.Children.Add(model);
+            }
+            cube.CubeColor = c;
         }
-
         #endregion
 
-        #region IDisposable 成员
-
-        public void Dispose()
-        {
-            return;
-        }
-
-        #endregion
-
+        private Model3DGroup mCubeGroup;
         private HelixViewport3D mView;
         private MainWindow mWin;
         private GeometryModel3D[] cubeModels;
@@ -224,13 +240,41 @@ namespace PixelCube.Scene3D
             
         }
 
-        private GeometryModel3D CubeModelFromIdx(int i, int j, int k)
+        #region Convert i,j,k to index
+        private int TupleToIdx(int i, int j, int k)
         {
-            var c = mWin.FindName(NameForCubeModel(i, j, k)) as GeometryModel3D;
-            if (c == null)
+            var sceneSize = mWin.CurrentArt.SceneSize;
+            if (i >= 0 && j >= 0 && k >= 0
+                && i <= sceneSize.X
+                && j <= sceneSize.Y
+                && k <= sceneSize.Z)
+            {
+                return (int) (i + j * sceneSize.X + k * sceneSize.X * sceneSize.Y);
+            }
+            else
                 throw new ArgumentOutOfRangeException("(i, j, k)", new Vector3D(i, j, k), "Shoule be >=0 && < SceneSize.X/Y/Z");
-            return c;
         }
+
+        private int TupleToIdx(Tuple<int, int, int> tuple)
+        {
+            return TupleToIdx(tuple.Item1, tuple.Item2, tuple.Item3);
+        }
+
+        private int TupleToIdx(Vector3D tuple)
+        {
+            return TupleToIdx((int)tuple.X, (int)tuple.Y, (int)tuple.Z);
+        }
+
+        private GeometryModel3D ModelFromIdx(int i, int j, int k)
+        {
+            return cubeModels[TupleToIdx(i, j, k)];
+        }
+
+        private ICube CubeFromIdx(int i, int j, int k)
+        {
+            return mWin.CurrentArt.Cubes[TupleToIdx(i, j, k)];
+        }
+        #endregion
 
         private String NameForCubeModel(int i, int j, int k)
         {

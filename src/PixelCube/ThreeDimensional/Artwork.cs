@@ -10,19 +10,15 @@ namespace PixelCube.ThreeDimensional
 {
     public class Artwork : IArtwork
     {
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        public Artwork()
-        {
-            Cubes = new List<Cube>();
-        }
-
         public void DefaultValue()
         {
             BackgroundFill = Color.FromArgb(100, 200, 200, 200);
             SceneSize = new Vector3D(9, 9, 9);
             FileName = "新文件.ps";
+
+            Cubes = new List<Cube>();
+            for (int i = 0; i != SceneSize.X * SceneSize.Y * SceneSize.Z; i++)
+                Cubes.Add(new Cube());
         }
 
 

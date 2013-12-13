@@ -147,7 +147,6 @@ namespace PixelCube
 
         private void MenuItem_Save(object sender, RoutedEventArgs e)
         {
-            SceneControler.Flush();
             LSDocu.SaveAsDocument(CurrentArt);
         }
     }
