@@ -47,29 +47,36 @@
                         Normals="-1,-1,1 -1,1,1 1,1,1 1,-1,1 -1,-1,-1 -1,1,-1 1,1,-1 1,-1,-1"
                         TriangleIndices="4,6,7 4,5,6 0,2,1 0,3,2 0,5,4 0,1,5 7,2,3 7,6,2 5,1,2 5,2,6 0,4,7 0,7,3" />-->
 
-        <Color x:Key="whiteSmokeColor" A="25" R="102" G="102" B="102"/>
+        <Color x:Key="whiteSmokeColor" A="25" R="70" G="70" B="70"/>
         <DiffuseMaterial x:Key="whiteSmokeMaterial">
             <DiffuseMaterial.Brush>
                 <SolidColorBrush Color="{StaticResource whiteSmokeColor}"/>
             </DiffuseMaterial.Brush>
         </DiffuseMaterial>
-
-        <EmissiveMaterial x:Key="focusMaterial">
+        
+        <EmissiveMaterial x:Key="whiteEmissivematerial">
             <EmissiveMaterial.Brush>
-                <RadialGradientBrush>
-                    <RadialGradientBrush.GradientStops>
-                        <GradientStop Color="#00000000" Offset="0.99"/>
-                        <GradientStop Color="MediumAquamarine" Offset="1"/>
-                    </RadialGradientBrush.GradientStops>
-                </RadialGradientBrush>
+                <SolidColorBrush Color="#30FFFFFF"/>
             </EmissiveMaterial.Brush>
         </EmissiveMaterial>
+
+        <DiffuseMaterial x:Key="focusMaterial">
+            <DiffuseMaterial.Brush>
+                <RadialGradientBrush>
+                    <RadialGradientBrush.GradientStops>
+                        <GradientStop Color="#00000000" Offset="0.8"/>
+                        <GradientStop Color="Aquamarine" Offset="1"/>
+                    </RadialGradientBrush.GradientStops>
+                </RadialGradientBrush>
+            </DiffuseMaterial.Brush>
+        </DiffuseMaterial>
 
         <GeometryModel3D x:Key="cubeSeed"
                          Geometry="{StaticResource cubeGeo}">
             <GeometryModel3D.Material>
                 <MaterialGroup>
                     <StaticResource ResourceKey="whiteSmokeMaterial" />
+                    <StaticResource ResourceKey="whiteEmissivematerial" />
                 </MaterialGroup>
             </GeometryModel3D.Material>
         </GeometryModel3D>
