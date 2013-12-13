@@ -55,6 +55,28 @@ namespace PixelCube.Scene3D
             // Read cube list from artwork
             cubeModels = SerializeHepler.cubeInput(cubeseed, win.CurrentArt).ToArray();
 
+            // Draw a outter frame
+            var p000 = new Point3D(0, 0, 0);
+            var p001 = new Point3D(0, 0, sceneSize.Z * cubea);
+            var p010 = new Point3D(0, sceneSize.Y * cubea, 0);
+            var p011 = new Point3D(0, sceneSize.Y * cubea, sceneSize.Z * cubea);
+            var p100 = new Point3D(sceneSize.X * cubea, 0, 0);
+            var p101 = new Point3D(sceneSize.X * cubea, 0, sceneSize.Z * cubea);
+            var p110 = new Point3D(sceneSize.X * cubea, sceneSize.Y * cubea, 0);
+            var p111 = new Point3D(sceneSize.X * cubea, sceneSize.Y * cubea, sceneSize.Z * cubea);
+            mView.Children.Add(CreateLine(p000, p001));
+            mView.Children.Add(CreateLine(p001, p011));
+            mView.Children.Add(CreateLine(p011, p111));
+            mView.Children.Add(CreateLine(p111, p110));
+            mView.Children.Add(CreateLine(p110, p100));
+            mView.Children.Add(CreateLine(p100, p101));
+            mView.Children.Add(CreateLine(p101, p111));
+            mView.Children.Add(CreateLine(p000, p100));
+            mView.Children.Add(CreateLine(p000, p010));
+            mView.Children.Add(CreateLine(p010, p011));
+            mView.Children.Add(CreateLine(p010, p110));
+            mView.Children.Add(CreateLine(p001, p101));
+
             NameScope.SetNameScope(win, new NameScope());
             for (int i = 0; i != sceneSize.X; i++)
             {
@@ -157,6 +179,16 @@ namespace PixelCube.Scene3D
         private String NameForCubeModel(int i, int j, int k)
         {
             return String.Format("CubeModel{0}_{1}_{2}", i, j, k);
+        }
+
+        private LinesVisual3D CreateLine(Point3D from, Point3D to)
+        {
+            var line = new LinesVisual3D()
+            {
+                Color = Colors.Gray,
+                Points = new Point3D[] { from, to }.ToList()
+            };
+            return line;
         }
     }
 }
