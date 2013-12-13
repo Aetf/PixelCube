@@ -58,6 +58,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -86,10 +87,12 @@
     <Compile Include="Operations\PostDragOperationEventArgs.cs" />
     <Compile Include="Operations\PostEraseOperationEventArgs.cs" />
     <Compile Include="Scene3D\CubeSceneController.cs" />
+    <Compile Include="Scene3D\SerializeHepler.cs" />
     <Compile Include="Scene3D\WatchDog.cs" />
     <Compile Include="ThreeDimensional\Artwork.cs" />
     <Compile Include="Sound\BackgroundMusic.cs" />
     <Compile Include="ThreeDimensional\Cube.cs" />
+    <Compile Include="Utils\FreqLimitUtil.cs" />
     <Compile Include="Utils\MatixTransform3DExtension.cs" />
     <Compile Include="Sound\BackgroundSound.cs" />
     <Page Include="MainWindow.xaml">
@@ -108,7 +111,7 @@
     <Compile Include="Interfaces\ILeapMotion.cs" />
     <Compile Include="Interfaces\ISceneControler.cs" />
     <Compile Include="Interfaces\IVolume.cs" />
-    <Compile Include="LeapMotion\LeapStatusChangeEventArgs.cs" />
+    <Compile Include="LeapMotion\LeapModeChangeEventArgs.cs" />
     <Compile Include="LeapMotion\LeapListener.cs" />
     <Compile Include="LeapMotion\PreDrawOperationEventArgs.cs" />
     <Compile Include="LeapMotion\PreFocusOperationEventArgs.cs" />
@@ -167,6 +170,25 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="AxWMPLib">
+      <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>aximp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+    <COMReference Include="WMPLib">
+      <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

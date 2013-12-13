@@ -12,7 +12,39 @@ namespace PixelCube.LeapMotion
         private LeapListener listener;
         private CoordinatesTrans trans;
 
-        public event EventHandler<LeapStatusChangeEventArgs> LeapStatusChangeEvent;
+        // Public Attributes
+        //#region public bool Visible;
+        ///// <summary>
+        ///// Identifies the <see cref="Visible"/> dependency property.
+        ///// </summary>
+        //public static readonly DependencyProperty VisibleProperty = DependencyProperty.Register(
+        //    "Visible",
+        //    typeof(bool),
+        //    typeof(SAOMenu3D),
+        //    new UIPropertyMetadata(default(bool), VisibleChanged));
+
+        //protected static void VisibleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    (d as SAOMenu3D).OnVisibleChanged();
+        //}
+
+        //protected virtual void OnVisibleChanged()
+        //{
+        //    showsb.Begin();
+        //}
+
+        ///// <summary>
+        ///// Get or set the visibility of the menu.
+        ///// </summary>
+        //public bool Visible
+        //{
+        //    get { return (bool)this.GetValue(VisibleProperty); }
+        //    set { this.SetValue(VisibleProperty, value); }
+        //}
+        //#endregion
+
+
+        public event EventHandler<LeapModeChangeEventArgs> LeapModeChangeEvent;
         public event EventHandler<PreDrawOperationEventArgs> PreDrawOperationEvent;
         public event EventHandler<PreFocusOperationEventArgs> PreFocusOperationEvent;
         public event EventHandler<PreRotateOperationEventArgs> PreRotateOperationEvent;
@@ -46,6 +78,7 @@ namespace PixelCube.LeapMotion
             listener.PreFocusOperationEvent += PreFocusOperationEvent;
             listener.PreRotateOperationEvent += PreRotateOperationEvent;
             listener.PreScaleOperationEvent += PreScaleOperationEvent;
+            listener.LeapModeChangeEvent += LeapModeChangeEvent;
         }
 
         public void Uninitialize()

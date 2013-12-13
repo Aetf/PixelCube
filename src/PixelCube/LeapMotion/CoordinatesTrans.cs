@@ -39,7 +39,7 @@ namespace PixelCube.LeapMotion
             ConfigProvider cp = ConfigProvider.Instance;
             cubea = cp.CubeA;       //获取小方块边长
 
-            cuben = (int)art.SceneSize.X;    //获取每行小方块数目
+            cuben = art.SceneSize.Item1;    //获取每行小方块数目
             maxCoord =(float) cubea * cuben + 40;
         }
 

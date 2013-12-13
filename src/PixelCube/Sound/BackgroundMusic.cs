@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using System.Media;
 using PixelCube.Interfaces;
 using System.ComponentModel;
+using WMPLib;
+using System.IO;
+using System.Reflection;
 
 namespace PixelCube.Sound
 {
@@ -14,11 +17,23 @@ namespace PixelCube.Sound
     /// </summary>
     public class BackgroundMusic : IVolume
     {
-        SoundPlayer mu = new System.Media.SoundPlayer("../../Sound/etudeofwater.wav");
-
+        WMPLib.WindowsMediaPlayer BGM = new WindowsMediaPlayer();
+        private string path;
+        /// <summary>
+        /// 获取音频文件的绝对路径
+        /// </summary>
+        public string SetPath()
+        {
+            DirectoryInfo dr = new DirectoryInfo(Assembly.GetEntryAssembly().Location);
+            dr = dr.Parent.Parent;
+            path = dr.FullName.ToString();
+            return path;
+        }
         public void DoInit(MainWindow win, bool open)
         {
-            mu.Load();
+            BGM.settings.setMode("loop", true);
+            BGM.uiMode = "Invisible";
+            BGM.URL = Path.Combine(Path.GetDirectoryName(SetPath()), "Sound//etudeofwater.wav");
             Mute = open;
         }
 
@@ -34,11 +49,11 @@ namespace PixelCube.Sound
                 mute = value;
                 if (!value)
                 {
-                    mu.Stop();
+                    BGM.controls.stop();
                 }
                 else
                 {
-                    mu.PlayLooping();
+                    BGM.controls.play();
                 }
             }
         }

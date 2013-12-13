@@ -75,9 +75,7 @@ namespace PixelCube
 
             kernel.PostDrawOperationEvent += se.DrawOperationSound;
             kernel.PostFocusOperationEvent += se.FocusOperationSound;
-
-            // FIXME: OpCore donot have PostEraseOperationEvent.
-            //kernel.PostEraseOperationEvent += se.EraseOperationSound;
+            kernel.PostEraseOperationEvent += se.EraseOperationSound;
 
             return se;
         }
@@ -105,19 +103,28 @@ namespace PixelCube
            
             return c;
         }
-        #endregion
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Must be called after CurrentArt is initilized.
+        /// </summary>
+        private void InitModules()
         {
-            CurrentArt = LSDocu.NewArtwork();
             Leap = CreateLeapMotion();
             SceneControler = CreateSceneControler();
             kernel = CreateOpCore();
             bgm = CreateBGM();
             se = CreateSE();
             wd = CreateWatchDog();
-            
+
             Leap.LinkEvent();
+        }
+        #endregion
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            CurrentArt = LSDocu.NewArtwork();
+
+            InitModules();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -126,6 +133,21 @@ namespace PixelCube
             {
                 Leap.Uninitialize();
             }
+        }
+
+        private void MenuItem_Open(object sender, RoutedEventArgs e)
+        {
+            var tmp = LSDocu.LoadArtworkDoc();
+            if(tmp != null)
+            {
+                CurrentArt = tmp;
+                InitModules();
+            }
+        }
+
+        private void MenuItem_Save(object sender, RoutedEventArgs e)
+        {
+            LSDocu.SaveAsDocument(CurrentArt);
         }
     }
 }

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using System.Media;
 using PixelCube.LeapMotion;
 using PixelCube.Operations;
+using WMPLib;
+using System.IO;
+using System.Reflection;
 
 namespace PixelCube.Sound
 {
@@ -14,15 +17,42 @@ namespace PixelCube.Sound
      /// </summary>
     public class BackgroundSound
     {
-        SoundPlayer focus = new SoundPlayer("../../Sound/focussound.wav");
-        SoundPlayer erase = new SoundPlayer("../../Sound/erasesound.wav");
-        SoundPlayer draw = new SoundPlayer("../../Sound/drawsound.wav");
+        WindowsMediaPlayer focussound = new WindowsMediaPlayer();
+        WindowsMediaPlayer erasesound = new WindowsMediaPlayer();
+        WindowsMediaPlayer drawsound = new WindowsMediaPlayer();
+        /// <summary>
+        /// PixelCube path
+        /// </summary>
+        private string path;
+        /// <summary>
+        /// 获取音频文件的绝对路径
+        /// </summary>
+        public string SetPath()
+        {
+            DirectoryInfo dr = new DirectoryInfo(Assembly.GetEntryAssembly().Location);
+            dr = dr.Parent.Parent;
+            path = dr.FullName.ToString();
+            return path;
+        }
+
+        /// <summary>
+        /// WMP 参数设置
+        /// </summary>
+        /// <param name="sound"></param>
+        /// <param name="name"></param>
+        private void Load(WindowsMediaPlayer sound,string name)
+        {
+            sound.uiMode = "Invisible";
+            sound.settings.autoStart = false;
+            sound.URL = Path.Combine(Path.GetDirectoryName(SetPath()), "Sound//"+name+".wav");
+            sound.ToString();
+        }
 
         public void DoInit(MainWindow win)
         {
-            focus.Load();
-            draw.Load();
-            erase.Load();
+            Load(focussound,"focussound");
+            Load(drawsound,"drawsound");
+            Load(erasesound,"erasesound");
         }
 
         /// <summary>
@@ -32,7 +62,7 @@ namespace PixelCube.Sound
         /// <param name="e"></param>
         public void FocusOperationSound(object sender, PostFocusOperationEventArgs e)
         {
-            focus.Play();
+            focussound.controls.play();
         }
 
         /// <summary>
@@ -42,7 +72,7 @@ namespace PixelCube.Sound
         /// <param name="e"></param>
         public void DrawOperationSound(object sender, PostDrawOperationEventArgs e)
         {
-            draw.Play();
+            drawsound.controls.play();
         }
 
         /// <summary>
@@ -52,7 +82,7 @@ namespace PixelCube.Sound
         /// <param name="e"></param>
         public void EraseOperationSound(object sender, PostEraseOperationEventArgs e)
         {
-            erase.Play();
+            erasesound.controls.play();
         }
     }
 }
