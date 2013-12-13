@@ -113,9 +113,9 @@ namespace PixelCube.Operations
                     return;
 
                 //判断当前坐标是否越界
-                if (i < martwork.SceneSize.X
-                    && j < martwork.SceneSize.Y
-                    && k < martwork.SceneSize.Z
+                if (i < martwork.SceneSize.Item1
+                    && j < martwork.SceneSize.Item2
+                    && k < martwork.SceneSize.Item3
                     && i >= 0 && j >= 0 && k >= 0)
                 {
                     //通知视图控制类
@@ -157,7 +157,7 @@ namespace PixelCube.Operations
             mwin.Dispatcher.BeginInvoke(new Action(() =>
             {
                 //判断小方块绝对三维坐标是否离开画布
-                if (i < martwork.SceneSize.X && j < martwork.SceneSize.Y && k < martwork.SceneSize.Z
+                if (i < martwork.SceneSize.Item1 && j < martwork.SceneSize.Item2 && k < martwork.SceneSize.Item3
                     && i >= 0 && j >= 0 && k >= 0 )
                 {
                     //设置当前焦点
@@ -294,7 +294,7 @@ namespace PixelCube.Operations
                 dragFactor[2] += k;
 
                 //比较累计平移向量与画布大小，判断平移是否离开画布区域，若否则进行平移，若是则取消平移，取消累计平移向量的更新
-                if (dragFactor[0] < martwork.SceneSize.X && dragFactor[1] < martwork.SceneSize.Y && dragFactor[2] < martwork.SceneSize.Z && dragFactor[0] > -martwork.SceneSize.X && dragFactor[1] > -martwork.SceneSize.Y && dragFactor[2] > -martwork.SceneSize.Z)
+                if (dragFactor[0] < martwork.SceneSize.Item1 && dragFactor[1] < martwork.SceneSize.Item2 && dragFactor[2] < martwork.SceneSize.Item3 && dragFactor[0] > -martwork.SceneSize.Item1 && dragFactor[1] > -martwork.SceneSize.Item2 && dragFactor[2] > -martwork.SceneSize.Item3)
                 {
 
                     //封装为三维向量,并转换为对摄像机的转换矩阵的平移向量参数，即对原平移向量坐标取反
@@ -346,9 +346,9 @@ namespace PixelCube.Operations
             mwin.Dispatcher.BeginInvoke(new Action(() =>
             {
                 //判断当前坐标是否越界
-                if (i < martwork.SceneSize.X
-                    && j < martwork.SceneSize.Y
-                    && k < martwork.SceneSize.Z
+                if (i < martwork.SceneSize.Item1
+                    && j < martwork.SceneSize.Item2
+                    && k < martwork.SceneSize.Item3
                     && i >= 0 && j >= 0 && k >= 0)
                 {
                     //设置当前焦点

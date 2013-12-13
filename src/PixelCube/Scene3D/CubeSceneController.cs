@@ -49,7 +49,7 @@ namespace PixelCube.Scene3D
             var cubeseed = (GeometryModel3D)win.FindResource("cubeSeed");
             var sceneSize = win.CurrentArt.SceneSize;
             var cubea = (double)win.FindResource("cubeA");
-            var framea = sceneSize.X * cubea;
+            var framea = sceneSize.Item1 * cubea;
 
             #region Draw outter frame
             // Draw a outter frame
@@ -122,13 +122,13 @@ namespace PixelCube.Scene3D
             #endregion
 
             // Pre-create all models.
-            cubeModels = new GeometryModel3D[(int)(sceneSize.X * sceneSize.Y * sceneSize.Z)];
+            cubeModels = new GeometryModel3D[sceneSize.Item1 * sceneSize.Item2 * sceneSize.Item3];
             NameScope.SetNameScope(win, new NameScope());
-            for (int i = 0; i != sceneSize.X; i++)
+            for (int i = 0; i != sceneSize.Item1; i++)
             {
-                for (int j = 0; j != sceneSize.Y; j++)
+                for (int j = 0; j != sceneSize.Item2; j++)
                 {
-                    for (int k = 0; k != sceneSize.Z; k++)
+                    for (int k = 0; k != sceneSize.Item3; k++)
                     {
                         GeometryModel3D c = cubeseed.Clone();
                         cubeModels[TupleToIdx(i, j, k)] = c;
@@ -139,9 +139,9 @@ namespace PixelCube.Scene3D
             }
 
             // Show cubes on screen
-            for (int i = 0; i != sceneSize.X; i++)
-                for (int j = 0; j != sceneSize.Y; j++)
-                    for (int k = 0; k != sceneSize.Z; k++)
+            for (int i = 0; i != sceneSize.Item1; i++)
+                for (int j = 0; j != sceneSize.Item2; j++)
+                    for (int k = 0; k != sceneSize.Item3; k++)
                     {
                         var c = CubeFromIdx(i, j, k);
                         var m = ModelFromIdx(i, j, k);
@@ -245,14 +245,14 @@ namespace PixelCube.Scene3D
         {
             var sceneSize = mWin.CurrentArt.SceneSize;
             if (i >= 0 && j >= 0 && k >= 0
-                && i <= sceneSize.X
-                && j <= sceneSize.Y
-                && k <= sceneSize.Z)
+                && i <= sceneSize.Item1
+                && j <= sceneSize.Item2
+                && k <= sceneSize.Item3)
             {
-                return (int) (i + j * sceneSize.X + k * sceneSize.X * sceneSize.Y);
+                return i + j * sceneSize.Item1 + k * sceneSize.Item1 * sceneSize.Item2;
             }
             else
-                throw new ArgumentOutOfRangeException("(i, j, k)", new Vector3D(i, j, k), "Shoule be >=0 && < SceneSize.X/Y/Z");
+                throw new ArgumentOutOfRangeException("(i, j, k)", new Vector3D(i, j, k), "Shoule be >=0 && < SceneSize.Item1/Y/Z");
         }
 
         private int TupleToIdx(Tuple<int, int, int> tuple)
