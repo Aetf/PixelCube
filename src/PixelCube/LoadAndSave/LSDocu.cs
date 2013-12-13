@@ -43,7 +43,6 @@ namespace PixelCube.LoadAndSave
                 openFileDialog2 = new OpenFileDialog();
                 openFileDialog2.Title = "请选择要打开的文件";
                 openFileDialog2.Filter = "PixcelCube Documents(*.pd)|*.pd";
-                openFileDialog2.ShowDialog();
                 //将数据载入Document
                 if (openFileDialog2.ShowDialog() == DialogResult.OK)
                 {
@@ -105,8 +104,6 @@ namespace PixelCube.LoadAndSave
             SaveFileDialog SaveFileDialog1 = new SaveFileDialog();
             SaveFileDialog1.Title = "将文件另存于";
             SaveFileDialog1.Filter = "Map Documents(*.pd)|*.pd";
-            SaveFileDialog1.ShowDialog();
-            string str = Serialize(ArtworkDoc);
             if (SaveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 string fileName = SaveFileDialog1.FileName;
@@ -118,6 +115,7 @@ namespace PixelCube.LoadAndSave
                 {
                     try
                     {
+                        string str = Serialize(ArtworkDoc);
                         Stream stream = File.OpenWrite(fileName);
                         using (StreamWriter writer = new StreamWriter(stream))
                         {
