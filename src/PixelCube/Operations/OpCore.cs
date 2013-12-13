@@ -338,7 +338,10 @@ namespace PixelCube.Operations
                 Vector erasePosition = e.Position;
 
                 //将leapmotion捕捉到的小方块坐标封装
-                Point3D inCameraPosition = new Point3D(erasePosition.x, erasePosition.y, erasePosition.z);
+                Point3D preinCameraPosition = new Point3D(erasePosition.x, erasePosition.y, erasePosition.z);
+
+                //对当前坐标进行逆变换
+                Point3D inCameraPosition = msceneController.WorldTransform.Transform(preinCameraPosition);
 
                 //i,j,k为小方块的三维位置索引
                 int i = (int)(inCameraPosition.X / mcubea);
