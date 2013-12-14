@@ -165,6 +165,12 @@ namespace PixelCube.Wpf
                 var passed = SetupCamera();
                 if (AutoCalcPosition)
                     CalcPinPoint();
+                foreach (var item in Items)
+                {
+                    this.Children.Add(item.Symbol);
+                    this.Children.Add(item.Textboard);
+                }
+
                 showsb.BeginTime = TimeSpan.FromSeconds(passed);
                 showsb.Begin();
             }
@@ -175,6 +181,7 @@ namespace PixelCube.Wpf
                     item.Symbol.Opacity = 0;
                     item.Textboard.Opacity = 0;
                 }
+                this.Children.Clear();
                 RestoreCamera();
             }
         }
@@ -524,7 +531,6 @@ namespace PixelCube.Wpf
                     Position = pos,
                     Opacity = 0
                 };
-                this.Children.Add(Items[i].Symbol);
                 w += Items[i].Symbol.Geometry.Bounds.SizeX * ScaleFactor;
                 height += Items[i].Symbol.Geometry.Bounds.SizeY * ScaleFactor;
 
@@ -538,7 +544,6 @@ namespace PixelCube.Wpf
                     Opacity = 0,
                     Position = pos
                 };
-                this.Children.Add(Items[i].Textboard);
                 w += Items[i].Textboard.Width + SymbolGeometry.Bounds.SizeX + 1;
 
                 width = Math.Max(w, width);

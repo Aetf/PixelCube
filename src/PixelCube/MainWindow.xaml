@@ -41,10 +41,10 @@
             <h:SphereVisual3D x:Name="pointerzx" Fill="Red" Radius="0.2" Center="0, 0, 0" />
 
             <src:SAOMenu3D x:Name="saomenu" Visible="False" Distance="15" ScaleFactor="1.5" ZoomOutDistance="225" SymbolGeometry="{StaticResource Sphere}">
-                <src:SAOMenu3DItem Header="新建" Selected="MenuItem_New"/>
+                <src:SAOMenu3DItem Header="继续" />
                 <src:SAOMenu3DItem Header="打开" Selected="MenuItem_Open"/>
                 <src:SAOMenu3DItem Header="保存" Selected="MenuItem_Save"/>
-                <src:SAOMenu3DItem Header="继续" />
+                <src:SAOMenu3DItem Header="新建" Selected="MenuItem_New"/>
                 <src:SAOMenu3DItem Header="退出" Selected="MenuItem_Exit"/>
             </src:SAOMenu3D>
             
