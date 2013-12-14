@@ -349,7 +349,7 @@ namespace PixelCube.Operations
                 int k = (int)(inCameraPosition.Z / mcubea);
 
                 // 是否与之前相同，是的话返回
-                if (FreqLimitUtil.CheckFreq("OnPreFocusOperation", Tuple.Create(i, j, k)))
+                if (FreqLimitUtil.CheckFreq("OnPreEraseOperation", Tuple.Create(i, j, k)))
                     return;
 
                 //判断当前坐标是否越界

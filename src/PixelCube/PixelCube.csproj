@@ -77,8 +77,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Interfaces\ILeapTrace.cs" />
     <Compile Include="LeapMotion\CoordinatesTrans.cs" />
     <Compile Include="LeapMotion\LeapController.cs" />
+    <Compile Include="LeapMotion\LeapMenu.cs" />
+    <Compile Include="LeapMotion\MenuInfo.cs" />
     <Compile Include="LeapMotion\PreChangeColorOperationEventArgs.cs" />
     <Compile Include="LeapMotion\PreDragOperationEventArgs.cs" />
     <Compile Include="LeapMotion\PreEraseOperationEventArgs.cs" />
