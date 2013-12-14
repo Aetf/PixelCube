@@ -459,6 +459,7 @@ namespace PixelCube.Wpf
             double scale = distOn(origCameraPos, new Point3D(0, 0, 0), lookdir);
             scale = 1 + ZoomOutDistance / scale;
             y /= scale * 6;
+            y += 2.5;
             System.Diagnostics.Debug.WriteLine("yafter = " + y);
 
             for(int i = 0; i!= Items.Count; i++)
