@@ -50,6 +50,9 @@ namespace PixelCube.LeapMotion
        private Frame currentFrame;      // Represent the current frame
        private Controller controller;   // Refer to the Leap controller
        private CoordinatesTrans trans;
+
+       private Vector oriMenuPos;
+      // private int menuCount;
        #endregion
 
        public LeapListener(CoordinatesTrans trans)
@@ -69,7 +72,8 @@ namespace PixelCube.LeapMotion
             lastFrame = null;
             this.controller = controller;
 
-            Debug.WriteLine("Init");
+            oriMenuPos = null;
+            //menuCount = 0;
             base.OnInit(controller);
         }
 
@@ -144,12 +148,12 @@ namespace PixelCube.LeapMotion
                 lastFrame = currentFrame;
             //Pointable pointable;
             PointableList pointables = currentFrame.Pointables;
-            Pointable pointable;
+            Pointable pointable = currentFrame.Pointable(pointableID);
 
             #region Trace
             if (!pointables.IsEmpty)
             {
-               pointable = currentFrame.Pointable(pointableID);
+               //pointable = currentFrame.Pointable(pointableID);
                 if (!pointable.IsValid)  // Pointable is invalid, track a new one
                 {
                     pointable = currentFrame.Pointables[0];
@@ -164,12 +168,87 @@ namespace PixelCube.LeapMotion
                         trace(this, new TraceMenuArgs(trans.getNewVec()));
                     }
                 }
+                else // Invalid position
+                {
+                    base.OnFrame(controller);
+                    return;
+                }
 
+            } else {
+                base.OnFrame(controller);
+                return;
             }
             #endregion
 
             // If has two hands, suppose it will has a scale operation soon.
 
+            #region Menu
+
+            #region MenuSelectingMode
+            // menuSelectingMode doesn't need others action
+            if (state == State.menuSelecting)
+            {
+
+                if (currentFrame.Gestures().Count > 0)
+                {
+                    GestureList menuGestures = currentFrame.Gestures();
+                    foreach (Gesture ges in menuGestures)
+                    {
+                        if (ges.Type == Gesture.GestureType.TYPESCREENTAP)
+                        {
+                            Debug.WriteLine("SelectMenu");
+                            EventHandler<SelectMenuArgs> select = SelectMenuEvent;
+                            if (select != null)
+                            {
+                                select(this, new SelectMenuArgs());
+                                state = State.focusing;
+                                oriMenuPos = null;
+                                
+
+                                //menuCount = 0;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+
+                base.OnFrame(controller);
+                return;
+            }
+
+            #endregion
+
+            #region ExhaleMenu
+            if (currentFrame.Hands.Count == 1 && currentFrame.Fingers.Count == 2)
+            {
+                // The begin of the exhaling
+                if (lastFrame.Hands.Count != 1 || lastFrame.Fingers.Count != 2)
+                {
+                    oriMenuPos = pointable.TipPosition;
+                    //menuCount = 0;
+                }
+
+                if (System.Math.Abs(pointable.TipPosition.x - oriMenuPos.x) < 30
+                    && System.Math.Abs(pointable.TipPosition.z - oriMenuPos.z) < 30
+                    && (pointable.TipPosition.y - oriMenuPos.y) > 100
+                    && pointable.TipVelocity.Magnitude > 800)
+                {
+                    Debug.WriteLine("exhale menu");
+                    //state = State.menuSelecting;
+                    EventHandler<ExhaleMenuArgs> exhale = ExhaleMenuEvent;
+                    if (exhale != null)
+                    {
+                        exhale(this, new ExhaleMenuArgs());
+                        state = State.menuSelecting;
+                    }
+
+                }
+
+            }
+            #endregion
+
+            #endregion
 
             #region Gestures
             GestureList gestures = currentFrame.Gestures();
@@ -229,18 +308,6 @@ namespace PixelCube.LeapMotion
 
                 }
             }
-            #endregion
-
-
-
-            #region MenuSelectingMode
-            // menuSelectingMode doesn't need others action
-            if (state == State.menuSelecting)
-            {
-                base.OnFrame(controller);
-                return;
-            }
-
             #endregion
 
             #region TwoHands
@@ -305,7 +372,7 @@ namespace PixelCube.LeapMotion
             
             if (!pointables.IsEmpty)
             {
-                pointable = currentFrame.Pointable(pointableID);
+                //pointable = currentFrame.Pointable(pointableID);
                 // Ensure that this vector is valid
                 if (trans.TransPoint(pointable.TipPosition))
                 {
