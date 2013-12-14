@@ -197,7 +197,7 @@ namespace PixelCube.Wpf
             "Items",
             typeof(SAOMenu3DItemCollection),
             typeof(SAOMenu3D),
-            new UIPropertyMetadata(default(SAOMenu3DItemCollection), ItemsChanged));
+            new UIPropertyMetadata(new SAOMenu3DItemCollection(), ItemsChanged));
 
         protected static void ItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -250,12 +250,81 @@ namespace PixelCube.Wpf
         }
         #endregion
 
+        #region public double ScaleFactor;
+        /// <summary>
+        /// Identifies the <see cref="ScaleFactor"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ScaleFactorProperty = DependencyProperty.Register(
+            "ScaleFactor",
+            typeof(double),
+            typeof(SAOMenu3D),
+            new UIPropertyMetadata(2.0, ScaleFactorChanged));
+
+        protected static void ScaleFactorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as SAOMenu3D).OnScaleFactorChanged();
+        }
+
+        protected virtual void OnScaleFactorChanged()
+        {
+            if (Items.Count != 0)
+                UpdateModels();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public double ScaleFactor
+        {
+            get { return (double)this.GetValue(ScaleFactorProperty); }
+            set { this.SetValue(ScaleFactorProperty, value); }
+        }
+        #endregion
+
+        #region public double ZoomOutDistance;
+        /// <summary>
+        /// Identifies the <see cref="ZoomOutDistance"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ZoomOutDistanceProperty = DependencyProperty.Register(
+            "ZoomOutDistance",
+            typeof(double),
+            typeof(SAOMenu3D),
+            new UIPropertyMetadata(default(double), ZoomOutDistanceChanged));
+
+        protected static void ZoomOutDistanceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as SAOMenu3D).OnZoomOutDistanceChanged();
+        }
+
+        protected virtual void OnZoomOutDistanceChanged()
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public double ZoomOutDistance
+        {
+            get { return (double)this.GetValue(ZoomOutDistanceProperty); }
+            set { this.SetValue(ZoomOutDistanceProperty, value); }
+        }
+        #endregion
+
         /// <summary>
         /// Toggle this menu.
         /// </summary>
         public void Toggle()
         {
             this.Visible = !this.Visible;
+        }
+
+        /// <summary>
+        /// Cause the current selected menu item to be activated.
+        /// </summary>
+        public void EnterCurrent()
+        {
+            this.Visible = false;
         }
 
         #region Camera manipulation
@@ -274,7 +343,7 @@ namespace PixelCube.Wpf
 
             // Calculate directions
             var lookdir = camera.LookDirection; lookdir.Normalize();
-            var outoffset = Vector3D.Multiply(-Distance, lookdir);
+            var outoffset = Vector3D.Multiply(-ZoomOutDistance, lookdir);
             var dest = Point3D.Add(camera.Position, outoffset);
             origCameraPos = camera.Position;
             var animationTime = 0.7;
@@ -311,13 +380,17 @@ namespace PixelCube.Wpf
             // yvec's projection on updir
             var y = distOn(Pointer, Position, updir);
 
+            System.Diagnostics.Debug.WriteLine("y= " + y);
+
             for(int i = 0; i!= Items.Count; i++)
             {
                 var item = Items[i];
                 // FIXME: threshold should be calc according to updir.
                 var threshold = item.Symbol.Geometry.Bounds.SizeY;
-                var lowbound = distOn(item.Symbol.Geometry.Bounds.Location, Position, updir) - threshold / 2;
+                var lowbound = distOn(item.Symbol.Position, Position, updir) - threshold / 2;
                 var upperbound = lowbound + threshold;
+
+                System.Diagnostics.Debug.WriteLine("low= " + lowbound + ", upper= " + upperbound);
 
                 if(y >= lowbound && y <= upperbound)
                 {
@@ -338,6 +411,9 @@ namespace PixelCube.Wpf
 
         private void UpdateModels()
         {
+            if (SymbolGeometry == null)
+                return;
+
             // Clear previous models.
             this.Children.Clear();
             // Create and re-add models.
@@ -345,7 +421,7 @@ namespace PixelCube.Wpf
             // Calculate three directions
             var lookdir = new Vector3D(0, 0, -1);
             var updir = new Vector3D(0, 1, 0);
-            if(this.GetViewport3D() != null)
+            if (this.GetViewport3D() != null && this.GetViewport3D().Camera != null)
             {
                 lookdir = this.GetViewport3D().Camera.GetLookDirection(); lookdir.Normalize();
                 updir = this.GetViewport3D().Camera.GetUpDirection(); updir.Normalize();
@@ -355,7 +431,7 @@ namespace PixelCube.Wpf
             for (int i = 0; i != Items.Count; i++)
             {
                 var pos = Position;
-                pos = Point3D.Add(Position, Vector3D.Multiply(updir, i * 2 * SymbolGeometry.Bounds.SizeY));
+                pos = Point3D.Add(Position, Vector3D.Multiply(updir, i * ScaleFactor * SymbolGeometry.Bounds.SizeY));
                 // Symbol
                 Items[i].Symbol = new SAOMenu3DSymbolVisual3D()
                 {
@@ -365,13 +441,12 @@ namespace PixelCube.Wpf
                     Opacity = 0
                 };
                 this.Children.Add(Items[i].Symbol);
-
-                pos = Point3D.Add(pos, Vector3D.Multiply(rightdir, SymbolGeometry.Bounds.SizeX + 1));
                 // Textboard
+                pos = Point3D.Add(pos, Vector3D.Multiply(rightdir, SymbolGeometry.Bounds.SizeX + 1));
                 Items[i].Textboard = new SAOMenu3DTextBillboard()
                 {
                     Text = Items[i].Header,
-                    FontSize = 44,
+                    FontSize = 32,
                     Color = Colors.Red,
                     Opacity = 0,
                     Position = pos

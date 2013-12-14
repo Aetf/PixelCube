@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace PixelCube.LeapMotion
 {
-    interface ILeapTrace
+    public interface ILeapTrace
     {
         event EventHandler<ExhaleMenuArgs> ExhaleMenuEvent;    // Exhale Event
         event EventHandler<SelectMenuArgs> SelectMenuEvent;    // Select Event
-        event EventHandler<TraceMenuArgs> TraceMenuEvent;  // Trace Event
+        event EventHandler<TraceMenuArgs> TraceEvent;  // Trace Event
         void LinkEvent();
         void Initialize();    // LeapMotion initialize
         void Uninitialize();

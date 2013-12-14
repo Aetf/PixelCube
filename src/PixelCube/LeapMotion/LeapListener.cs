@@ -235,9 +235,9 @@ namespace PixelCube.LeapMotion
                 }
 
                 if (System.Math.Abs(pointable.TipPosition.x - oriMenuPos.x) < 30
-                    && System.Math.Abs(pointable.TipPosition.z - oriMenuPos.z) < 30
-                    && (pointable.TipPosition.y - oriMenuPos.y) > 100
-                    && pointable.TipVelocity.Magnitude > 800)
+                    //&& System.Math.Abs(pointable.TipPosition.z - oriMenuPos.z) < 60
+                    && (oriMenuPos.y - pointable.TipPosition.y) > 80
+                    && pointable.TipVelocity.Magnitude > 500)
                 {
                     Debug.WriteLine("exhale menu");
                     //state = State.menuSelecting;

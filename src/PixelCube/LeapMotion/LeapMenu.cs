@@ -13,7 +13,7 @@ namespace PixelCube.LeapMotion
         
        public event EventHandler<ExhaleMenuArgs> ExhaleMenuEvent;    // Exhale Event
        public event EventHandler<SelectMenuArgs> SelectMenuEvent;    // Select Event
-       public event EventHandler<TraceMenuArgs> TraceMenuEvent;  // Trace Event
+       public event EventHandler<TraceMenuArgs> TraceEvent;  // Trace Event
 
 
        public LeapMenu(ILeapMotion leap)
@@ -26,7 +26,7 @@ namespace PixelCube.LeapMotion
        {
            listener.ExhaleMenuEvent += ExhaleMenuEvent;
            listener.SelectMenuEvent += SelectMenuEvent;
-           listener.TraceMenuEvent += TraceMenuEvent;
+           listener.TraceMenuEvent += TraceEvent;
        }
        public void Initialize()
        {

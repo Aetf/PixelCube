@@ -8,6 +8,7 @@ using PixelCube.LoadAndSave;
 using PixelCube.Operations;
 using PixelCube.Sound;
 using System;
+using PixelCube.Utils;
 
 namespace PixelCube
 {
@@ -19,6 +20,7 @@ namespace PixelCube
         public ISceneControler SceneControler;
         public IArtwork CurrentArt;
         public ILeapMotion Leap;
+        public ILeapTrace LeapT;
 
         internal OpCore kernel;
         internal BackgroundMusic bgm;
@@ -80,6 +82,10 @@ namespace PixelCube
             return se;
         }
 
+        /// <summary>
+        /// Must be called after Leap and LeapT is initilized
+        /// </summary>
+        /// <returns></returns>
         private WatchDog CreateWatchDog()
         {
             var w = new WatchDog();
@@ -87,6 +93,10 @@ namespace PixelCube
             return w;
         }
 
+        /// <summary>
+        /// Must be called after Leap is initilized
+        /// </summary>
+        /// <returns></returns>
         private OpCore CreateOpCore()
         {
             var c = new OpCore();
@@ -105,18 +115,57 @@ namespace PixelCube
         }
 
         /// <summary>
+        /// Must be called after Leap is initilized
+        /// </summary>
+        /// <returns></returns>
+        private ILeapTrace CreateLeapTrace()
+        {
+            var lt = new LeapMenu(Leap);
+
+
+            lt.Initialize();
+            return lt;
+        }
+
+        /// <summary>
         /// Must be called after CurrentArt is initilized.
         /// </summary>
         private void InitModules()
         {
             Leap = CreateLeapMotion();
+            LeapT = CreateLeapTrace();
             SceneControler = CreateSceneControler();
             kernel = CreateOpCore();
             bgm = CreateBGM();
             se = CreateSE();
             wd = CreateWatchDog();
 
+            SetupSAOMenu();
+
             Leap.LinkEvent();
+            LeapT.LinkEvent();
+        }
+
+        /// <summary>
+        /// Must be called after LeapT is initialized
+        /// </summary>
+        private void SetupSAOMenu()
+        {
+            LeapT.ExhaleMenuEvent += (sender, e) =>
+            {
+                this.Dispatcher.BeginInvoke(new Action(()=>saomenu.Toggle()));
+            };
+            LeapT.TraceEvent += (sender, e) =>
+            {
+                this.Dispatcher.BeginInvoke(new Action(() => { saomenu.Pointer = e.TracePosition.ToPoint3D(); }));
+            };
+            LeapT.SelectMenuEvent += (sender, e) =>
+            {
+                this.Dispatcher.BeginInvoke(new Action(()=>
+                    {
+                        saomenu.EnterCurrent();
+                    }));
+            };
         }
         #endregion
 
@@ -132,6 +181,10 @@ namespace PixelCube
             if(Leap != null)
             {
                 Leap.Uninitialize();
+            }
+            if(LeapT != null)
+            {
+                LeapT.Uninitialize();
             }
         }
 
