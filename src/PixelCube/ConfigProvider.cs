@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
 using System.Windows;
+using System.Windows.Media.Media3D;
 
 namespace PixelCube
 {
@@ -115,6 +116,19 @@ namespace PixelCube
             get
             {
                 return readBool("SEMute", false);
+            }
+        }
+        #endregion
+
+        #region public Rect3D LeapWorldRect
+        /// <summary>
+        /// LeapMotion坐标系的坐标范围
+        /// </summary>
+        public Rect3D LeapWorldRect
+        {
+            get
+            {
+                return new Rect3D(-300, 30, -300, 600, 600, 600);
             }
         }
         #endregion
