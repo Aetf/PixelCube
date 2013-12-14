@@ -9,30 +9,16 @@
     <Window.Resources>
     </Window.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <!--<Menu Grid.Row="0" Grid.ColumnSpan="2">
-            <MenuItem Header="文件 (_F)">
-                <MenuItem Header="新建" Click="MenuItem_New" />
-                <MenuItem Header="打开 (_O)" Click="MenuItem_Open"/>
-                <MenuItem Header="保存 (_S)" Click="MenuItem_Save"/>
-            </MenuItem>
-            <MenuItem Header="帮助 (_H)">
-                <MenuItem Header="关于 (_A)" />
-            </MenuItem>
-        </Menu>-->
-        <TextBlock x:Name="infoPanel" Grid.Row="1" Margin="5 5 0 0" />
+        <TextBlock x:Name="infoPanel" Margin="5 5 0 0" />
         <TextBlock x:Name="modePanel"
-                   Grid.Row="1" Grid.Column="1" Margin="0 0 5 5"
+                   Grid.Column="1" Margin="0 0 5 5"
                    HorizontalAlignment="Right" />
                    
-        <h:HelixViewport3D x:Name="sceneViewport" Grid.Row="1" Grid.ColumnSpan="2"
+        <h:HelixViewport3D x:Name="sceneViewport" Grid.ColumnSpan="2"
                            ShowCameraInfo="False" ShowCoordinateSystem="True"
                            CameraRotationMode="Turntable" ModelUpDirection="0,1,0">
             <h:HelixViewport3D.Camera>
@@ -44,9 +30,6 @@
 						Position="20,20,110"
 						FieldOfView="60" />
             </h:HelixViewport3D.Camera>
-
-            <!--<h:CoordinateSystemVisual3D ArrowLengths="1"/>-->
-            <!--<h:GridLinesVisual3D Normal="0,1,0" LengthDirection="1,0,0"/>-->
 
             <h:SphereVisual3D x:Name="pointer" Fill="Red"  Radius="0.2" Center="0, 0, 0" />
             <h:LinesVisual3D x:Name="linez" Color="Red" />
