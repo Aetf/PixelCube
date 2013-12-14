@@ -15,6 +15,8 @@ namespace PixelCube.Wpf
         internal SAOMenu3DSymbolVisual3D Symbol;
         internal SAOMenu3DTextBillboard Textboard;
 
+        public EventHandler SelectedEvent;
+
         #region public String Header;
         /// <summary>
         /// Identifies the <see cref="Header"/> dependency property.

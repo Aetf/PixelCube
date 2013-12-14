@@ -63,19 +63,7 @@ namespace PixelCube.Wpf
 
         protected static void PointerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            (d as SAOMenu3D).OnPointerChanged();
-        }
-
-        protected virtual void OnPointerChanged()
-        {
-            if (Items.Count == 0)
-                return;
-
-            var y = Pointer.Y - Position.Y;
-
-            int idx =(int) (y / Items[0].Symbol.Geometry.Bounds.SizeY / 1.5);
-            if (idx >= 0 && idx < Items.Count)
-                SelectedIndex = idx;
+            (d as SAOMenu3D).JudgeFocus();
         }
 
         /// <summary>
@@ -435,11 +423,14 @@ namespace PixelCube.Wpf
         private void CalcPinPoint()
         {
             Viewport3D parent = this.GetViewport3D();
-            var camera = parent.Camera;
-            var lookdirection = camera.GetLookDirection();
-            lookdirection.Normalize();
-            lookdirection = Vector3D.Multiply(lookdirection, Distance);
-            Position = Point3D.Add(camera.GetPosition(), lookdirection);
+            if(parent != null)
+            {
+                var camera = parent.Camera;
+                var lookdirection = camera.GetLookDirection();
+                lookdirection.Normalize();
+                lookdirection = Vector3D.Multiply(lookdirection, Distance);
+                Position = Point3D.Add(camera.GetPosition(), lookdirection);
+            }
         }
 
         private double distOn(Point3D point, Point3D orig, Vector3D dir)

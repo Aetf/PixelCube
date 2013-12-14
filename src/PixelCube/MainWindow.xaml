@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
+        xmlns:src="clr-namespace:PixelCube.Wpf"
         Title="MainWindow" Height="480" Width="600" Loaded="Window_Loaded" Closing="Window_Closing">
     <Window.Resources>
     </Window.Resources>
@@ -16,6 +17,7 @@
         </Grid.ColumnDefinitions>
         <Menu Grid.Row="0" Grid.ColumnSpan="2">
             <MenuItem Header="文件 (_F)">
+                <MenuItem Header="新建" Click="MenuItem_New" />
                 <MenuItem Header="打开 (_O)" Click="MenuItem_Open"/>
                 <MenuItem Header="保存 (_S)" Click="MenuItem_Save"/>
             </MenuItem>
@@ -51,6 +53,13 @@
             <h:SphereVisual3D x:Name="pointerxy" Fill="Red" Radius="0.2" Center="0, 0, 0" />
             <h:SphereVisual3D x:Name="pointeryz" Fill="Red" Radius="0.2" Center="0, 0, 0" />
             <h:SphereVisual3D x:Name="pointerzx" Fill="Red" Radius="0.2" Center="0, 0, 0" />
+
+            <src:SAOMenu3D x:Name="saomenu" Visible="False" SymbolGeometry="{StaticResource Sphere}">
+                <src:SAOMenu3DItem Header="新建" />
+                <src:SAOMenu3DItem Header="打开" />
+                <src:SAOMenu3DItem Header="保存" />
+            </src:SAOMenu3D>
+            
             <ModelVisual3D >
                 <ModelVisual3D.Content>
                     <Model3DGroup x:Name="cubeGroup">

@@ -149,5 +149,12 @@ namespace PixelCube
         {
             LSDocu.SaveAsDocument(CurrentArt);
         }
+
+        private void MenuItem_New(object sender, RoutedEventArgs e)
+        {
+            CurrentArt = LSDocu.NewArtwork();
+
+            InitModules();
+        }
     }
 }
