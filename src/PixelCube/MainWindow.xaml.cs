@@ -9,6 +9,7 @@ using PixelCube.Operations;
 using PixelCube.Sound;
 using System;
 using PixelCube.Utils;
+using System.Windows.Media.Imaging;
 
 namespace PixelCube
 {
@@ -54,6 +55,11 @@ namespace PixelCube
         private ILeapMotion CreateLeapMotion()
         {
             var leap = new LeapController(CurrentArt);
+            leap.LeapConnectionChangedEvent += (o, e) =>
+            {
+                this.Dispatcher.BeginInvoke(new Action(() => this.WaitLeap(e.Connected)));
+            };
+
             leap.Initialize();
             return leap;
         }
@@ -180,6 +186,18 @@ namespace PixelCube
             mCamera.Position = new Point3D(20, 20, 110);
             mCamera.LookDirection = new Vector3D(0, 0, -1);
             mCamera.UpDirection = new Vector3D(0, 1, 0);
+        }
+
+        private void WaitLeap(bool connected)
+        {
+            if(connected)
+            {
+                waitingimg.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                waitingimg.Visibility = Visibility.Visible;
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

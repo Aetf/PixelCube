@@ -6,12 +6,6 @@ using System.Threading.Tasks;
 using Leap;
 using System.Diagnostics;
 
-
-
-
-
-
-
 namespace PixelCube.LeapMotion
 {
     /// <summary>
@@ -25,6 +19,7 @@ namespace PixelCube.LeapMotion
        /// <summary>
        /// All events this class will offer
        /// </summary>
+       internal EventHandler<LeapConnectionChangedEventArgs> LeapConntectionChangedEvent;
        internal EventHandler<LeapModeChangeEventArgs> LeapModeChangeEvent;
        internal EventHandler<PreDrawOperationEventArgs> PreDrawOperationEvent;
        internal EventHandler<PreFocusOperationEventArgs> PreFocusOperationEvent;
@@ -91,13 +86,12 @@ namespace PixelCube.LeapMotion
             controller.EnableGesture(Gesture.GestureType.TYPESCREENTAP);
             controller.EnableGesture(Gesture.GestureType.TYPESWIPE);
 
-          
-            //if (leapStatusChangeEvent != null)
-            //{
-            //    LeapModeChangeEventArgs leapStatusChangeEventArgs = new LeapModeChangeEventArgs();
-            //    leapStatusChangeEventArgs.isConnected = true;
-            //    leapStatusChangeEvent(this, leapStatusChangeEventArgs);
-            //}
+            if (LeapConntectionChangedEvent != null)
+            {
+                var leapStatusChangeEventArgs = new LeapConnectionChangedEventArgs();
+                leapStatusChangeEventArgs.Connected = true;
+                LeapConntectionChangedEvent(this, leapStatusChangeEventArgs);
+            }
             EventHandler<LeapModeChangeEventArgs> mode = LeapModeChangeEvent;
             if (mode != null)
             {
@@ -117,13 +111,12 @@ namespace PixelCube.LeapMotion
         public override void OnDisconnect(Controller controller)
         {
             //Debug.WriteLine("LeapDisconnected");
-            //EventHandler<LeapModeChangeEventArgs> leapStatusChangeEvent = LeapModeChangeEvent;
-            //if (leapStatusChangeEvent != null)
-            //{
-            //    LeapModeChangeEventArgs deviceInfoArg = new LeapModeChangeEventArgs();
-            //    deviceInfoArg.isConnected = false;
-            //    leapStatusChangeEvent(this, deviceInfoArg);
-            //}
+            if (LeapConntectionChangedEvent != null)
+            {
+                var leapStatusChangeEventArgs = new LeapConnectionChangedEventArgs();
+                leapStatusChangeEventArgs.Connected = false;
+                LeapConntectionChangedEvent(this, leapStatusChangeEventArgs);
+            }
             base.OnDisconnect(controller);
         }
 

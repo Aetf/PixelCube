@@ -11,6 +11,7 @@ namespace PixelCube.LeapMotion
         private LeapListener listener;
         private CoordinatesTrans trans;
 
+        public event EventHandler<LeapConnectionChangedEventArgs> LeapConnectionChangedEvent;
         public event EventHandler<LeapModeChangeEventArgs> LeapModeChangeEvent;
         public event EventHandler<PreDrawOperationEventArgs> PreDrawOperationEvent;
         public event EventHandler<PreFocusOperationEventArgs> PreFocusOperationEvent;
@@ -53,6 +54,7 @@ namespace PixelCube.LeapMotion
             listener.PreRotateOperationEvent += PreRotateOperationEvent;
             listener.PreScaleOperationEvent += PreScaleOperationEvent;
             listener.LeapModeChangeEvent += LeapModeChangeEvent;
+            listener.LeapConntectionChangedEvent += LeapConnectionChangedEvent;
         }
 
         public void Uninitialize()

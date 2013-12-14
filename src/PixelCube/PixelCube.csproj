@@ -79,6 +79,7 @@
     </ApplicationDefinition>
     <Compile Include="Interfaces\ILeapTrace.cs" />
     <Compile Include="LeapMotion\CoordinatesTrans.cs" />
+    <Compile Include="LeapMotion\LeapConnectionChangedEventArgs.cs" />
     <Compile Include="LeapMotion\LeapController.cs" />
     <Compile Include="LeapMotion\LeapMenu.cs" />
     <Compile Include="LeapMotion\MenuInfo.cs" />
@@ -198,6 +199,9 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res\plug.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

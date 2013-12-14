@@ -8,7 +8,7 @@
         Loaded="Window_Loaded" Closing="Window_Closing">
     <Window.Resources>
     </Window.Resources>
-    <Grid>
+    <Grid x:Name="rootGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
@@ -18,7 +18,15 @@
                    Grid.Column="1" Margin="0 5 10 0"
                    FontSize="24" FontFamily="Jokerman" Text="Normal"
                    HorizontalAlignment="Right" />
-                   
+        <Label x:Name="waitingimg" Grid.ColumnSpan="2" Panel.ZIndex="999999" Visibility="Collapsed">
+            <Label.Background>
+                <ImageBrush>
+                    <ImageBrush.ImageSource>
+                        <BitmapImage DecodePixelWidth="1366" UriSource="res/plug.png" />
+                    </ImageBrush.ImageSource>
+                </ImageBrush>
+            </Label.Background>
+        </Label>
         <h:HelixViewport3D x:Name="sceneViewport" Grid.ColumnSpan="2"
                            ShowCameraInfo="False" ShowCoordinateSystem="True"
                            CameraRotationMode="Turntable" ModelUpDirection="0,1,0">
