@@ -311,6 +311,68 @@ namespace PixelCube.Wpf
         }
         #endregion
 
+        #region public double ActualHeight;
+        /// <summary>
+        /// Identifies the <see cref="ActualHeight"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ActualHeightProperty = DependencyProperty.Register(
+            "ActualHeight",
+            typeof(double),
+            typeof(SAOMenu3D),
+            new UIPropertyMetadata(default(double), ActualHeightChanged));
+
+        protected static void ActualHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as SAOMenu3D).OnActualHeightChanged();
+        }
+
+        protected virtual void OnActualHeightChanged()
+        {
+            if (AutoCalcPosition)
+                CalcPinPoint();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public double ActualHeight
+        {
+            get { return (double)this.GetValue(ActualHeightProperty); }
+            private set { this.SetValue(ActualHeightProperty, value); }
+        }
+        #endregion
+
+        #region public double ActualWidth;
+        /// <summary>
+        /// Identifies the <see cref="ActualWidth"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ActualWidthProperty = DependencyProperty.Register(
+            "ActualWidth",
+            typeof(double),
+            typeof(SAOMenu3D),
+            new UIPropertyMetadata(default(double), ActualWidthChanged));
+
+        protected static void ActualWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as SAOMenu3D).OnActualWidthChanged();
+        }
+
+        protected virtual void OnActualWidthChanged()
+        {
+            if (AutoCalcPosition)
+                CalcPinPoint();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public double ActualWidth
+        {
+            get { return (double)this.GetValue(ActualWidthProperty); }
+            private set { this.SetValue(ActualWidthProperty, value); }
+        }
+        #endregion
+
         /// <summary>
         /// Toggle this menu.
         /// </summary>
@@ -418,6 +480,7 @@ namespace PixelCube.Wpf
             this.Children.Clear();
             // Create and re-add models.
             showsb = new Storyboard();
+            showsb.FillBehavior = FillBehavior.Stop;
             // Calculate three directions
             var lookdir = new Vector3D(0, 0, -1);
             var updir = new Vector3D(0, 1, 0);
@@ -427,11 +490,15 @@ namespace PixelCube.Wpf
                 updir = this.GetViewport3D().Camera.GetUpDirection(); updir.Normalize();
             }
             var rightdir = Vector3D.CrossProduct(lookdir, updir); rightdir.Normalize();
+
+            double width = 0;
+            double height = 0;
             // Create models and apply animations
             for (int i = 0; i != Items.Count; i++)
             {
+                double w = 0;
                 var pos = Position;
-                pos = Point3D.Add(Position, Vector3D.Multiply(updir, i * ScaleFactor * SymbolGeometry.Bounds.SizeY));
+                pos = Point3D.Add(Position, Vector3D.Multiply(updir, (Items.Count - i) * ScaleFactor * SymbolGeometry.Bounds.SizeY));
                 // Symbol
                 Items[i].Symbol = new SAOMenu3DSymbolVisual3D()
                 {
@@ -441,6 +508,9 @@ namespace PixelCube.Wpf
                     Opacity = 0
                 };
                 this.Children.Add(Items[i].Symbol);
+                w += Items[i].Symbol.Geometry.Bounds.SizeX * ScaleFactor;
+                height += Items[i].Symbol.Geometry.Bounds.SizeY * ScaleFactor;
+
                 // Textboard
                 pos = Point3D.Add(pos, Vector3D.Multiply(rightdir, SymbolGeometry.Bounds.SizeX + 1));
                 Items[i].Textboard = new SAOMenu3DTextBillboard()
@@ -452,12 +522,17 @@ namespace PixelCube.Wpf
                     Position = pos
                 };
                 this.Children.Add(Items[i].Textboard);
+                w += Items[i].Textboard.Width + SymbolGeometry.Bounds.SizeX + 1;
+
+                width = Math.Max(w, width);
 
                 Items[i].showupanim = SetupShowTL(Items[i]);
-                Items[i].showupanim.BeginTime = TimeSpan.FromSeconds(0.1 * i);
+                Items[i].showupanim.BeginTime = TimeSpan.FromSeconds(0.1 * (Items.Count - i));
                 showsb.Children.Add(Items[i].showupanim);
             }
-            showsb.FillBehavior = FillBehavior.Stop;
+            // Must update ActualWidth and ActualHeight once, or StackOverFlow
+            ActualHeight = height;
+            ActualWidth = width;
         }
 
         private ParallelTimeline SetupShowTL(SAOMenu3DItem item)
@@ -539,13 +614,20 @@ namespace PixelCube.Wpf
         private void CalcPinPoint()
         {
             Viewport3D parent = this.GetViewport3D();
-            if(parent != null)
+            if(parent != null && parent.Camera != null)
             {
                 var camera = parent.Camera;
-                var lookdirection = camera.GetLookDirection();
-                lookdirection.Normalize();
-                lookdirection = Vector3D.Multiply(lookdirection, Distance);
-                Position = Point3D.Add(camera.GetPosition(), lookdirection);
+                var lookoffset = camera.GetLookDirection();
+                lookoffset.Normalize();
+                lookoffset = Vector3D.Multiply(lookoffset, Distance);
+
+                var downoffset = camera.GetUpDirection();
+                downoffset.Normalize();
+                downoffset = Vector3D.Multiply(downoffset, -ActualHeight / 2);
+                
+                var offset = Vector3D.Add(lookoffset, downoffset);
+                
+                Position = Point3D.Add(camera.GetPosition(), offset);
             }
         }
 
