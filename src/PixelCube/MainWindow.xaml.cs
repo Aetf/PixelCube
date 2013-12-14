@@ -161,10 +161,7 @@ namespace PixelCube
             };
             LeapT.SelectMenuEvent += (sender, e) =>
             {
-                this.Dispatcher.BeginInvoke(new Action(()=>
-                    {
-                        saomenu.EnterCurrent();
-                    }));
+                this.Dispatcher.BeginInvoke(new Action(()=>saomenu.EnterCurrent()));
             };
         }
         #endregion
@@ -208,6 +205,16 @@ namespace PixelCube
             CurrentArt = LSDocu.NewArtwork();
 
             InitModules();
+        }
+
+        private void MenuItem_Exit(object sender, RoutedEventArgs e)
+        {
+            var timer = new System.Timers.Timer(700)
+                {
+                    AutoReset = false,
+                };
+            timer.Elapsed += (o, arg) => this.Dispatcher.BeginInvoke(new Action(()=> this.Close()));
+            timer.Start();
         }
     }
 }

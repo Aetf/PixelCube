@@ -9,13 +9,41 @@ using PixelCube.Utils;
 
 namespace PixelCube.Wpf
 {
-    public class SAOMenu3DItem : DependencyObject
+    public class SAOMenu3DItem : UIElement3D
     {
         internal ParallelTimeline showupanim;
         internal SAOMenu3DSymbolVisual3D Symbol;
         internal SAOMenu3DTextBillboard Textboard;
 
-        public EventHandler SelectedEvent;
+        #region Selected Route Event
+        /// <summary>
+        /// The item selected event.
+        /// </summary>
+        public static readonly RoutedEvent SelectedEvent = EventManager.RegisterRoutedEvent(
+            "Selected", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(SAOMenu3DItem));
+
+        /// <summary>
+        /// Event when this item has been selected
+        /// </summary>
+        public event RoutedEventHandler Selected
+        {
+            add
+            {
+                this.AddHandler(SelectedEvent, value);
+            }
+
+            remove
+            {
+                this.RemoveHandler(SelectedEvent, value);
+            }
+        }
+
+        internal void RaiseSelectedEvent()
+        {
+            var args = new RoutedEventArgs(SelectedEvent, this);
+            this.RaiseEvent(args);
+        }
+        #endregion
 
         #region public String Header;
         /// <summary>
@@ -255,11 +283,8 @@ namespace PixelCube.Wpf
             {
                 (this.Content as GeometryModel3D).Geometry = value;
                 GeometryExtension.MakeSureCenterZero(this.Content as GeometryModel3D);
-                //// Record the initial Transform.
-                //geoOffset = (this.Content as GeometryModel3D).Transform;
             }
         }
-        //private Transform3D geoOffset;
 
         public SAOMenu3DSymbolVisual3D()
         {

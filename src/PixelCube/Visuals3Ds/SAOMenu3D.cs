@@ -386,7 +386,12 @@ namespace PixelCube.Wpf
         /// </summary>
         public void EnterCurrent()
         {
-            this.Visible = false;
+            if(SelectedIndex >= 0 && SelectedIndex < Items.Count)
+            {
+                //Items[SelectedIndex].RaiseSelectedEvent(null);
+                this.Visible = false;
+                Items[SelectedIndex].RaiseSelectedEvent();
+            }
         }
 
         #region Camera manipulation
