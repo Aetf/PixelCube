@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace PixelCube.LeapMotion
@@ -21,6 +17,5 @@ namespace PixelCube.LeapMotion
         event EventHandler<PreDragOperationEventArgs> PreDragOperationEvent;    // Drag event
         event EventHandler<PreEraseOperationEventArgs> PreEraseOperationEvent;  // Erase event
         event EventHandler<PreChangeColorOperationEventArgs> PreChangeColorOperationEvent; // ChangeColor event
-
     }
 }

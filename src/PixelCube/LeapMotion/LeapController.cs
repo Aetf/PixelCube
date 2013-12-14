@@ -1,7 +1,6 @@
 ﻿using System;
 using Leap;
 using PixelCube.Scene3D;
-using PixelCube.ThreeDimensional;
 
 namespace PixelCube.LeapMotion
 {
@@ -33,7 +32,6 @@ namespace PixelCube.LeapMotion
         public LeapListener GetListener() 
         {
             return listener;
-            
         }
 
 
@@ -62,7 +60,6 @@ namespace PixelCube.LeapMotion
             controller.RemoveListener(listener);
             controller.Dispose();
         }
-        
         #endregion
     }
 }

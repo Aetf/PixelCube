@@ -91,7 +91,6 @@
     <Compile Include="Operations\PostDragOperationEventArgs.cs" />
     <Compile Include="Operations\PostEraseOperationEventArgs.cs" />
     <Compile Include="Scene3D\CubeSceneController.cs" />
-    <Compile Include="Scene3D\SerializeHepler.cs" />
     <Compile Include="Scene3D\WatchDog.cs" />
     <Compile Include="ThreeDimensional\Artwork.cs" />
     <Compile Include="Sound\BackgroundMusic.cs" />
@@ -116,8 +115,6 @@
     <Compile Include="ConfigProvider.cs" />
     <Compile Include="Interfaces\ICube.cs" />
     <Compile Include="Interfaces\IArtwork.cs" />
-    <Compile Include="Interfaces\IBackgroundMusic.cs" />
-    <Compile Include="Interfaces\IBackgroundSound.cs" />
     <Compile Include="Interfaces\ILeapMotion.cs" />
     <Compile Include="Interfaces\ISceneControler.cs" />
     <Compile Include="Interfaces\IVolume.cs" />

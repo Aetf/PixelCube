@@ -1,8 +1,9 @@
-﻿using Leap;
+﻿using System;
+using Leap;
 
 namespace PixelCube.LeapMotion
 {
-   public class PreRotateOperationEventArgs
+    public class PreRotateOperationEventArgs : EventArgs
     {
        public float RotationAngle;
        public Vector RotationAxis;

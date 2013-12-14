@@ -1,18 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Windows.Forms;
 using System.IO;
-using PixelCube.ThreeDimensional;
+using System.Text;
+using System.Windows.Forms;
 using PixelCube.Scene3D;
-using System.Windows.Media;
-using System.Windows.Media.Media3D;
-
+using PixelCube.ThreeDimensional;
 
 namespace PixelCube.LoadAndSave
 {

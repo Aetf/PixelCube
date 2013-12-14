@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Media.Media3D;
-using PixelCube.LeapMotion;
-using System.Windows.Data;
-using System.Windows;
 using System.Globalization;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Media.Media3D;
 using PixelCube.Utils;
 
 namespace PixelCube.Scene3D

@@ -1,8 +1,9 @@
-﻿using Leap;
+﻿using System;
+using Leap;
 
 namespace PixelCube.LeapMotion
 {
-    public class PreDrawOperationEventArgs
+    public class PreDrawOperationEventArgs : EventArgs
     {
         public Vector DrawPosition { set; get; }
 

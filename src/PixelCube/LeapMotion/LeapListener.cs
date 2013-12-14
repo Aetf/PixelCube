@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Leap;
 using System.Diagnostics;
+using Leap;
 
 namespace PixelCube.LeapMotion
 {
@@ -33,8 +29,6 @@ namespace PixelCube.LeapMotion
        internal EventHandler<ExhaleMenuArgs> ExhaleMenuEvent;    // Exhale Event
        internal EventHandler<SelectMenuArgs> SelectMenuEvent;    // Select Event
        internal EventHandler<TraceMenuArgs> TraceMenuEvent;  // Trace Event
-
-
        #endregion   
 
        #region Private Attributes
@@ -80,7 +74,6 @@ namespace PixelCube.LeapMotion
         /// </param>
         public override void OnConnect(Controller controller)
         {
-            //EventHandler<LeapModeChangeEventArgs> leapStatusChangeEvent = LeapModeChangeEvent;
             //controller.EnableGesture(Gesture.GestureType.TYPECIRCLE);
             controller.EnableGesture(Gesture.GestureType.TYPEKEYTAP);
             controller.EnableGesture(Gesture.GestureType.TYPESCREENTAP);

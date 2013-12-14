@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using Leap;
 using PixelCube.LeapMotion;
 using PixelCube.Scene3D;
 using PixelCube.Utils;
-using System.Diagnostics;
-
 
 namespace PixelCube.Operations
 {

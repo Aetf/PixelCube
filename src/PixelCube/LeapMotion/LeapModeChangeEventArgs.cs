@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PixelCube.LeapMotion
 {
@@ -15,17 +11,13 @@ namespace PixelCube.LeapMotion
         Menu
     }
     
-    
     public class LeapModeChangeEventArgs:EventArgs
     {
         public State state { set; get; }
-
 
         public LeapModeChangeEventArgs(State state) 
         {
             this.state = state;
         }
-
-
     }
 }

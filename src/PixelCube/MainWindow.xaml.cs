@@ -1,15 +1,13 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using System;
+using System.Windows;
 using System.Windows.Media.Media3D;
-using PixelCube.LeapMotion;
-using PixelCube.Scene3D;
 using HelixToolkit.Wpf;
+using PixelCube.LeapMotion;
 using PixelCube.LoadAndSave;
 using PixelCube.Operations;
+using PixelCube.Scene3D;
 using PixelCube.Sound;
-using System;
 using PixelCube.Utils;
-using System.Windows.Media.Imaging;
 
 namespace PixelCube
 {
@@ -27,17 +25,6 @@ namespace PixelCube
         internal BackgroundMusic bgm;
         internal BackgroundSound se;
         internal WatchDog wd;
-
-        public HelixViewport3D getViewport()
-        {
-            return sceneViewport;
-        }
-
-        public Model3DGroup getCubeGroup()
-        {
-            return cubeGroup;
-        }
-
 
         public MainWindow()
         {
