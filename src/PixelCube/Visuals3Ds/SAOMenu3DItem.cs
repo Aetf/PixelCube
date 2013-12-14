@@ -15,6 +15,96 @@ namespace PixelCube.Wpf
         internal SAOMenu3DSymbolVisual3D Symbol;
         internal SAOMenu3DTextBillboard Textboard;
 
+        #region public bool IsVertical;
+        /// <summary>
+        /// Identifies the <see cref="IsVertical"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsVerticalProperty = DependencyProperty.Register(
+            "IsVertical",
+            typeof(bool),
+            typeof(SAOMenu3DItem),
+            new UIPropertyMetadata(false, IsVerticalChanged));
+
+        protected static void IsVerticalChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as SAOMenu3DItem).OnIsVerticalChanged();
+        }
+
+        protected virtual void OnIsVerticalChanged()
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsVertical
+        {
+            get { return (bool)this.GetValue(IsVerticalProperty); }
+            set { this.SetValue(IsVerticalProperty, value); }
+        }
+        #endregion
+
+        #region public SAOMenu3D parent;
+        /// <summary>
+        /// Identifies the <see cref="parent"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty parentProperty = DependencyProperty.Register(
+            "parent",
+            typeof(SAOMenu3D),
+            typeof(SAOMenu3DItem),
+            new UIPropertyMetadata(default(SAOMenu3D), parentChanged));
+
+        protected static void parentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as SAOMenu3DItem).OnparentChanged();
+        }
+
+        protected virtual void OnparentChanged()
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public SAOMenu3D parent
+        {
+            get { return (SAOMenu3D)this.GetValue(parentProperty); }
+            set { this.SetValue(parentProperty, value); }
+        }
+        #endregion
+
+        #region public bool IsSubMenu;
+        /// <summary>
+        /// Identifies the <see cref="IsSubMenu"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsSubMenuProperty = DependencyProperty.Register(
+            "IsSubMenu",
+            typeof(bool),
+            typeof(SAOMenu3DItem),
+            new UIPropertyMetadata(default(bool), IsSubMenuChanged));
+
+        protected static void IsSubMenuChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as SAOMenu3DItem).OnIsSubMenuChanged();
+        }
+
+        protected virtual void OnIsSubMenuChanged()
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsSubMenu
+        {
+            get { return (bool)this.GetValue(IsSubMenuProperty); }
+            set { this.SetValue(IsSubMenuProperty, value); }
+        }
+        #endregion
+
         #region Selected Route Event
         /// <summary>
         /// The item selected event.
@@ -41,7 +131,15 @@ namespace PixelCube.Wpf
         internal void RaiseSelectedEvent()
         {
             var args = new RoutedEventArgs(SelectedEvent, this);
+            if(IsSubMenu)
+            {
+                parent.onsubmenu = true;
+            }
             this.RaiseEvent(args);
+            if (IsSubMenu)
+            {
+                parent.onsubmenu = false;
+            }
         }
         #endregion
 

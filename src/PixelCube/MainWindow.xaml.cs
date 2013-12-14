@@ -161,10 +161,15 @@ namespace PixelCube
                 {
                     saomenu.Pointer = SceneControler.WorldTransform.Transform(e.TracePosition.ToPoint3D()); ;
                 }));
+                this.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    slotmenu.Pointer = SceneControler.WorldTransform.Transform(e.TracePosition.ToPoint3D()); ;
+                }));
             };
             LeapT.SelectMenuEvent += (sender, e) =>
             {
                 this.Dispatcher.BeginInvoke(new Action(()=>saomenu.EnterCurrent()));
+                this.Dispatcher.BeginInvoke(new Action(()=>slotmenu.EnterCurrent()));
             };
         }
         #endregion

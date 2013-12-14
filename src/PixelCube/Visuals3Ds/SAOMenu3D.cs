@@ -14,6 +14,7 @@ namespace PixelCube.Wpf
     {
         Storyboard showsb;
         internal bool animating = false;
+        internal bool onsubmenu = false;
 
         public SAOMenu3D()
         {
@@ -403,7 +404,7 @@ namespace PixelCube.Wpf
         /// </summary>
         public void EnterCurrent()
         {
-            if (animating)
+            if (animating || onsubmenu)
                 return;
             if(SelectedIndex >= 0 && SelectedIndex < Items.Count)
             {
@@ -450,7 +451,7 @@ namespace PixelCube.Wpf
 
         protected virtual void JudgeFocus()
         {
-            if (Items.Count == 0 || !Visible || animating)
+            if (Items.Count == 0 || !Visible || animating || onsubmenu)
                 return;
 
             // Calculate three directions
@@ -528,6 +529,8 @@ namespace PixelCube.Wpf
                 double w = 0;
                 var pos = Position;
                 pos = Point3D.Add(Position, Vector3D.Multiply(updir, (Items.Count - i) * ScaleFactor * SymbolGeometry.Bounds.SizeY));
+                // set parent
+                Items[i].parent = this;
                 // Symbol
                 Items[i].Symbol = new SAOMenu3DSymbolVisual3D()
                 {
