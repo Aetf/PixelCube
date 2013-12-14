@@ -653,8 +653,14 @@ namespace PixelCube.Wpf
                 var downoffset = camera.GetUpDirection();
                 downoffset.Normalize();
                 downoffset = Vector3D.Multiply(downoffset, -ActualHeight / 2);
-                
+
+                var leftoffset = Vector3D.CrossProduct(camera.GetLookDirection(), camera.GetUpDirection());
+                leftoffset.Normalize();
+                leftoffset = Vector3D.Multiply(leftoffset, -ActualWidth / 100);
+                System.Diagnostics.Debug.WriteLine(leftoffset);
+
                 var offset = Vector3D.Add(lookoffset, downoffset);
+                offset = Vector3D.Add(offset, leftoffset);
                 
                 Position = Point3D.Add(camera.GetPosition(), offset);
             }
