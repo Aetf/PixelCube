@@ -96,6 +96,7 @@
     <Compile Include="Sound\BackgroundMusic.cs" />
     <Compile Include="ThreeDimensional\Cube.cs" />
     <Compile Include="Utils\FreqLimitUtil.cs" />
+    <Compile Include="Utils\LeapVectorExtionsion.cs" />
     <Compile Include="Utils\MatrixTransform3DExtension.cs" />
     <Compile Include="Sound\BackgroundSound.cs" />
     <Compile Include="Utils\CameraExtension.cs" />
