@@ -8,11 +8,11 @@ namespace PixelCube.LeapMotion
 {
     public enum State
     {
-        drawing,
-        focusing,
-        erasing,
-        colorChanging,
-        menuSelecting
+        Drawing,
+        Normal,
+        Erasing,
+        ChangingColor,
+        Menu
     }
     
     

@@ -15,7 +15,8 @@
         </Grid.ColumnDefinitions>
         <TextBlock x:Name="infoPanel" Margin="5 5 0 0" />
         <TextBlock x:Name="modePanel"
-                   Grid.Column="1" Margin="0 0 5 5"
+                   Grid.Column="1" Margin="0 5 10 0"
+                   FontSize="24" FontFamily="Jokerman" Text="Normal"
                    HorizontalAlignment="Right" />
                    
         <h:HelixViewport3D x:Name="sceneViewport" Grid.ColumnSpan="2"

@@ -67,7 +67,7 @@ namespace PixelCube.LeapMotion
         public override void OnInit(Controller controller)
         {
             pointableID = -1;
-            state = State.focusing;
+            state = State.Normal;
             currentFrame = null;
             lastFrame = null;
             this.controller = controller;
@@ -186,7 +186,7 @@ namespace PixelCube.LeapMotion
 
             #region MenuSelectingMode
             // menuSelectingMode doesn't need others action
-            if (state == State.menuSelecting)
+            if (state == State.Menu)
             {
 
                 if (currentFrame.Gestures().Count > 0)
@@ -201,7 +201,7 @@ namespace PixelCube.LeapMotion
                             if (select != null)
                             {
                                 select(this, new SelectMenuArgs());
-                                state = State.focusing;
+                                state = State.Normal;
                                 //oriMenuPos = null;
 
                                 EventHandler<LeapModeChangeEventArgs> modechange = LeapModeChangeEvent;
@@ -225,7 +225,7 @@ namespace PixelCube.LeapMotion
             #endregion
 
             #region ExhaleMenu
-            if (currentFrame.Hands.Count == 1 && currentFrame.Fingers.Count == 2 && state != State.menuSelecting)
+            if (currentFrame.Hands.Count == 1 && currentFrame.Fingers.Count == 2 && state != State.Menu)
             {
                 // The begin of the exhaling
                 if (lastFrame.Hands.Count != 1 || lastFrame.Fingers.Count != 2)
@@ -245,7 +245,7 @@ namespace PixelCube.LeapMotion
                     if (exhale != null)
                     {
                         exhale(this, new ExhaleMenuArgs());
-                        state = State.menuSelecting;
+                        state = State.Menu;
                         EventHandler<LeapModeChangeEventArgs> modechange = LeapModeChangeEvent;
                         if (modechange != null)
                         {
@@ -287,13 +287,13 @@ namespace PixelCube.LeapMotion
                     // return to focus mode/draw mode
                     case Gesture.GestureType.TYPEKEYTAP:
 
-                        if (state != State.focusing)
+                        if (state != State.Normal)
                         {
-                            state = State.focusing;
+                            state = State.Normal;
                         }
                         else
                         {
-                            state = State.drawing;
+                            state = State.Drawing;
                         }
 
                         EventHandler<LeapModeChangeEventArgs> mode = LeapModeChangeEvent;
@@ -308,7 +308,7 @@ namespace PixelCube.LeapMotion
                     case Gesture.GestureType.TYPESWIPE:
                         if (currentFrame.Fingers.Count >= 4)
                         {
-                            state = State.erasing;
+                            state = State.Erasing;
                         }
                         EventHandler<LeapModeChangeEventArgs> mode2 = LeapModeChangeEvent;
                         if (mode2 != null)
@@ -390,7 +390,7 @@ namespace PixelCube.LeapMotion
                    
                     switch (state)
                     {
-                        case State.focusing:
+                        case State.Normal:
                             EventHandler<PreFocusOperationEventArgs> focus = PreFocusOperationEvent;
                             if (focus != null)
                             {
@@ -398,7 +398,7 @@ namespace PixelCube.LeapMotion
                             }
                             break;
 
-                        case State.erasing:
+                        case State.Erasing:
                             EventHandler<PreEraseOperationEventArgs> erase = PreEraseOperationEvent;
                             if (erase != null)
                             {
@@ -407,7 +407,7 @@ namespace PixelCube.LeapMotion
                             
                             break;
 
-                        case State.drawing:
+                        case State.Drawing:
                             EventHandler<PreDrawOperationEventArgs> drawLine = PreDrawOperationEvent;
                             if (drawLine != null)
                             {
@@ -416,7 +416,7 @@ namespace PixelCube.LeapMotion
                            
                             break;
 
-                        case State.colorChanging:
+                        case State.ChangingColor:
                             EventHandler<PreChangeColorOperationEventArgs> changeColor = PreChangeColorOperationEvent;
                             if (changeColor != null)
                             {
