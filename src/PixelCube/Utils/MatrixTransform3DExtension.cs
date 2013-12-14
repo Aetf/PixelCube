@@ -7,7 +7,7 @@ using System.Windows.Media.Media3D;
 
 namespace PixelCube.Utils
 {
-    public static class MatixTransform3DExtension
+    public static class MatrixTransform3DExtension
     {
         /// <summary>
         /// 融合另一个Transform3D的变换效果。
