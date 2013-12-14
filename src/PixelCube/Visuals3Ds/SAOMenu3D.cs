@@ -13,6 +13,7 @@ namespace PixelCube.Wpf
     public class SAOMenu3D : ModelVisual3D
     {
         Storyboard showsb;
+        internal bool animating = false;
 
         public SAOMenu3D()
         {
@@ -171,6 +172,7 @@ namespace PixelCube.Wpf
                     this.Children.Add(item.Textboard);
                 }
 
+                animating = true;
                 showsb.BeginTime = TimeSpan.FromSeconds(passed);
                 showsb.Begin();
             }
@@ -401,6 +403,8 @@ namespace PixelCube.Wpf
         /// </summary>
         public void EnterCurrent()
         {
+            if (animating)
+                return;
             if(SelectedIndex >= 0 && SelectedIndex < Items.Count)
             {
                 //Items[SelectedIndex].RaiseSelectedEvent(null);
@@ -446,7 +450,7 @@ namespace PixelCube.Wpf
 
         protected virtual void JudgeFocus()
         {
-            if (Items.Count == 0 || !Visible)
+            if (Items.Count == 0 || !Visible || animating)
                 return;
 
             // Calculate three directions
@@ -505,6 +509,7 @@ namespace PixelCube.Wpf
             // Create and re-add models.
             showsb = new Storyboard();
             showsb.FillBehavior = FillBehavior.Stop;
+            showsb.Completed += (o, e) => this.animating = false;
             // Calculate three directions
             var lookdir = new Vector3D(0, 0, -1);
             var updir = new Vector3D(0, 1, 0);
