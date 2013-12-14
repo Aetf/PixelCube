@@ -548,6 +548,7 @@ namespace PixelCube.Wpf
                 {
                     Text = Items[i].Header,
                     FontSize = 32,
+                    FontFamily = new FontFamily("Jokerman"),
                     Opacity = 0,
                     Position = pos
                 };

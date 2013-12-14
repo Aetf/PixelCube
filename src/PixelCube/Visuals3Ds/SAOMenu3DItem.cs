@@ -23,7 +23,7 @@ namespace PixelCube.Wpf
             "Foreground",
             typeof(Brush),
             typeof(SAOMenu3DItem),
-            new UIPropertyMetadata(default(Brush), ForegroundChanged));
+            new UIPropertyMetadata(Brushes.Black, ForegroundChanged));
 
         protected static void ForegroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -32,8 +32,9 @@ namespace PixelCube.Wpf
 
         protected virtual void OnForegroundChanged(DependencyPropertyChangedEventArgs e)
         {
-            if (e.NewValue != null && Textboard != null)
-                Textboard.Foreground = (Brush)e.NewValue;
+            var brush = (Brush)e.NewValue;
+            if (brush != null && Textboard != null)
+                Textboard.Foreground = brush;
         }
 
         /// <summary>
