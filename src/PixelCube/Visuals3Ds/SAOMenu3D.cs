@@ -548,7 +548,6 @@ namespace PixelCube.Wpf
                 {
                     Text = Items[i].Header,
                     FontSize = 32,
-                    Color = Colors.Red,
                     Opacity = 0,
                     Position = pos
                 };

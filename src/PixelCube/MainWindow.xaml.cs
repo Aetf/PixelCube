@@ -203,7 +203,7 @@ namespace PixelCube
 
         private void MenuItem_Open(object sender, RoutedEventArgs e)
         {
-            var tmp = LSDocu.LoadArtworkDoc();
+            var tmp = LSDocu.LoadArtworkDoc(ConfigProvider.Instance.SlotPath[0]);
             if(tmp != null)
             {
                 CurrentArt = tmp;
@@ -213,7 +213,8 @@ namespace PixelCube
 
         private void MenuItem_Save(object sender, RoutedEventArgs e)
         {
-            LSDocu.SaveAsDocument(CurrentArt);
+            CurrentArt.FileName = ConfigProvider.Instance.SlotPath[0];
+            LSDocu.SaveDocument(CurrentArt);
         }
 
         private void MenuItem_New(object sender, RoutedEventArgs e)

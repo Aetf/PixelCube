@@ -15,6 +15,68 @@ namespace PixelCube.Wpf
         internal SAOMenu3DSymbolVisual3D Symbol;
         internal SAOMenu3DTextBillboard Textboard;
 
+        #region public Brush Foreground;
+        /// <summary>
+        /// Identifies the <see cref="Foreground"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ForegroundProperty = DependencyProperty.Register(
+            "Foreground",
+            typeof(Brush),
+            typeof(SAOMenu3DItem),
+            new UIPropertyMetadata(default(Brush), ForegroundChanged));
+
+        protected static void ForegroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as SAOMenu3DItem).OnForegroundChanged(e);
+        }
+
+        protected virtual void OnForegroundChanged(DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue != null && Textboard != null)
+                Textboard.Foreground = (Brush)e.NewValue;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Brush Foreground
+        {
+            get { return (Brush)this.GetValue(ForegroundProperty); }
+            set { this.SetValue(ForegroundProperty, value); }
+        }
+        #endregion
+
+        #region public FontFamily FontFamily;
+        /// <summary>
+        /// Identifies the <see cref="FontFamily"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty FontFamilyProperty = DependencyProperty.Register(
+            "FontFamily",
+            typeof(FontFamily),
+            typeof(SAOMenu3DItem),
+            new UIPropertyMetadata(default(FontFamily), FontFamilyChanged));
+
+        protected static void FontFamilyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as SAOMenu3DItem).OnFontFamilyChanged(e);
+        }
+
+        protected virtual void OnFontFamilyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            if(e.NewValue != null && Textboard != null)
+                Textboard.FontFamily = (FontFamily)e.NewValue;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public FontFamily FontFamily
+        {
+            get { return (FontFamily)this.GetValue(FontFamilyProperty); }
+            set { this.SetValue(FontFamilyProperty, value); }
+        }
+        #endregion
+
         #region public bool IsVertical;
         /// <summary>
         /// Identifies the <see cref="IsVertical"/> dependency property.

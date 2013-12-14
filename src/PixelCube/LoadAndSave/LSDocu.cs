@@ -29,6 +29,36 @@ namespace PixelCube.LoadAndSave
             return ArtworkDoc;
         }
 
+        /// <summary>
+        /// 从指定路径加载
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        static public IArtwork LoadArtworkDoc(String path)
+        {
+            IArtwork ArtworkDoc = null;
+            if (!File.Exists(path))
+            {
+                MessageBox.Show("文件不存在");
+            }
+            else
+            {
+                try
+                {
+                    Stream stream = File.OpenRead(path);
+                    StreamReader reader = new StreamReader(stream);
+                    string str = reader.ReadToEnd();
+                    ArtworkDoc = Deserialize(str);
+                    ArtworkDoc.FileName = path;
+                }
+                catch (System.Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+            return ArtworkDoc;
+        }
 
         /// <summary>
         /// 文件的加载, 可能返回null
