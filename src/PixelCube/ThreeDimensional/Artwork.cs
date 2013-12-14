@@ -13,7 +13,7 @@ namespace PixelCube.ThreeDimensional
         public void DefaultValue()
         {
             BackgroundFill = Color.FromArgb(100, 200, 200, 200);
-            SceneSize = Tuple.Create(20, 20, 20);
+            SceneSize = new SceneSize3D(20, 20, 20);
             FileName = "新文件.ps";
 
             Cubes = new List<Cube>();
@@ -30,7 +30,7 @@ namespace PixelCube.ThreeDimensional
         /// <summary>
         /// 画布的大小
         /// </summary>
-        public Tuple<int, int, int> SceneSize { get; set; }
+        public SceneSize3D SceneSize { get; set; }
 
         /// <summary>
         /// 返回场景中所有的小方块，位于(i, j, k)的小方块的索引为 i+SceneSize.x*j+SceneSize.y*k

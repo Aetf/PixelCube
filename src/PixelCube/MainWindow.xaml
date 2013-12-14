@@ -42,7 +42,7 @@
             </h:HelixViewport3D.Camera>
 
             <h:CoordinateSystemVisual3D ArrowLengths="1"/>
-            <h:GridLinesVisual3D Normal="0,1,0" LengthDirection="1,0,0"/>
+            <!--<h:GridLinesVisual3D Normal="0,1,0" LengthDirection="1,0,0"/>-->
 
             <h:SphereVisual3D x:Name="pointer" Fill="Red"  Radius="0.2" Center="0, 0, 0" />
             <h:LinesVisual3D x:Name="linez" Color="Red" />

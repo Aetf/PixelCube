@@ -93,8 +93,13 @@
     <Compile Include="Sound\BackgroundMusic.cs" />
     <Compile Include="ThreeDimensional\Cube.cs" />
     <Compile Include="Utils\FreqLimitUtil.cs" />
-    <Compile Include="Utils\MatixTransform3DExtension.cs" />
+    <Compile Include="Utils\MatrixTransform3DExtension.cs" />
     <Compile Include="Sound\BackgroundSound.cs" />
+    <Compile Include="Utils\CameraExtension.cs" />
+    <Compile Include="Utils\GeometryExtension.cs" />
+    <Compile Include="Visuals3Ds\SAOMenu3D.cs" />
+    <Compile Include="Visuals3Ds\SAOMenu3DItem.cs" />
+    <Compile Include="Utils\Visual3DTreeHelper.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
