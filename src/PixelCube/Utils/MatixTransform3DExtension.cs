@@ -17,10 +17,13 @@ namespace PixelCube.Utils
         /// <returns>融合之后的本体</returns>
         public static MatrixTransform3D Merge(this MatrixTransform3D obj, Transform3D trans)
         {
-            var g = new Transform3DGroup();
-            g.Children.Add(obj);
-            g.Children.Add(trans);
-            obj.Matrix = g.Value;
+            if (trans != null)
+            {
+                var g = new Transform3DGroup();
+                g.Children.Add(obj);
+                g.Children.Add(trans);
+                obj.Matrix = g.Value;
+            }
             return obj;
         }
     }
