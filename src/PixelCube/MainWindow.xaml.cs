@@ -153,11 +153,14 @@ namespace PixelCube
         {
             LeapT.ExhaleMenuEvent += (sender, e) =>
             {
-                this.Dispatcher.BeginInvoke(new Action(()=>saomenu.Toggle()));
+                this.Dispatcher.BeginInvoke(new Action(()=>saomenu.Show()));
             };
             LeapT.TraceEvent += (sender, e) =>
             {
-                this.Dispatcher.BeginInvoke(new Action(() => { saomenu.Pointer = e.TracePosition.ToPoint3D(); }));
+                this.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    saomenu.Pointer = SceneControler.WorldTransform.Transform(e.TracePosition.ToPoint3D()); ;
+                }));
             };
             LeapT.SelectMenuEvent += (sender, e) =>
             {

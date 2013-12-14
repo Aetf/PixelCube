@@ -382,6 +382,14 @@ namespace PixelCube.Wpf
         }
 
         /// <summary>
+        /// Show menu
+        /// </summary>
+        public void Show()
+        {
+            this.Visible = true;
+        }
+
+        /// <summary>
         /// Cause the current selected menu item to be activated.
         /// </summary>
         public void EnterCurrent()
@@ -446,8 +454,12 @@ namespace PixelCube.Wpf
 
             // yvec's projection on updir
             var y = distOn(Pointer, Position, updir);
-
-            System.Diagnostics.Debug.WriteLine("y= " + y);
+            // A little scale for better operation.
+            // Because the camera has been zoomed out but the world transform was not updated.
+            double scale = distOn(origCameraPos, new Point3D(0, 0, 0), lookdir);
+            scale = 1 + ZoomOutDistance / scale;
+            y /= scale * 6;
+            System.Diagnostics.Debug.WriteLine("yafter = " + y);
 
             for(int i = 0; i!= Items.Count; i++)
             {
@@ -457,11 +469,10 @@ namespace PixelCube.Wpf
                 var lowbound = distOn(item.Symbol.Position, Position, updir) - threshold / 2;
                 var upperbound = lowbound + threshold;
 
-                System.Diagnostics.Debug.WriteLine("low= " + lowbound + ", upper= " + upperbound);
-
                 if(y >= lowbound && y <= upperbound)
                 {
-                    SelectedIndex = i;
+                    // Little tricky, the element in Items are actually displayed in reversed order.
+                    SelectedIndex = Items.Count - i - 1;
                     break;
                 }
             }
@@ -532,7 +543,7 @@ namespace PixelCube.Wpf
                 width = Math.Max(w, width);
 
                 Items[i].showupanim = SetupShowTL(Items[i]);
-                Items[i].showupanim.BeginTime = TimeSpan.FromSeconds(0.1 * (Items.Count - i));
+                Items[i].showupanim.BeginTime = TimeSpan.FromSeconds(0.1 * (Items.Count - i - 1));
                 showsb.Children.Add(Items[i].showupanim);
             }
             // Must update ActualWidth and ActualHeight once, or StackOverFlow
