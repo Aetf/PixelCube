@@ -157,10 +157,15 @@ namespace PixelCube.Wpf
             if (e.NewValue == e.OldValue)
                 return;
 
-            if((bool)e.NewValue)
+            if ((bool)e.NewValue)
             {
+                if (this.GetViewport3D() == null)
+                    return;
+
+                var passed = SetupCamera();
                 if (AutoCalcPosition)
                     CalcPinPoint();
+                showsb.BeginTime = TimeSpan.FromSeconds(passed);
                 showsb.Begin();
             }
             else
@@ -170,6 +175,7 @@ namespace PixelCube.Wpf
                     item.Symbol.Opacity = 0;
                     item.Textboard.Opacity = 0;
                 }
+                RestoreCamera();
             }
         }
 
@@ -252,9 +258,44 @@ namespace PixelCube.Wpf
             this.Visible = !this.Visible;
         }
 
+        #region Camera manipulation
+        /// <summary>
+        /// Zoom out the camera, so that menu will not be hiden by other objects
+        /// </summary>
+        /// <returns>
+        /// time used to animate, in second
+        /// </returns>
+        private double SetupCamera()
+        {
+            if (this.GetViewport3D() == null || !(this.GetViewport3D().Camera is ProjectionCamera))
+                return 0;
+
+            var camera = this.GetViewport3D().Camera as ProjectionCamera;
+
+            // Calculate directions
+            var lookdir = camera.LookDirection; lookdir.Normalize();
+            var outoffset = Vector3D.Multiply(-Distance, lookdir);
+            var dest = Point3D.Add(camera.Position, outoffset);
+            origCameraPos = camera.Position;
+            var animationTime = 0.7;
+            HelixToolkit.Wpf.CameraHelper.AnimateTo(camera, dest, camera.LookDirection, camera.UpDirection, animationTime * 1000);
+            return animationTime;
+        }
+        Point3D origCameraPos;
+        private void RestoreCamera()
+        {
+            if (this.GetViewport3D() == null || !(this.GetViewport3D().Camera is ProjectionCamera))
+                return;
+
+            var camera = this.GetViewport3D().Camera as ProjectionCamera;
+            HelixToolkit.Wpf.CameraHelper.AnimateTo(camera, origCameraPos, camera.LookDirection, camera.UpDirection, 700);
+        }
+
+        #endregion
+
         protected virtual void JudgeFocus()
         {
-            if (Items.Count == 0)
+            if (Items.Count == 0 || !Visible)
                 return;
 
             // Calculate three directions
@@ -325,7 +366,7 @@ namespace PixelCube.Wpf
                 };
                 this.Children.Add(Items[i].Symbol);
 
-                pos = Point3D.Add(pos, Vector3D.Multiply(rightdir, SymbolGeometry.Bounds.SizeX + 0.2));
+                pos = Point3D.Add(pos, Vector3D.Multiply(rightdir, SymbolGeometry.Bounds.SizeX + 1));
                 // Textboard
                 Items[i].Textboard = new SAOMenu3DTextBillboard()
                 {
