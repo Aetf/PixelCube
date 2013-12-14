@@ -57,9 +57,10 @@ namespace PixelCube.Scene3D
             mView.Children.Add(new GridLinesVisual3D()
             {
                 Normal = new Vector3D(0, 1, 0),
-                MajorDistance = cubea,
-                MinorDistance = cubea,
+                MajorDistance = framea,
+                MinorDistance = framea,
                 Center = new Point3D(framea / 2, framea, framea / 2),
+                //Center = new Point3D(0, framea, 0),
                 Length = framea,
                 LengthDirection = new Vector3D(1, 0, 0),
                 Width = framea
@@ -68,9 +69,10 @@ namespace PixelCube.Scene3D
             mView.Children.Add(new GridLinesVisual3D()
             {
                 Normal = new Vector3D(0, 1, 0),
-                MajorDistance = cubea,
-                MinorDistance = cubea,
+                MajorDistance = framea,
+                MinorDistance = framea,
                 Center = new Point3D(framea / 2, 0, framea / 2),
+                //Center = new Point3D(0, framea, 0),
                 Length = framea,
                 LengthDirection = new Vector3D(1, 0, 0),
                 Width = framea
@@ -79,9 +81,10 @@ namespace PixelCube.Scene3D
             mView.Children.Add(new GridLinesVisual3D()
             {
                 Normal = new Vector3D(0, 0, 1),
-                MajorDistance = cubea,
-                MinorDistance = cubea,
+                MajorDistance = framea,
+                MinorDistance = framea,
                 Center = new Point3D(framea / 2, framea / 2, framea),
+                //Center = new Point3D(0, framea / 2, framea / 2),
                 Length = framea,
                 LengthDirection = new Vector3D(1, 0, 0),
                 Width = framea
@@ -90,9 +93,10 @@ namespace PixelCube.Scene3D
             mView.Children.Add(new GridLinesVisual3D()
             {
                 Normal = new Vector3D(0, 0, 1),
-                MajorDistance = cubea,
-                MinorDistance = cubea,
+                MajorDistance = framea,
+                MinorDistance = framea,
                 Center = new Point3D(framea / 2, framea / 2, 0),
+                //Center = new Point3D(0, framea / 2, -framea / 2),
                 Length = framea,
                 LengthDirection = new Vector3D(1, 0, 0),
                 Width = framea
@@ -101,9 +105,10 @@ namespace PixelCube.Scene3D
             mView.Children.Add(new GridLinesVisual3D()
             {
                 Normal = new Vector3D(1, 0, 0),
-                MajorDistance = cubea,
-                MinorDistance = cubea,
+                MajorDistance = framea,
+                MinorDistance = framea,
                 Center = new Point3D(0, framea / 2, framea / 2),
+                //Center = new Point3D(-framea / 2, framea / 2, 0),
                 Length = framea,
                 LengthDirection = new Vector3D(0, 0, 1),
                 Width = framea
@@ -112,9 +117,10 @@ namespace PixelCube.Scene3D
             mView.Children.Add(new GridLinesVisual3D()
             {
                 Normal = new Vector3D(1, 0, 0),
-                MajorDistance = cubea,
-                MinorDistance = cubea,
+                MajorDistance = framea,
+                MinorDistance = framea,
                 Center = new Point3D(framea, framea / 2, framea / 2),
+                //Center = new Point3D(framea / 2, framea / 2, 0),
                 Length = framea,
                 LengthDirection = new Vector3D(0, 0, 1),
                 Width = framea
@@ -133,7 +139,8 @@ namespace PixelCube.Scene3D
                         GeometryModel3D c = cubeseed.Clone();
                         cubeModels[TupleToIdx(i, j, k)] = c;
                         mWin.RegisterName(NameForCubeModel(i, j, k), c);
-                        c.Transform = new TranslateTransform3D(cubea*i, cubea*j, cubea*k);
+                        //c.Transform = new TranslateTransform3D(cubea * i - sceneSize.Item1, cubea * j, cubea * k - sceneSize.Item1);
+                        c.Transform = new TranslateTransform3D(cubea * i, cubea * j, cubea * k);
                     }
                 }
             }
@@ -163,7 +170,7 @@ namespace PixelCube.Scene3D
             {
                 GeometryModel3D preModel = ModelFromIdx(preFocus.Item1, preFocus.Item2, preFocus.Item3);
                 var g = preModel.Material as MaterialGroup;
-                var focusmaterial = g.Children.OfType<EmissiveMaterial>().LastOrDefault();
+                var focusmaterial = g.Children.OfType<DiffuseMaterial>().LastOrDefault();
                 g.Children.Remove(focusmaterial);
 
                 var cube = CubeFromIdx(preFocus.Item1, preFocus.Item2, preFocus.Item3);
@@ -211,7 +218,10 @@ namespace PixelCube.Scene3D
         public void SetColor(int i, int j, int k, Color c)
         {
             // FIXME: only debug propose here!! Should delete this line in release.
-            c = Colors.WhiteSmoke;
+            Color s = new Color();
+            s.ScA = 1; s.ScB = (float)0.9882; s.ScG = (float)0.6863; s.ScR = (float)0.3765;
+            c = s;
+            // ENDFIXME
 
             var model = ModelFromIdx(i, j, k);
             var g = model.Material as MaterialGroup;

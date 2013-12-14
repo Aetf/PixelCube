@@ -34,15 +34,15 @@
             <h:HelixViewport3D.Camera>
                 <PerspectiveCamera x:Name="mCamera"
 						FarPlaneDistance="300" 
-						LookDirection="-1,-1,-2" 
+						LookDirection="0,0,-1" 
 						UpDirection="0,1,0"
 						NearPlaneDistance="1" 
-						Position="20,20,40"
+						Position="20,20,110"
 						FieldOfView="60" />
             </h:HelixViewport3D.Camera>
 
             <h:CoordinateSystemVisual3D ArrowLengths="1"/>
-            <h:GridLinesVisual3D Normal="0,1,0" LengthDirection="1,0,0"/>
+            <!--<h:GridLinesVisual3D Normal="0,1,0" LengthDirection="1,0,0"/>-->
 
             <h:SphereVisual3D x:Name="pointer" Fill="Red"  Radius="0.2" Center="0, 0, 0" />
             <h:LinesVisual3D x:Name="linez" Color="Red" />
