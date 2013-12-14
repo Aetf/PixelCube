@@ -202,7 +202,7 @@ namespace PixelCube.LeapMotion
                             {
                                 select(this, new SelectMenuArgs());
                                 state = State.Normal;
-                                //oriMenuPos = null;
+                                oriMenuPos = null;
 
                                 EventHandler<LeapModeChangeEventArgs> modechange = LeapModeChangeEvent;
                                 if (modechange != null)
@@ -234,7 +234,8 @@ namespace PixelCube.LeapMotion
                     //menuCount = 0;
                 }
 
-                if (System.Math.Abs(pointable.TipPosition.x - oriMenuPos.x) < 30
+                if (oriMenuPos != null
+                    && System.Math.Abs(pointable.TipPosition.x - oriMenuPos.x) < 30
                     //&& System.Math.Abs(pointable.TipPosition.z - oriMenuPos.z) < 60
                     && (oriMenuPos.y - pointable.TipPosition.y) > 80
                     && pointable.TipVelocity.Magnitude > 500)
