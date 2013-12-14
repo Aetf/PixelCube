@@ -197,7 +197,7 @@ namespace PixelCube.Operations
                 Vector3D rotateAxis = msceneController.WorldTransform.Transform(prerotateAxis);
                 //从事件参数中获取旋转角度
                 double rotateAngel = e.RotationAngle;
-                rotateAngel *= 180 / Math.PI; // from rad to deg
+                rotateAngel *= 220 / Math.PI; // from rad to deg
                 //判断传递来的轴中是否存在负数
                 //if (curCameraOrig.X < 0 )
                 //{

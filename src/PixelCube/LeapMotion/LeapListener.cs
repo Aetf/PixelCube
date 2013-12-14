@@ -202,12 +202,17 @@ namespace PixelCube.LeapMotion
                             {
                                 select(this, new SelectMenuArgs());
                                 state = State.focusing;
-                                oriMenuPos = null;
-                                
+                                //oriMenuPos = null;
 
-                                //menuCount = 0;
-                                break;
+                                EventHandler<LeapModeChangeEventArgs> modechange = LeapModeChangeEvent;
+                                if (modechange != null)
+                                {
+                                    modechange(this, new LeapModeChangeEventArgs(state));
+                                }
+                                base.OnFrame(controller);
+                                return;
                             }
+
                         }
                     }
                 }
@@ -220,7 +225,7 @@ namespace PixelCube.LeapMotion
             #endregion
 
             #region ExhaleMenu
-            if (currentFrame.Hands.Count == 1 && currentFrame.Fingers.Count == 2)
+            if (currentFrame.Hands.Count == 1 && currentFrame.Fingers.Count == 2 && state != State.menuSelecting)
             {
                 // The begin of the exhaling
                 if (lastFrame.Hands.Count != 1 || lastFrame.Fingers.Count != 2)
@@ -241,10 +246,16 @@ namespace PixelCube.LeapMotion
                     {
                         exhale(this, new ExhaleMenuArgs());
                         state = State.menuSelecting;
+                        EventHandler<LeapModeChangeEventArgs> modechange = LeapModeChangeEvent;
+                        if (modechange != null)
+                        {
+                            modechange(this, new LeapModeChangeEventArgs(state));
+                        }
+                        base.OnFrame(controller);
+                        return;
                     }
-
+                    
                 }
-
             }
             #endregion
 
