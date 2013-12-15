@@ -10,15 +10,105 @@ namespace PixelCube.LeapMotion
         private LeapListener listener;
         private CoordinatesTrans trans;
 
-        public event EventHandler<LeapConnectionChangedEventArgs> LeapConnectionChangedEvent;
-        public event EventHandler<LeapModeChangeEventArgs> LeapModeChangeEvent;
-        public event EventHandler<PreDrawOperationEventArgs> PreDrawOperationEvent;
-        public event EventHandler<PreFocusOperationEventArgs> PreFocusOperationEvent;
-        public event EventHandler<PreRotateOperationEventArgs> PreRotateOperationEvent;
-        public event EventHandler<PreScaleOperationEventArgs> PreScaleOperationEvent;
-        public event EventHandler<PreDragOperationEventArgs> PreDragOperationEvent;
-        public event EventHandler<PreEraseOperationEventArgs> PreEraseOperationEvent;
-        public event EventHandler<PreChangeColorOperationEventArgs> PreChangeColorOperationEvent;
+        public event EventHandler<LeapConnectionChangedEventArgs> LeapConnectionChangedEvent
+        {
+            add
+            {
+                listener.LeapConntectionChangedEvent += value;
+            }
+            remove
+            {
+                listener.LeapConntectionChangedEvent -= value;
+            }
+        }
+        public event EventHandler<LeapModeChangeEventArgs> LeapModeChangeEvent
+        {
+            add
+            {
+                listener.LeapModeChangeEvent += value;
+            }
+            remove
+            {
+                listener.LeapModeChangeEvent -= value;
+            }
+        }
+        public event EventHandler<PreDrawOperationEventArgs> PreDrawOperationEvent
+        {
+            add
+            {
+                listener.PreDrawOperationEvent += value;
+            }
+            remove
+            {
+                listener.PreDrawOperationEvent -= value;
+            }
+        }
+        public event EventHandler<PreFocusOperationEventArgs> PreFocusOperationEvent
+        {
+            add
+            {
+                listener.PreFocusOperationEvent += value;
+            }
+            remove
+            {
+                listener.PreFocusOperationEvent -= value;
+            }
+        }
+        public event EventHandler<PreRotateOperationEventArgs> PreRotateOperationEvent
+        {
+            add
+            {
+                listener.PreRotateOperationEvent += value;
+            }
+            remove
+            {
+                listener.PreRotateOperationEvent -= value;
+            }
+        }
+        public event EventHandler<PreScaleOperationEventArgs> PreScaleOperationEvent
+        {
+            add
+            {
+                listener.PreScaleOperationEvent += value;
+            }
+            remove
+            {
+                listener.PreScaleOperationEvent -= value;
+            }
+        }
+        public event EventHandler<PreDragOperationEventArgs> PreDragOperationEvent
+        {
+            add
+            {
+                listener.PreDragOperationEvent += value;
+            }
+            remove
+            {
+                listener.PreDragOperationEvent -= value;
+            }
+        }
+        public event EventHandler<PreEraseOperationEventArgs> PreEraseOperationEvent
+        {
+            add
+            {
+                listener.PreEraseOperationEvent += value;
+            }
+            remove
+            {
+                listener.PreEraseOperationEvent -= value;
+            }
+        }
+        public event EventHandler<PreChangeColorOperationEventArgs> PreChangeColorOperationEvent
+        {
+            add
+            {
+                listener.PreChangeColorOperationEvent += value;
+            }
+            remove
+            {
+                listener.PreChangeColorOperationEvent -= value;
+            }
+        }
         /// <summary>
         ///     Constructor
         /// </summary>
@@ -26,7 +116,6 @@ namespace PixelCube.LeapMotion
         {
             trans = new CoordinatesTrans(artWork);
             listener = new LeapListener(trans);
-            controller = new Controller();
         }
 
         public LeapListener GetListener() 
@@ -39,20 +128,7 @@ namespace PixelCube.LeapMotion
         /* Intializer and Unintializer */
         public void Initialize()
         {
-            controller.AddListener(listener);
-        }
-
-        public void LinkEvent()
-        {
-            listener.PreChangeColorOperationEvent += PreChangeColorOperationEvent;
-            listener.PreDragOperationEvent += PreDragOperationEvent;
-            listener.PreDrawOperationEvent += PreDrawOperationEvent;
-            listener.PreEraseOperationEvent += PreEraseOperationEvent;
-            listener.PreFocusOperationEvent += PreFocusOperationEvent;
-            listener.PreRotateOperationEvent += PreRotateOperationEvent;
-            listener.PreScaleOperationEvent += PreScaleOperationEvent;
-            listener.LeapModeChangeEvent += LeapModeChangeEvent;
-            listener.LeapConntectionChangedEvent += LeapConnectionChangedEvent;
+            controller = new Controller(listener);
         }
 
         public void Uninitialize()

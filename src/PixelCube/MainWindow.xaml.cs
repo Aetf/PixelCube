@@ -68,10 +68,6 @@ namespace PixelCube
             var se = new BackgroundSound();
             se.DoInit(this);
 
-            kernel.PostDrawOperationEvent += se.DrawOperationSound;
-            kernel.PostFocusOperationEvent += se.FocusOperationSound;
-            kernel.PostEraseOperationEvent += se.EraseOperationSound;
-
             return se;
         }
 
@@ -87,7 +83,7 @@ namespace PixelCube
         }
 
         /// <summary>
-        /// Must be called after Leap is initilized
+        /// Must be called after SceneController is initilized
         /// </summary>
         /// <returns></returns>
         private OpCore CreateOpCore()
@@ -95,15 +91,6 @@ namespace PixelCube
             var c = new OpCore();
             c.DoInit(this);
 
-            // Link all the event listeners.
-            Leap.PreChangeColorOperationEvent += c.OnChangeColorOperation;
-            Leap.PreDragOperationEvent += c.OnDragOperation;
-            Leap.PreDrawOperationEvent += c.OnPreDrawOperation;
-            Leap.PreEraseOperationEvent += c.OnEraseOperation;
-            Leap.PreRotateOperationEvent += c.OnPreRotateOperation;
-            Leap.PreScaleOperationEvent += c.OnPreScaleOperation;
-            Leap.PreFocusOperationEvent += c.OnPreFocusOperation;
-           
             return c;
         }
 
@@ -114,29 +101,8 @@ namespace PixelCube
         private ILeapTrace CreateLeapTrace()
         {
             var lt = new LeapMenu(Leap);
-
-
-            lt.Initialize();
+            lt.DoInit();
             return lt;
-        }
-
-        /// <summary>
-        /// Must be called after CurrentArt is initilized.
-        /// </summary>
-        private void InitModules()
-        {
-            Leap = CreateLeapMotion();
-            LeapT = CreateLeapTrace();
-            SceneControler = CreateSceneControler();
-            kernel = CreateOpCore();
-            bgm = CreateBGM();
-            se = CreateSE();
-            wd = CreateWatchDog();
-
-            SetupSAOMenu();
-
-            Leap.LinkEvent();
-            LeapT.LinkEvent();
         }
 
         /// <summary>
@@ -165,6 +131,21 @@ namespace PixelCube
                 this.Dispatcher.BeginInvoke(new Action(()=>slotmenu.EnterCurrent()));
             };
         }
+
+        /// <summary>
+        /// Must be called after CurrentArt is initilized.
+        /// </summary>
+        private void InitModules()
+        {
+            Leap = CreateLeapMotion();
+            LeapT = CreateLeapTrace();
+            wd = CreateWatchDog();
+            SetupSAOMenu();
+
+            SceneControler = CreateSceneControler();
+            kernel = CreateOpCore();
+            se = CreateSE();
+        }
         #endregion
 
         private void ResetWorld()
@@ -189,9 +170,12 @@ namespace PixelCube
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            bgm = CreateBGM();
             CurrentArt = LSDocu.NewArtwork();
 
-            InitModules();
+            // Post init event in message queue
+            // not to block the window.
+            this.Dispatcher.BeginInvoke(new Action(InitModules));
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

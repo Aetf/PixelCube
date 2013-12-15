@@ -18,7 +18,7 @@
                    Grid.Column="1" Margin="0 5 10 0"
                    FontSize="24" FontFamily="Jokerman" Text="Normal"
                    HorizontalAlignment="Right" />
-        <Label x:Name="waitingimg" Grid.ColumnSpan="2" Panel.ZIndex="999999" Visibility="Collapsed">
+        <Label x:Name="waitingimg" Grid.ColumnSpan="2" Panel.ZIndex="999999" Visibility="Visible">
             <Label.Background>
                 <ImageBrush>
                     <ImageBrush.ImageSource>
