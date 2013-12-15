@@ -12,21 +12,12 @@ namespace PixelCube.Sound
     {
         WMPLib.WindowsMediaPlayer BGM = new WindowsMediaPlayer();
         private string path;
-        /// <summary>
-        /// 获取音频文件的绝对路径
-        /// </summary>
-        public string SetPath()
-        {
-            DirectoryInfo dr = new DirectoryInfo(Assembly.GetEntryAssembly().Location);
-            dr = dr.Parent.Parent;
-            path = dr.FullName.ToString();
-            return path;
-        }
+
         public void DoInit(MainWindow win, bool open)
         {
             BGM.settings.setMode("loop", true);
             BGM.uiMode = "Invisible";
-            BGM.URL = Path.Combine(Path.GetDirectoryName(SetPath()), "Sound//etudeofwater.wav");
+            BGM.URL = "res//etudeofwater.wav";
             Mute = open;
         }
 
