@@ -1,10 +1,5 @@
-﻿﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿﻿using System.Text;
 using System.Windows.Media;
-using System.Windows.Media.Media3D;
 using PixelCube.Scene3D;
 
 namespace PixelCube.ThreeDimensional
@@ -16,12 +11,6 @@ namespace PixelCube.ThreeDimensional
             Visible = false;
         }
 
-        ///// <summary>
-        ///// 小方块相对场景的位置。
-        ///// 比如在4x4x4的场景中，某个角即为(0, 0, 0)
-        ///// </summary>
-        //public Vector3D Position { get; set; } 
-
         /// <summary>
         /// 小方块的材质
         /// </summary>
@@ -32,11 +21,6 @@ namespace PixelCube.ThreeDimensional
         /// </summary>
         public bool Visible { get; set; }
 
-        ///// <summary>
-        ///// 是否拥有焦点
-        ///// </summary>
-        //public bool Hasfocus { get; set; }
-
         /// <summary>
         /// 序列化
         /// </summary>
@@ -45,11 +29,8 @@ namespace PixelCube.ThreeDimensional
         public static string Serialize(PixelCube.ThreeDimensional.Cube dt)
         {
             System.Xml.Serialization.XmlSerializer ser = new System.Xml.Serialization.XmlSerializer(dt.GetType());
-
             StringBuilder sb = new StringBuilder();
-
             System.IO.StringWriter writer = new System.IO.StringWriter(sb);
-
             ser.Serialize(writer, dt);
 
             return sb.ToString();

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
-using System.Windows.Media.Media3D;
 using PixelCube.Scene3D;
+
 namespace PixelCube.ThreeDimensional
 {
     public class Artwork : IArtwork
@@ -20,7 +17,6 @@ namespace PixelCube.ThreeDimensional
             for (int i = 0; i != SceneSize.Item1 * SceneSize.Item2 * SceneSize.Item3; i++)
                 Cubes.Add(new Cube());
         }
-
 
         /// <summary>
         /// 背景颜色

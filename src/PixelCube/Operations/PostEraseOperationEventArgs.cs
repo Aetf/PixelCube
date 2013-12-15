@@ -9,7 +9,7 @@ namespace PixelCube.Operations
     /// <summary>
     /// 擦除事件参数
     /// </summary>
-    public class PostEraseOperationEventArgs
+    public class PostEraseOperationEventArgs : EventArgs
     {
     }
 }

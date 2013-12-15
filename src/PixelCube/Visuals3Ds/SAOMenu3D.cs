@@ -13,6 +13,8 @@ namespace PixelCube.Wpf
     public class SAOMenu3D : ModelVisual3D
     {
         Storyboard showsb;
+        internal bool animating = false;
+        internal bool onsubmenu = false;
 
         public SAOMenu3D()
         {
@@ -63,19 +65,7 @@ namespace PixelCube.Wpf
 
         protected static void PointerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            (d as SAOMenu3D).OnPointerChanged();
-        }
-
-        protected virtual void OnPointerChanged()
-        {
-            if (Items.Count == 0)
-                return;
-
-            var y = Pointer.Y - Position.Y;
-
-            int idx =(int) (y / Items[0].Symbol.Geometry.Bounds.SizeY / 1.5);
-            if (idx >= 0 && idx < Items.Count)
-                SelectedIndex = idx;
+            (d as SAOMenu3D).JudgeFocus();
         }
 
         /// <summary>
@@ -169,10 +159,22 @@ namespace PixelCube.Wpf
             if (e.NewValue == e.OldValue)
                 return;
 
-            if((bool)e.NewValue)
+            if ((bool)e.NewValue)
             {
+                if (this.GetViewport3D() == null)
+                    return;
+
+                var passed = SetupCamera();
                 if (AutoCalcPosition)
                     CalcPinPoint();
+                foreach (var item in Items)
+                {
+                    this.Children.Add(item.Symbol);
+                    this.Children.Add(item.Textboard);
+                }
+
+                animating = true;
+                showsb.BeginTime = TimeSpan.FromSeconds(passed);
                 showsb.Begin();
             }
             else
@@ -182,6 +184,8 @@ namespace PixelCube.Wpf
                     item.Symbol.Opacity = 0;
                     item.Textboard.Opacity = 0;
                 }
+                this.Children.Clear();
+                RestoreCamera();
             }
         }
 
@@ -203,7 +207,7 @@ namespace PixelCube.Wpf
             "Items",
             typeof(SAOMenu3DItemCollection),
             typeof(SAOMenu3D),
-            new UIPropertyMetadata(default(SAOMenu3DItemCollection), ItemsChanged));
+            new UIPropertyMetadata(new SAOMenu3DItemCollection(), ItemsChanged));
 
         protected static void ItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -256,6 +260,129 @@ namespace PixelCube.Wpf
         }
         #endregion
 
+        #region public double ScaleFactor;
+        /// <summary>
+        /// Identifies the <see cref="ScaleFactor"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ScaleFactorProperty = DependencyProperty.Register(
+            "ScaleFactor",
+            typeof(double),
+            typeof(SAOMenu3D),
+            new UIPropertyMetadata(2.0, ScaleFactorChanged));
+
+        protected static void ScaleFactorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as SAOMenu3D).OnScaleFactorChanged();
+        }
+
+        protected virtual void OnScaleFactorChanged()
+        {
+            if (Items.Count != 0)
+                UpdateModels();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public double ScaleFactor
+        {
+            get { return (double)this.GetValue(ScaleFactorProperty); }
+            set { this.SetValue(ScaleFactorProperty, value); }
+        }
+        #endregion
+
+        #region public double ZoomOutDistance;
+        /// <summary>
+        /// Identifies the <see cref="ZoomOutDistance"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ZoomOutDistanceProperty = DependencyProperty.Register(
+            "ZoomOutDistance",
+            typeof(double),
+            typeof(SAOMenu3D),
+            new UIPropertyMetadata(default(double), ZoomOutDistanceChanged));
+
+        protected static void ZoomOutDistanceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as SAOMenu3D).OnZoomOutDistanceChanged();
+        }
+
+        protected virtual void OnZoomOutDistanceChanged()
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public double ZoomOutDistance
+        {
+            get { return (double)this.GetValue(ZoomOutDistanceProperty); }
+            set { this.SetValue(ZoomOutDistanceProperty, value); }
+        }
+        #endregion
+
+        #region public double ActualHeight;
+        /// <summary>
+        /// Identifies the <see cref="ActualHeight"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ActualHeightProperty = DependencyProperty.Register(
+            "ActualHeight",
+            typeof(double),
+            typeof(SAOMenu3D),
+            new UIPropertyMetadata(default(double), ActualHeightChanged));
+
+        protected static void ActualHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as SAOMenu3D).OnActualHeightChanged();
+        }
+
+        protected virtual void OnActualHeightChanged()
+        {
+            if (AutoCalcPosition)
+                CalcPinPoint();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public double ActualHeight
+        {
+            get { return (double)this.GetValue(ActualHeightProperty); }
+            private set { this.SetValue(ActualHeightProperty, value); }
+        }
+        #endregion
+
+        #region public double ActualWidth;
+        /// <summary>
+        /// Identifies the <see cref="ActualWidth"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ActualWidthProperty = DependencyProperty.Register(
+            "ActualWidth",
+            typeof(double),
+            typeof(SAOMenu3D),
+            new UIPropertyMetadata(default(double), ActualWidthChanged));
+
+        protected static void ActualWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as SAOMenu3D).OnActualWidthChanged();
+        }
+
+        protected virtual void OnActualWidthChanged()
+        {
+            if (AutoCalcPosition)
+                CalcPinPoint();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public double ActualWidth
+        {
+            get { return (double)this.GetValue(ActualWidthProperty); }
+            private set { this.SetValue(ActualWidthProperty, value); }
+        }
+        #endregion
+
         /// <summary>
         /// Toggle this menu.
         /// </summary>
@@ -264,9 +391,67 @@ namespace PixelCube.Wpf
             this.Visible = !this.Visible;
         }
 
+        /// <summary>
+        /// Show menu
+        /// </summary>
+        public void Show()
+        {
+            this.Visible = true;
+        }
+
+        /// <summary>
+        /// Cause the current selected menu item to be activated.
+        /// </summary>
+        public void EnterCurrent()
+        {
+            if (animating || onsubmenu)
+                return;
+            if(SelectedIndex >= 0 && SelectedIndex < Items.Count)
+            {
+                //Items[SelectedIndex].RaiseSelectedEvent(null);
+                this.Visible = false;
+                Items[SelectedIndex].RaiseSelectedEvent();
+            }
+        }
+
+        #region Camera manipulation
+        /// <summary>
+        /// Zoom out the camera, so that menu will not be hiden by other objects
+        /// </summary>
+        /// <returns>
+        /// time used to animate, in second
+        /// </returns>
+        private double SetupCamera()
+        {
+            if (this.GetViewport3D() == null || !(this.GetViewport3D().Camera is ProjectionCamera))
+                return 0;
+
+            var camera = this.GetViewport3D().Camera as ProjectionCamera;
+
+            // Calculate directions
+            var lookdir = camera.LookDirection; lookdir.Normalize();
+            var outoffset = Vector3D.Multiply(-ZoomOutDistance, lookdir);
+            var dest = Point3D.Add(camera.Position, outoffset);
+            origCameraPos = camera.Position;
+            var animationTime = 0.7;
+            HelixToolkit.Wpf.CameraHelper.AnimateTo(camera, dest, camera.LookDirection, camera.UpDirection, animationTime * 1000);
+            return animationTime;
+        }
+        Point3D origCameraPos;
+        private void RestoreCamera()
+        {
+            if (this.GetViewport3D() == null || !(this.GetViewport3D().Camera is ProjectionCamera))
+                return;
+
+            var camera = this.GetViewport3D().Camera as ProjectionCamera;
+            HelixToolkit.Wpf.CameraHelper.AnimateTo(camera, origCameraPos, camera.LookDirection, camera.UpDirection, 700);
+        }
+
+        #endregion
+
         protected virtual void JudgeFocus()
         {
-            if (Items.Count == 0)
+            if (Items.Count == 0 || !Visible || animating || onsubmenu)
                 return;
 
             // Calculate three directions
@@ -281,18 +466,26 @@ namespace PixelCube.Wpf
 
             // yvec's projection on updir
             var y = distOn(Pointer, Position, updir);
+            // A little scale for better operation.
+            // Because the camera has been zoomed out but the world transform was not updated.
+            double scale = distOn(origCameraPos, new Point3D(0, 0, 0), lookdir);
+            scale = 1 + ZoomOutDistance / scale;
+            y /= scale * 6;
+            y += 2.5;
+            System.Diagnostics.Debug.WriteLine("yafter = " + y);
 
             for(int i = 0; i!= Items.Count; i++)
             {
                 var item = Items[i];
                 // FIXME: threshold should be calc according to updir.
                 var threshold = item.Symbol.Geometry.Bounds.SizeY;
-                var lowbound = distOn(item.Symbol.Geometry.Bounds.Location, Position, updir) - threshold / 2;
+                var lowbound = distOn(item.Symbol.Position, Position, updir) - threshold / 2;
                 var upperbound = lowbound + threshold;
 
                 if(y >= lowbound && y <= upperbound)
                 {
-                    SelectedIndex = i;
+                    // Little tricky, the element in Items are actually displayed in reversed order.
+                    SelectedIndex = Items.Count - i - 1;
                     break;
                 }
             }
@@ -309,24 +502,35 @@ namespace PixelCube.Wpf
 
         private void UpdateModels()
         {
+            if (SymbolGeometry == null)
+                return;
+
             // Clear previous models.
             this.Children.Clear();
             // Create and re-add models.
             showsb = new Storyboard();
+            showsb.FillBehavior = FillBehavior.Stop;
+            showsb.Completed += (o, e) => this.animating = false;
             // Calculate three directions
             var lookdir = new Vector3D(0, 0, -1);
             var updir = new Vector3D(0, 1, 0);
-            if(this.GetViewport3D() != null)
+            if (this.GetViewport3D() != null && this.GetViewport3D().Camera != null)
             {
                 lookdir = this.GetViewport3D().Camera.GetLookDirection(); lookdir.Normalize();
                 updir = this.GetViewport3D().Camera.GetUpDirection(); updir.Normalize();
             }
             var rightdir = Vector3D.CrossProduct(lookdir, updir); rightdir.Normalize();
+
+            double width = 0;
+            double height = 0;
             // Create models and apply animations
             for (int i = 0; i != Items.Count; i++)
             {
+                double w = 0;
                 var pos = Position;
-                pos = Point3D.Add(Position, Vector3D.Multiply(updir, i * 2 * SymbolGeometry.Bounds.SizeY));
+                pos = Point3D.Add(Position, Vector3D.Multiply(updir, (Items.Count - i) * ScaleFactor * SymbolGeometry.Bounds.SizeY));
+                // set parent
+                Items[i].parent = this;
                 // Symbol
                 Items[i].Symbol = new SAOMenu3DSymbolVisual3D()
                 {
@@ -335,25 +539,30 @@ namespace PixelCube.Wpf
                     Position = pos,
                     Opacity = 0
                 };
-                this.Children.Add(Items[i].Symbol);
+                w += Items[i].Symbol.Geometry.Bounds.SizeX * ScaleFactor;
+                height += Items[i].Symbol.Geometry.Bounds.SizeY * ScaleFactor;
 
-                pos = Point3D.Add(pos, Vector3D.Multiply(rightdir, SymbolGeometry.Bounds.SizeX + 0.2));
                 // Textboard
+                pos = Point3D.Add(pos, Vector3D.Multiply(rightdir, SymbolGeometry.Bounds.SizeX + 1));
                 Items[i].Textboard = new SAOMenu3DTextBillboard()
                 {
                     Text = Items[i].Header,
-                    FontSize = 44,
-                    Color = Colors.Red,
+                    FontSize = 32,
+                    FontFamily = new FontFamily("Jokerman"),
                     Opacity = 0,
                     Position = pos
                 };
-                this.Children.Add(Items[i].Textboard);
+                w += Items[i].Textboard.Width + SymbolGeometry.Bounds.SizeX + 1;
+
+                width = Math.Max(w, width);
 
                 Items[i].showupanim = SetupShowTL(Items[i]);
-                Items[i].showupanim.BeginTime = TimeSpan.FromSeconds(0.1 * i);
+                Items[i].showupanim.BeginTime = TimeSpan.FromSeconds(0.1 * (Items.Count - i - 1));
                 showsb.Children.Add(Items[i].showupanim);
             }
-            showsb.FillBehavior = FillBehavior.Stop;
+            // Must update ActualWidth and ActualHeight once, or StackOverFlow
+            ActualHeight = height;
+            ActualWidth = width;
         }
 
         private ParallelTimeline SetupShowTL(SAOMenu3DItem item)
@@ -435,11 +644,27 @@ namespace PixelCube.Wpf
         private void CalcPinPoint()
         {
             Viewport3D parent = this.GetViewport3D();
-            var camera = parent.Camera;
-            var lookdirection = camera.GetLookDirection();
-            lookdirection.Normalize();
-            lookdirection = Vector3D.Multiply(lookdirection, Distance);
-            Position = Point3D.Add(camera.GetPosition(), lookdirection);
+            if(parent != null && parent.Camera != null)
+            {
+                var camera = parent.Camera;
+                var lookoffset = camera.GetLookDirection();
+                lookoffset.Normalize();
+                lookoffset = Vector3D.Multiply(lookoffset, Distance);
+
+                var downoffset = camera.GetUpDirection();
+                downoffset.Normalize();
+                downoffset = Vector3D.Multiply(downoffset, -ActualHeight / 2);
+
+                var leftoffset = Vector3D.CrossProduct(camera.GetLookDirection(), camera.GetUpDirection());
+                leftoffset.Normalize();
+                leftoffset = Vector3D.Multiply(leftoffset, -ActualWidth / 100);
+                System.Diagnostics.Debug.WriteLine(leftoffset);
+
+                var offset = Vector3D.Add(lookoffset, downoffset);
+                offset = Vector3D.Add(offset, leftoffset);
+                
+                Position = Point3D.Add(camera.GetPosition(), offset);
+            }
         }
 
         private double distOn(Point3D point, Point3D orig, Vector3D dir)

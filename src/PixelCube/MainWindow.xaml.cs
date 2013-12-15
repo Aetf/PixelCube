@@ -1,13 +1,13 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using System;
+using System.Windows;
 using System.Windows.Media.Media3D;
-using PixelCube.LeapMotion;
-using PixelCube.Scene3D;
 using HelixToolkit.Wpf;
+using PixelCube.LeapMotion;
 using PixelCube.LoadAndSave;
 using PixelCube.Operations;
+using PixelCube.Scene3D;
 using PixelCube.Sound;
-using System;
+using PixelCube.Utils;
 
 namespace PixelCube
 {
@@ -19,22 +19,12 @@ namespace PixelCube
         public ISceneControler SceneControler;
         public IArtwork CurrentArt;
         public ILeapMotion Leap;
+        public ILeapTrace LeapT;
 
         internal OpCore kernel;
         internal BackgroundMusic bgm;
         internal BackgroundSound se;
         internal WatchDog wd;
-
-        public HelixViewport3D getViewport()
-        {
-            return sceneViewport;
-        }
-
-        public Model3DGroup getCubeGroup()
-        {
-            return cubeGroup;
-        }
-
 
         public MainWindow()
         {
@@ -52,6 +42,11 @@ namespace PixelCube
         private ILeapMotion CreateLeapMotion()
         {
             var leap = new LeapController(CurrentArt);
+            leap.LeapConnectionChangedEvent += (o, e) =>
+            {
+                this.Dispatcher.BeginInvoke(new Action(() => this.WaitLeap(e.Connected)));
+            };
+
             leap.Initialize();
             return leap;
         }
@@ -80,6 +75,10 @@ namespace PixelCube
             return se;
         }
 
+        /// <summary>
+        /// Must be called after Leap and LeapT is initilized
+        /// </summary>
+        /// <returns></returns>
         private WatchDog CreateWatchDog()
         {
             var w = new WatchDog();
@@ -87,6 +86,10 @@ namespace PixelCube
             return w;
         }
 
+        /// <summary>
+        /// Must be called after Leap is initilized
+        /// </summary>
+        /// <returns></returns>
         private OpCore CreateOpCore()
         {
             var c = new OpCore();
@@ -105,20 +108,84 @@ namespace PixelCube
         }
 
         /// <summary>
+        /// Must be called after Leap is initilized
+        /// </summary>
+        /// <returns></returns>
+        private ILeapTrace CreateLeapTrace()
+        {
+            var lt = new LeapMenu(Leap);
+
+
+            lt.Initialize();
+            return lt;
+        }
+
+        /// <summary>
         /// Must be called after CurrentArt is initilized.
         /// </summary>
         private void InitModules()
         {
             Leap = CreateLeapMotion();
+            LeapT = CreateLeapTrace();
             SceneControler = CreateSceneControler();
             kernel = CreateOpCore();
             bgm = CreateBGM();
             se = CreateSE();
             wd = CreateWatchDog();
 
+            SetupSAOMenu();
+
             Leap.LinkEvent();
+            LeapT.LinkEvent();
+        }
+
+        /// <summary>
+        /// Must be called after LeapT is initialized
+        /// </summary>
+        private void SetupSAOMenu()
+        {
+            LeapT.ExhaleMenuEvent += (sender, e) =>
+            {
+                this.Dispatcher.BeginInvoke(new Action(()=>saomenu.Show()));
+            };
+            LeapT.TraceEvent += (sender, e) =>
+            {
+                this.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    saomenu.Pointer = SceneControler.WorldTransform.Transform(e.TracePosition.ToPoint3D()); ;
+                }));
+                this.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    slotmenu.Pointer = SceneControler.WorldTransform.Transform(e.TracePosition.ToPoint3D()); ;
+                }));
+            };
+            LeapT.SelectMenuEvent += (sender, e) =>
+            {
+                this.Dispatcher.BeginInvoke(new Action(()=>saomenu.EnterCurrent()));
+                this.Dispatcher.BeginInvoke(new Action(()=>slotmenu.EnterCurrent()));
+            };
         }
         #endregion
+
+        private void ResetWorld()
+        {
+            cubeGroup.Children.Clear();
+            mCamera.Position = new Point3D(20, 20, 110);
+            mCamera.LookDirection = new Vector3D(0, 0, -1);
+            mCamera.UpDirection = new Vector3D(0, 1, 0);
+        }
+
+        private void WaitLeap(bool connected)
+        {
+            if(connected)
+            {
+                waitingimg.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                waitingimg.Visibility = Visibility.Visible;
+            }
+        }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -133,11 +200,15 @@ namespace PixelCube
             {
                 Leap.Uninitialize();
             }
+            if(LeapT != null)
+            {
+                LeapT.Uninitialize();
+            }
         }
 
         private void MenuItem_Open(object sender, RoutedEventArgs e)
         {
-            var tmp = LSDocu.LoadArtworkDoc();
+            var tmp = LSDocu.LoadArtworkDoc(ConfigProvider.Instance.SlotPath[0]);
             if(tmp != null)
             {
                 CurrentArt = tmp;
@@ -147,7 +218,25 @@ namespace PixelCube
 
         private void MenuItem_Save(object sender, RoutedEventArgs e)
         {
-            LSDocu.SaveAsDocument(CurrentArt);
+            CurrentArt.FileName = ConfigProvider.Instance.SlotPath[0];
+            LSDocu.SaveDocument(CurrentArt);
+        }
+
+        private void MenuItem_New(object sender, RoutedEventArgs e)
+        {
+            CurrentArt = LSDocu.NewArtwork();
+            ResetWorld();
+            InitModules();
+        }
+
+        private void MenuItem_Exit(object sender, RoutedEventArgs e)
+        {
+            var timer = new System.Timers.Timer(700)
+                {
+                    AutoReset = false,
+                };
+            timer.Elapsed += (o, arg) => this.Dispatcher.BeginInvoke(new Action(()=> this.Close()));
+            timer.Start();
         }
     }
 }

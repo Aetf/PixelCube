@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Media;
-using PixelCube.LeapMotion;
+﻿using System.IO;
+using System.Reflection;
 using PixelCube.Operations;
 using WMPLib;
-using System.IO;
-using System.Reflection;
 
 namespace PixelCube.Sound
 {

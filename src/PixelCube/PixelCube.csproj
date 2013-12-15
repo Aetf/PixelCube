@@ -77,8 +77,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Interfaces\ILeapTrace.cs" />
     <Compile Include="LeapMotion\CoordinatesTrans.cs" />
+    <Compile Include="LeapMotion\LeapConnectionChangedEventArgs.cs" />
     <Compile Include="LeapMotion\LeapController.cs" />
+    <Compile Include="LeapMotion\LeapMenu.cs" />
+    <Compile Include="LeapMotion\MenuInfo.cs" />
     <Compile Include="LeapMotion\PreChangeColorOperationEventArgs.cs" />
     <Compile Include="LeapMotion\PreDragOperationEventArgs.cs" />
     <Compile Include="LeapMotion\PreEraseOperationEventArgs.cs" />
@@ -87,12 +91,12 @@
     <Compile Include="Operations\PostDragOperationEventArgs.cs" />
     <Compile Include="Operations\PostEraseOperationEventArgs.cs" />
     <Compile Include="Scene3D\CubeSceneController.cs" />
-    <Compile Include="Scene3D\SerializeHepler.cs" />
     <Compile Include="Scene3D\WatchDog.cs" />
     <Compile Include="ThreeDimensional\Artwork.cs" />
     <Compile Include="Sound\BackgroundMusic.cs" />
     <Compile Include="ThreeDimensional\Cube.cs" />
     <Compile Include="Utils\FreqLimitUtil.cs" />
+    <Compile Include="Utils\LeapVectorExtionsion.cs" />
     <Compile Include="Utils\MatrixTransform3DExtension.cs" />
     <Compile Include="Sound\BackgroundSound.cs" />
     <Compile Include="Utils\CameraExtension.cs" />
@@ -111,8 +115,6 @@
     <Compile Include="ConfigProvider.cs" />
     <Compile Include="Interfaces\ICube.cs" />
     <Compile Include="Interfaces\IArtwork.cs" />
-    <Compile Include="Interfaces\IBackgroundMusic.cs" />
-    <Compile Include="Interfaces\IBackgroundSound.cs" />
     <Compile Include="Interfaces\ILeapMotion.cs" />
     <Compile Include="Interfaces\ISceneControler.cs" />
     <Compile Include="Interfaces\IVolume.cs" />
@@ -194,6 +196,9 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res\plug.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

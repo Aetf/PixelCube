@@ -1,8 +1,9 @@
-﻿using Leap;
+﻿using System;
+using Leap;
 
 namespace PixelCube.LeapMotion
 {
-   public class PreFocusOperationEventArgs
+    public class PreFocusOperationEventArgs : EventArgs
     {
         public Vector FocusPosition { set; get; }
 
