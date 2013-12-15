@@ -17,10 +17,11 @@ namespace PixelCube.Scene3D
 
             win.LeapT.TraceEvent += (obj, arg) =>
             {
+                Point3D tipPos = arg.TracePosition.ToPoint3D();
                 win.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     // Tip Position
-                    win.pointer.Center = win.SceneControler.WorldTransform.Transform(arg.TracePosition.ToPoint3D());
+                    win.pointer.Center = win.SceneControler.WorldTransform.Transform(tipPos);
                     win.pointerxy.Center = new Point3D(win.pointer.Center.X, win.pointer.Center.Y, 0);
                     win.pointeryz.Center = new Point3D(0, win.pointer.Center.Y, win.pointer.Center.Z);
                     win.pointerzx.Center = new Point3D(win.pointer.Center.X, 0, win.pointer.Center.Z);

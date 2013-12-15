@@ -7,8 +7,8 @@ namespace PixelCube.LeapMotion
         event EventHandler<ExhaleMenuArgs> ExhaleMenuEvent;    // Exhale Event
         event EventHandler<SelectMenuArgs> SelectMenuEvent;    // Select Event
         event EventHandler<TraceMenuArgs> TraceEvent;  // Trace Event
-        void LinkEvent();
-        void Initialize();    // LeapMotion initialize
+
+        void DoInit();    // LeapMotion initialize
         void Uninitialize();
     }
 }

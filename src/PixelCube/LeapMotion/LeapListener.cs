@@ -15,20 +15,20 @@ namespace PixelCube.LeapMotion
        /// <summary>
        /// All events this class will offer
        /// </summary>
-       internal EventHandler<LeapConnectionChangedEventArgs> LeapConntectionChangedEvent;
-       internal EventHandler<LeapModeChangeEventArgs> LeapModeChangeEvent;
-       internal EventHandler<PreDrawOperationEventArgs> PreDrawOperationEvent;
-       internal EventHandler<PreFocusOperationEventArgs> PreFocusOperationEvent;
-       internal EventHandler<PreRotateOperationEventArgs> PreRotateOperationEvent;
-       internal EventHandler<PreScaleOperationEventArgs> PreScaleOperationEvent;
-       internal EventHandler<PreDragOperationEventArgs> PreDragOperationEvent;
-       internal EventHandler<PreEraseOperationEventArgs> PreEraseOperationEvent;
-       internal EventHandler<PreChangeColorOperationEventArgs> PreChangeColorOperationEvent;
+       internal event EventHandler<LeapConnectionChangedEventArgs> LeapConntectionChangedEvent;
+       internal event EventHandler<LeapModeChangeEventArgs> LeapModeChangeEvent;
+       internal event EventHandler<PreDrawOperationEventArgs> PreDrawOperationEvent;
+       internal event EventHandler<PreFocusOperationEventArgs> PreFocusOperationEvent;
+       internal event EventHandler<PreRotateOperationEventArgs> PreRotateOperationEvent;
+       internal event EventHandler<PreScaleOperationEventArgs> PreScaleOperationEvent;
+       internal event EventHandler<PreDragOperationEventArgs> PreDragOperationEvent;
+       internal event EventHandler<PreEraseOperationEventArgs> PreEraseOperationEvent;
+       internal event EventHandler<PreChangeColorOperationEventArgs> PreChangeColorOperationEvent;
 
        // MenuEvents
-       internal EventHandler<ExhaleMenuArgs> ExhaleMenuEvent;    // Exhale Event
-       internal EventHandler<SelectMenuArgs> SelectMenuEvent;    // Select Event
-       internal EventHandler<TraceMenuArgs> TraceMenuEvent;  // Trace Event
+       internal event EventHandler<ExhaleMenuArgs> ExhaleMenuEvent;    // Exhale Event
+       internal event EventHandler<SelectMenuArgs> SelectMenuEvent;    // Select Event
+       internal event EventHandler<TraceMenuArgs> TraceEvent;  // Trace Event
        #endregion   
 
        #region Private Attributes
@@ -59,10 +59,29 @@ namespace PixelCube.LeapMotion
             state = State.Normal;
             currentFrame = null;
             lastFrame = null;
-            this.controller = controller;
-
             oriMenuPos = null;
+            this.controller = controller;
             //menuCount = 0;
+
+            // Waiting for connection
+            while(!controller.IsConnected)
+            {
+                System.Threading.Thread.Sleep(20);
+            }
+
+            // Raise early stage event.
+            if (LeapConntectionChangedEvent != null)
+            {
+                var leapStatusChangeEventArgs = new LeapConnectionChangedEventArgs();
+                leapStatusChangeEventArgs.Connected = controller.IsConnected;
+                LeapConntectionChangedEvent(this, leapStatusChangeEventArgs);
+            }
+            EventHandler<LeapModeChangeEventArgs> mode = LeapModeChangeEvent;
+            if (mode != null)
+            {
+                mode(this, new LeapModeChangeEventArgs(state));
+            }
+
             base.OnInit(controller);
         }
 
@@ -94,7 +113,6 @@ namespace PixelCube.LeapMotion
             Debug.WriteLine("connect");
 
             base.OnConnect(controller);
-
         }
 
         /// <summary>
@@ -148,7 +166,7 @@ namespace PixelCube.LeapMotion
 
                 if (trans.TransPoint(pointable.TipPosition))
                 {
-                    EventHandler<TraceMenuArgs> trace = TraceMenuEvent;
+                    EventHandler<TraceMenuArgs> trace = TraceEvent;
                     if (trace != null)
                     {
                         trace(this, new TraceMenuArgs(trans.getNewVec()));
