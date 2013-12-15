@@ -116,13 +116,14 @@ namespace PixelCube
             };
             LeapT.TraceEvent += (sender, e) =>
             {
+                Point3D tipPos = e.TracePosition.ToPoint3D();
                 this.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    saomenu.Pointer = SceneControler.WorldTransform.Transform(e.TracePosition.ToPoint3D()); ;
+                    saomenu.Pointer = SceneControler.WorldTransform.Transform(tipPos);
                 }));
                 this.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    slotmenu.Pointer = SceneControler.WorldTransform.Transform(e.TracePosition.ToPoint3D()); ;
+                    slotmenu.Pointer = SceneControler.WorldTransform.Transform(tipPos);
                 }));
             };
             LeapT.SelectMenuEvent += (sender, e) =>
