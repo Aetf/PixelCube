@@ -141,6 +141,7 @@ namespace PixelCube.Scene3D
             }
 
             // Show cubes on screen
+            mCubeGroup.Children.Clear();
             for (int i = 0; i != sceneSize.Item1; i++)
                 for (int j = 0; j != sceneSize.Item2; j++)
                     for (int k = 0; k != sceneSize.Item3; k++)

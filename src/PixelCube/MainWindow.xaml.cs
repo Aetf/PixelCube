@@ -196,6 +196,7 @@ namespace PixelCube
             var tmp = LSDocu.LoadArtworkDoc(ConfigProvider.Instance.SlotPath[0]);
             if(tmp != null)
             {
+                ResetWorld();
                 CurrentArt = tmp;
                 InitModules();
             }
