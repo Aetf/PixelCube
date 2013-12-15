@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Media.Media3D;
-using PixelCube.LeapMotion;
-using System.Windows.Data;
-using System.Windows;
 using System.Globalization;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Media.Media3D;
+using PixelCube.Utils;
 
 namespace PixelCube.Scene3D
 {
@@ -18,16 +15,16 @@ namespace PixelCube.Scene3D
         {
             var mtb = win.infoPanel;
 
-            win.Leap.PreFocusOperationEvent += new System.EventHandler<PreFocusOperationEventArgs>((obj, arg) =>
+            win.LeapT.TraceEvent += (obj, arg) =>
             {
                 win.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     // Tip Position
-                    win.pointer.Center = win.SceneControler.WorldTransform.Transform(
-                        new Point3D(arg.FocusPosition.x, arg.FocusPosition.y, arg.FocusPosition.z));
+                    win.pointer.Center = win.SceneControler.WorldTransform.Transform(arg.TracePosition.ToPoint3D());
                     win.pointerxy.Center = new Point3D(win.pointer.Center.X, win.pointer.Center.Y, 0);
                     win.pointeryz.Center = new Point3D(0, win.pointer.Center.Y, win.pointer.Center.Z);
                     win.pointerzx.Center = new Point3D(win.pointer.Center.X, 0, win.pointer.Center.Z);
+
                     var list = new System.Collections.Generic.List<Point3D>();
                     list.Add(win.pointer.Center); list.Add(win.pointerxy.Center);
                     win.linez.Points = list;
@@ -38,15 +35,15 @@ namespace PixelCube.Scene3D
                     list.Add(win.pointer.Center); list.Add(win.pointerzx.Center);
                     win.liney.Points = list;
                 }));
-            });
+            };
 
-            win.Leap.LeapModeChangeEvent += new System.EventHandler<LeapModeChangeEventArgs>((obj, arg) =>
+            win.Leap.LeapModeChangeEvent += (obj, arg) =>
             {
                 win.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     win.modePanel.Text = arg.state.ToString();
                 }));
-            });
+            };
 
             win.mCamera.Changed += (sender, e) =>
             {

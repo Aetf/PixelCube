@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using Leap;
 using PixelCube.LeapMotion;
 using PixelCube.Scene3D;
 using PixelCube.Utils;
-using System.Diagnostics;
-
 
 namespace PixelCube.Operations
 {
@@ -197,7 +191,7 @@ namespace PixelCube.Operations
                 Vector3D rotateAxis = msceneController.WorldTransform.Transform(prerotateAxis);
                 //从事件参数中获取旋转角度
                 double rotateAngel = e.RotationAngle;
-                rotateAngel *= 180 / Math.PI; // from rad to deg
+                rotateAngel *= 220 / Math.PI; // from rad to deg
                 //判断传递来的轴中是否存在负数
                 //if (curCameraOrig.X < 0 )
                 //{
@@ -349,7 +343,7 @@ namespace PixelCube.Operations
                 int k = (int)(inCameraPosition.Z / mcubea);
 
                 // 是否与之前相同，是的话返回
-                if (FreqLimitUtil.CheckFreq("OnPreFocusOperation", Tuple.Create(i, j, k)))
+                if (FreqLimitUtil.CheckFreq("OnPreEraseOperation", Tuple.Create(i, j, k)))
                     return;
 
                 //判断当前坐标是否越界

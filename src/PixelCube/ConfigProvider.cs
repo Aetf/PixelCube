@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Configuration;
-using System.Windows;
+using System.IO;
+using System.Windows.Media.Media3D;
 
 namespace PixelCube
 {
@@ -21,6 +19,12 @@ namespace PixelCube
         {
             config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             appSettings = config.AppSettings as AppSettingsSection;
+
+            slotpath = new List<String>();
+            var slot1 = Path.Combine(new String[]{
+                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                "PixelCube", "slot1"});
+            slotpath.Add(slot1);
         }
 
         private ConfigProvider() { }
@@ -119,6 +123,37 @@ namespace PixelCube
         }
         #endregion
 
+        #region public Rect3D LeapWorldRect
+        /// <summary>
+        /// LeapMotion坐标系的坐标范围
+        /// </summary>
+        public Rect3D LeapWorldRect
+        {
+            get
+            {
+                return new Rect3D(-300, 30, -300, 600, 600, 600);
+            }
+        }
+        #endregion
+
+        #region public List<String> SlotPath
+        private static List<String> slotpath;
+        /// <summary>
+        /// 返回可用的Slot的路径列表
+        /// </summary>
+        public List<String> SlotPath
+        {
+            get
+            {
+                return slotpath;
+            }
+        }
+        #endregion
+
+        #region public double CubeA
+        /// <summary>
+        /// 小方块边长
+        /// </summary>
         public double CubeA
         {
             get
@@ -126,5 +161,6 @@ namespace PixelCube
                 return (Double) App.Current.FindResource("cubeA");
             }
         }
+        #endregion
     }
 }

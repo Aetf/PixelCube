@@ -1,11 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using HelixToolkit.Wpf;
-using System.Diagnostics;
-using System.Linq;
 using PixelCube.Utils;
 
 namespace PixelCube.Scene3D
@@ -32,10 +30,7 @@ namespace PixelCube.Scene3D
 
         public Point3D CameraOrig
         {
-            get
-            {
-                return (mView.Camera as PerspectiveCamera).Position;
-            }
+            get { return (mView.Camera as PerspectiveCamera).Position; }
         }
 
         public void DoInit(MainWindow win)
@@ -43,8 +38,8 @@ namespace PixelCube.Scene3D
             WorldTransform = new MatrixTransform3D(Matrix3D.Identity);
 
             mWin = win;
-            mView = win.getViewport();
-            mCubeGroup = win.getCubeGroup();
+            mView = win.sceneViewport;
+            mCubeGroup = win.cubeGroup;
             
             var cubeseed = (GeometryModel3D)win.FindResource("cubeSeed");
             var sceneSize = win.CurrentArt.SceneSize;
@@ -60,6 +55,7 @@ namespace PixelCube.Scene3D
                 MajorDistance = framea,
                 MinorDistance = framea,
                 Center = new Point3D(framea / 2, framea, framea / 2),
+                //Center = new Point3D(0, framea, 0),
                 Length = framea,
                 LengthDirection = new Vector3D(1, 0, 0),
                 Width = framea
@@ -71,6 +67,7 @@ namespace PixelCube.Scene3D
                 MajorDistance = framea,
                 MinorDistance = framea,
                 Center = new Point3D(framea / 2, 0, framea / 2),
+                //Center = new Point3D(0, framea, 0),
                 Length = framea,
                 LengthDirection = new Vector3D(1, 0, 0),
                 Width = framea
@@ -82,6 +79,7 @@ namespace PixelCube.Scene3D
                 MajorDistance = framea,
                 MinorDistance = framea,
                 Center = new Point3D(framea / 2, framea / 2, framea),
+                //Center = new Point3D(0, framea / 2, framea / 2),
                 Length = framea,
                 LengthDirection = new Vector3D(1, 0, 0),
                 Width = framea
@@ -93,6 +91,7 @@ namespace PixelCube.Scene3D
                 MajorDistance = framea,
                 MinorDistance = framea,
                 Center = new Point3D(framea / 2, framea / 2, 0),
+                //Center = new Point3D(0, framea / 2, -framea / 2),
                 Length = framea,
                 LengthDirection = new Vector3D(1, 0, 0),
                 Width = framea
@@ -104,6 +103,7 @@ namespace PixelCube.Scene3D
                 MajorDistance = framea,
                 MinorDistance = framea,
                 Center = new Point3D(0, framea / 2, framea / 2),
+                //Center = new Point3D(-framea / 2, framea / 2, 0),
                 Length = framea,
                 LengthDirection = new Vector3D(0, 0, 1),
                 Width = framea
@@ -115,6 +115,7 @@ namespace PixelCube.Scene3D
                 MajorDistance = framea,
                 MinorDistance = framea,
                 Center = new Point3D(framea, framea / 2, framea / 2),
+                //Center = new Point3D(framea / 2, framea / 2, 0),
                 Length = framea,
                 LengthDirection = new Vector3D(0, 0, 1),
                 Width = framea
@@ -133,7 +134,8 @@ namespace PixelCube.Scene3D
                         GeometryModel3D c = cubeseed.Clone();
                         cubeModels[TupleToIdx(i, j, k)] = c;
                         mWin.RegisterName(NameForCubeModel(i, j, k), c);
-                        c.Transform = new TranslateTransform3D(cubea*i, cubea*j, cubea*k);
+                        //c.Transform = new TranslateTransform3D(cubea * i - sceneSize.Item1, cubea * j, cubea * k - sceneSize.Item1);
+                        c.Transform = new TranslateTransform3D(cubea * i, cubea * j, cubea * k);
                     }
                 }
             }

@@ -1,9 +1,10 @@
-﻿using Leap;
+﻿using System;
+using Leap;
 
 namespace PixelCube.LeapMotion
 {
-    
-    public class PreDragOperationEventArgs
+
+    public class PreDragOperationEventArgs : EventArgs
     {
         public Vector TransVector { set; get; }
         public PreDragOperationEventArgs(Vector transVector)

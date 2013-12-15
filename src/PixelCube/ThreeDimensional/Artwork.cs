@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
-using System.Windows.Media.Media3D;
 using PixelCube.Scene3D;
+
 namespace PixelCube.ThreeDimensional
 {
     public class Artwork : IArtwork
@@ -13,14 +10,13 @@ namespace PixelCube.ThreeDimensional
         public void DefaultValue()
         {
             BackgroundFill = Color.FromArgb(100, 200, 200, 200);
-            SceneSize = Tuple.Create(20, 20, 20);
+            SceneSize = new SceneSize3D(20, 20, 20);
             FileName = "新文件.ps";
 
             Cubes = new List<Cube>();
             for (int i = 0; i != SceneSize.Item1 * SceneSize.Item2 * SceneSize.Item3; i++)
                 Cubes.Add(new Cube());
         }
-
 
         /// <summary>
         /// 背景颜色
@@ -30,7 +26,7 @@ namespace PixelCube.ThreeDimensional
         /// <summary>
         /// 画布的大小
         /// </summary>
-        public Tuple<int, int, int> SceneSize { get; set; }
+        public SceneSize3D SceneSize { get; set; }
 
         /// <summary>
         /// 返回场景中所有的小方块，位于(i, j, k)的小方块的索引为 i+SceneSize.x*j+SceneSize.y*k

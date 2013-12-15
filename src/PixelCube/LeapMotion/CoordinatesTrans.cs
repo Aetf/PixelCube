@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Leap;
+﻿using Leap;
 using PixelCube.Scene3D;
 namespace PixelCube.LeapMotion
 {
@@ -40,7 +35,9 @@ namespace PixelCube.LeapMotion
             cubea = cp.CubeA;       //获取小方块边长
 
             cuben = art.SceneSize.Item1;    //获取每行小方块数目
-            maxCoord =(float) cubea * cuben + 40;
+            maxCoord =(float) cubea * cuben;
+            maxCoord += 2 * maxCoord;
+
         }
 
         /// <summary>
@@ -65,9 +62,9 @@ namespace PixelCube.LeapMotion
             if (vec.x >= -300 && vec.x <= 300 && vec.y >= 30 && vec.y <= 630 && vec.z >= -300 && vec.z <= 300)
             {
                 //operations:
-                newVec.x = (vec.x + 300) / (600 / maxCoord) - 20;
-                newVec.y = (vec.y - 30) / (600 / maxCoord) - 20;
-                newVec.z = (vec.z + 300) / (600 / maxCoord) - 20;
+                newVec.x = (vec.x + 300) / (600 / maxCoord) - maxCoord/3 ;
+                newVec.y = (vec.y - 30) / (600 / maxCoord) - maxCoord/3 ;
+                newVec.z = (vec.z + 300) / (600 / maxCoord) - maxCoord/3 ;
                 return true;
             }
             return false;
