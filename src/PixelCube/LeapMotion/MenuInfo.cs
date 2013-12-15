@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Media.Media3D;
 using Leap;
 
 namespace PixelCube.LeapMotion
@@ -19,14 +20,10 @@ namespace PixelCube.LeapMotion
 
     public class TraceMenuArgs : EventArgs
     {
-        public float TracePositionX { set; get; }
-        public float TracePositionY { set; get; }
-        public float TracePositionZ { set; get; }
-        public TraceMenuArgs(Vector tracePosition)
+        public Point3D TracePosition { get; set; }
+        public TraceMenuArgs(Point3D tracePosition)
         {
-            TracePositionX = tracePosition.x;
-            TracePositionY = tracePosition.y;
-            TracePositionZ = tracePosition.z;
+            TracePosition = tracePosition;
         }
     }
 }

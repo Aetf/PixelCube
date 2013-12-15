@@ -116,7 +116,7 @@ namespace PixelCube
             };
             LeapT.TraceEvent += (sender, e) =>
             {
-                Point3D tipPos = new Point3D(e.TracePositionX, e.TracePositionY, e.TracePositionZ);
+                Point3D tipPos = e.TracePosition;
                 this.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     saomenu.Pointer = SceneControler.WorldTransform.Transform(tipPos);
