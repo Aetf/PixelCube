@@ -149,12 +149,15 @@ namespace PixelCube
         }
         #endregion
 
-        private void ResetWorld()
+        private void ResetWorld(bool resetCamera)
         {
             cubeGroup.Children.Clear();
-            mCamera.Position = new Point3D(20, 20, 110);
-            mCamera.LookDirection = new Vector3D(0, 0, -1);
-            mCamera.UpDirection = new Vector3D(0, 1, 0);
+            if(resetCamera)
+            {
+                mCamera.Position = new Point3D(20, 20, 110);
+                mCamera.LookDirection = new Vector3D(0, 0, -1);
+                mCamera.UpDirection = new Vector3D(0, 1, 0);
+            }
         }
 
         private void WaitLeap(bool connected)
@@ -196,7 +199,7 @@ namespace PixelCube
             var tmp = LSDocu.LoadArtworkDoc(ConfigProvider.Instance.SlotPath[0]);
             if(tmp != null)
             {
-                ResetWorld();
+                ResetWorld(false);
                 CurrentArt = tmp;
                 InitModules();
             }
@@ -211,7 +214,7 @@ namespace PixelCube
         private void MenuItem_New(object sender, RoutedEventArgs e)
         {
             CurrentArt = LSDocu.NewArtwork();
-            ResetWorld();
+            ResetWorld(true);
             InitModules();
         }
 

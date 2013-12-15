@@ -172,6 +172,7 @@ namespace PixelCube.Wpf
                     this.Children.Add(item.Symbol);
                     this.Children.Add(item.Textboard);
                 }
+                SelectedIndex = -1;
 
                 animating = true;
                 showsb.BeginTime = TimeSpan.FromSeconds(passed);
@@ -185,7 +186,9 @@ namespace PixelCube.Wpf
                     item.Textboard.Opacity = 0;
                 }
                 this.Children.Clear();
+                animating = true;
                 RestoreCamera();
+                animating = false;
             }
         }
 
@@ -493,11 +496,12 @@ namespace PixelCube.Wpf
 
         private void ChangeFocus(int from, int to)
         {
-            if (from != -1)
+            if (from != -1 && from < Items.Count)
             {
                 Items[from].Symbol.DecroateTransform = Transform3D.Identity;
             }
-            Items[to].Symbol.DecroateTransform = new ScaleTransform3D(new Vector3D(1.5, 1.5, 1.5), Items[to].Symbol.Position);
+            if(to != -1 && to < Items.Count)
+                Items[to].Symbol.DecroateTransform = new ScaleTransform3D(new Vector3D(1.5, 1.5, 1.5), Items[to].Symbol.Position);
         }
 
         private void UpdateModels()
