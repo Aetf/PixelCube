@@ -19,10 +19,14 @@ namespace PixelCube.LeapMotion
 
     public class TraceMenuArgs : EventArgs
     {
-        public Vector TracePosition { set; get; }
+        public float TracePositionX { set; get; }
+        public float TracePositionY { set; get; }
+        public float TracePositionZ { set; get; }
         public TraceMenuArgs(Vector tracePosition)
         {
-            TracePosition = tracePosition;
+            TracePositionX = tracePosition.x;
+            TracePositionY = tracePosition.y;
+            TracePositionZ = tracePosition.z;
         }
     }
 }
