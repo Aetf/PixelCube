@@ -10,22 +10,18 @@ namespace PixelCube.Sound
      /// </summary>
     public class BackgroundSound
     {
-        WindowsMediaPlayer focussound = new WindowsMediaPlayer();
-        WindowsMediaPlayer erasesound = new WindowsMediaPlayer();
-        WindowsMediaPlayer drawsound = new WindowsMediaPlayer();
-        /// <summary>
-        /// PixelCube path
-        /// </summary>
-        private string path;
+        static WindowsMediaPlayer focussound = new WindowsMediaPlayer();
+        static WindowsMediaPlayer erasesound = new WindowsMediaPlayer();
+        static WindowsMediaPlayer drawsound = new WindowsMediaPlayer();
+
         /// <summary>
         /// 获取音频文件的绝对路径
         /// </summary>
-        public string SetPath()
+        public static string GetPath()
         {
             DirectoryInfo dr = new DirectoryInfo(Assembly.GetEntryAssembly().Location);
             dr = dr.Parent.Parent;
-            path = dr.FullName.ToString();
-            return path;
+            return dr.FullName;
         }
 
         /// <summary>
@@ -33,19 +29,25 @@ namespace PixelCube.Sound
         /// </summary>
         /// <param name="sound"></param>
         /// <param name="name"></param>
-        private void Load(WindowsMediaPlayer sound,string name)
+        private static void Load(WindowsMediaPlayer sound,string name)
         {
             sound.uiMode = "Invisible";
             sound.settings.autoStart = false;
-            sound.URL = Path.Combine(Path.GetDirectoryName(SetPath()), "Sound//"+name+".wav");
-            sound.ToString();
+            sound.URL = Path.Combine(Path.GetDirectoryName(GetPath()), "Sound//"+name+".wav");
+        }
+
+        static BackgroundSound()
+        {
+            Load(focussound, "focussound");
+            Load(drawsound, "drawsound");
+            Load(erasesound, "erasesound");
         }
 
         public void DoInit(MainWindow win)
         {
-            Load(focussound,"focussound");
-            Load(drawsound,"drawsound");
-            Load(erasesound,"erasesound");
+            win.kernel.PostDrawOperationEvent += DrawOperationSound;
+            win.kernel.PostFocusOperationEvent += FocusOperationSound;
+            win.kernel.PostEraseOperationEvent += EraseOperationSound;
         }
 
         /// <summary>

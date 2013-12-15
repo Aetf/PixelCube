@@ -7,7 +7,7 @@ namespace PixelCube.LeapMotion
     {
         void Initialize();    // LeapMotion initialize
         void Uninitialize();
-        void LinkEvent();
+
         //LeapListener GetListener();
         event EventHandler<LeapModeChangeEventArgs> LeapModeChangeEvent;    // Device status change
         event EventHandler<PreDrawOperationEventArgs> PreDrawOperationEvent;    // Draw event

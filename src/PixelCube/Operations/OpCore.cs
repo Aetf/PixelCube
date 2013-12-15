@@ -74,6 +74,15 @@ namespace PixelCube.Operations
             //获取小方块的边长
             mcubea = (double)win.FindResource("cubeA");
             mrotateTransform = new MatrixTransform3D();
+
+            // Link all the event listeners.
+            win.Leap.PreChangeColorOperationEvent += OnChangeColorOperation;
+            win.Leap.PreDragOperationEvent += OnDragOperation;
+            win.Leap.PreDrawOperationEvent += OnPreDrawOperation;
+            win.Leap.PreEraseOperationEvent += OnEraseOperation;
+            win.Leap.PreRotateOperationEvent += OnPreRotateOperation;
+            win.Leap.PreScaleOperationEvent += OnPreScaleOperation;
+            win.Leap.PreFocusOperationEvent += OnPreFocusOperation;
         }
 
         #region 事件响应函数
