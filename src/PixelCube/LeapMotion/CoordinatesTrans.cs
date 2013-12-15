@@ -32,7 +32,6 @@ namespace PixelCube.LeapMotion
             cuben = art.SceneSize.Item1;    //获取每行小方块数目
             maxCoord =(float) cubea * cuben;
             maxCoord += 2 * maxCoord;
-
         }
 
         /// <summary>

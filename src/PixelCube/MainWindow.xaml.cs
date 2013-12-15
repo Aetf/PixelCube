@@ -119,11 +119,11 @@ namespace PixelCube
                 Point3D tipPos = e.TracePosition;
                 this.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    saomenu.Pointer = SceneControler.WorldTransform.Transform(tipPos);
+                    saomenu.RawPointer = SceneControler.WorldTransform.Transform(tipPos);
                 }));
                 this.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    slotmenu.Pointer = SceneControler.WorldTransform.Transform(tipPos);
+                    slotmenu.RawPointer = SceneControler.WorldTransform.Transform(tipPos);
                 }));
             };
             LeapT.SelectMenuEvent += (sender, e) =>
@@ -149,15 +149,20 @@ namespace PixelCube
         }
         #endregion
 
-        private void ResetWorld(bool resetCamera)
+        private void ResetWorld()
         {
             cubeGroup.Children.Clear();
-            if(resetCamera)
+            if (Leap != null)
             {
-                mCamera.Position = new Point3D(20, 20, 110);
-                mCamera.LookDirection = new Vector3D(0, 0, -1);
-                mCamera.UpDirection = new Vector3D(0, 1, 0);
+                Leap.Uninitialize();
             }
+            if (LeapT != null)
+            {
+                LeapT.Uninitialize();
+            }
+            mCamera.Position = new Point3D(20, 20, 110);
+            mCamera.LookDirection = new Vector3D(0, 0, -1);
+            mCamera.UpDirection = new Vector3D(0, 1, 0);
         }
 
         private void WaitLeap(bool connected)
@@ -199,7 +204,7 @@ namespace PixelCube
             var tmp = LSDocu.LoadArtworkDoc(ConfigProvider.Instance.SlotPath[0]);
             if(tmp != null)
             {
-                ResetWorld(false);
+                ResetWorld();
                 CurrentArt = tmp;
                 InitModules();
             }
@@ -214,7 +219,7 @@ namespace PixelCube
         private void MenuItem_New(object sender, RoutedEventArgs e)
         {
             CurrentArt = LSDocu.NewArtwork();
-            ResetWorld(true);
+            ResetWorld();
             InitModules();
         }
 
