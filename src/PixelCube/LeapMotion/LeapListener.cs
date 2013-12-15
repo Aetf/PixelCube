@@ -192,39 +192,79 @@ namespace PixelCube.LeapMotion
             // menuSelectingMode doesn't need others action
             if (state == State.Menu)
             {
-
-                if (currentFrame.Gestures().Count > 0)
+                 //The begining of the slide
+                if (pointable.TipVelocity.Magnitude > 100 && pointable.TipVelocity.Magnitude < 800)
                 {
-                    GestureList menuGestures = currentFrame.Gestures();
-                    foreach (Gesture ges in menuGestures)
-                    {
-                        if (ges.Type == Gesture.GestureType.TYPESCREENTAP)
-                        {
-                            Debug.WriteLine("SelectMenu");
-                            EventHandler<SelectMenuArgs> select = SelectMenuEvent;
-                            if (select != null)
-                            {
-                                select(this, new SelectMenuArgs());
-                                state = State.Normal;
-                                oriMenuPos = null;
-
-                                EventHandler<LeapModeChangeEventArgs> modechange = LeapModeChangeEvent;
-                                if (modechange != null)
-                                {
-                                    modechange(this, new LeapModeChangeEventArgs(state));
-                                }
-                                base.OnFrame(controller);
-                                return;
-                            }
-
-                        }
-                    }
+                    oriMenuPos = pointable.TipPosition;
+                    //menuCount = 0;
                 }
 
+                if (oriMenuPos != null
+                    && pointable.TipPosition.x - oriMenuPos.x >80
+                    //&& System.Math.Abs(pointable.TipPosition.z - oriMenuPos.z) < 60
+                    && System.Math.Abs(oriMenuPos.y - pointable.TipPosition.y) < 30
+                    && pointable.TipVelocity.Magnitude > 2000)
+                {
+                    //Debug.WriteLine("exhale menu");
+                    //state = State.menuSelecting;
+                    EventHandler<SelectMenuArgs> select = SelectMenuEvent;
+                    if (select != null)
+                    {
+                        select(this, new SelectMenuArgs());
+                        state = State.Normal;
+                        EventHandler<LeapModeChangeEventArgs> modechange = LeapModeChangeEvent;
+                        if (modechange != null)
+                        {
+                            modechange(this, new LeapModeChangeEventArgs(state));
+                        }
+                        base.OnFrame(controller);
+                        return;
+                    }
+
+                }
 
                 base.OnFrame(controller);
                 return;
+
             }
+
+
+
+            //if (state == State.Menu)
+            //{
+
+            //    if (currentFrame.Gestures().Count > 0)
+            //    {
+            //        GestureList menuGestures = currentFrame.Gestures();
+            //        foreach (Gesture ges in menuGestures)
+            //        {
+            //            if (ges.Type == Gesture.GestureType.TYPESCREENTAP)
+            //            {
+            //                Debug.WriteLine("SelectMenu");
+            //                EventHandler<SelectMenuArgs> select = SelectMenuEvent;
+            //                if (select != null)
+            //                {
+            //                    select(this, new SelectMenuArgs());
+            //                    state = State.Normal;
+            //                    oriMenuPos = null;
+
+            //                    EventHandler<LeapModeChangeEventArgs> modechange = LeapModeChangeEvent;
+            //                    if (modechange != null)
+            //                    {
+            //                        modechange(this, new LeapModeChangeEventArgs(state));
+            //                    }
+            //                    base.OnFrame(controller);
+            //                    return;
+            //                }
+
+            //            }
+            //        }
+            //    }
+
+
+            //    base.OnFrame(controller);
+            //    return;
+            //}
 
             #endregion
 
@@ -266,175 +306,179 @@ namespace PixelCube.LeapMotion
 
             #endregion
 
-            #region Gestures
-            GestureList gestures = currentFrame.Gestures();
-            foreach (Gesture gesture in gestures)
+            
+            if (state != State.Menu)
             {
-                //                HandList hands = gesture.Hands;
-
-                switch (gesture.Type)
+                #region Gestures
+                GestureList gestures = currentFrame.Gestures();
+                foreach (Gesture gesture in gestures)
                 {
-                    // draw one pixel
-                    case Gesture.GestureType.TYPESCREENTAP:
-                        EventHandler<PreDrawOperationEventArgs> draw = PreDrawOperationEvent;
-                        if (draw != null)
-                        {
-                            ScreenTapGesture screenTapGesture = new ScreenTapGesture(gesture);
-                            if (trans.TransPoint(screenTapGesture.Position))
+                    //                HandList hands = gesture.Hands;
+
+                    switch (gesture.Type)
+                    {
+                        // draw one pixel
+                        case Gesture.GestureType.TYPESCREENTAP:
+                            EventHandler<PreDrawOperationEventArgs> draw = PreDrawOperationEvent;
+                            if (draw != null)
                             {
-                                Vector tempVec = trans.getNewVec();
-                                tempVec.z += 8;
-                                draw(this, new PreDrawOperationEventArgs(tempVec));
+                                ScreenTapGesture screenTapGesture = new ScreenTapGesture(gesture);
+                                if (trans.TransPoint(screenTapGesture.Position))
+                                {
+                                    Vector tempVec = trans.getNewVec();
+                                    tempVec.z += 8;
+                                    draw(this, new PreDrawOperationEventArgs(tempVec));
+                                }
                             }
-                        }
-                        break;
+                            break;
 
-                    // return to focus mode/draw mode
-                    case Gesture.GestureType.TYPEKEYTAP:
+                        // return to focus mode/draw mode
+                        case Gesture.GestureType.TYPEKEYTAP:
 
-                        if (state != State.Normal)
-                        {
-                            state = State.Normal;
-                        }
-                        else
-                        {
-                            state = State.Drawing;
-                        }
+                            if (state != State.Normal)
+                            {
+                                state = State.Normal;
+                            }
+                            else
+                            {
+                                state = State.Drawing;
+                            }
 
-                        EventHandler<LeapModeChangeEventArgs> mode = LeapModeChangeEvent;
-                        if (mode != null)
-                        {
-                            mode(this, new LeapModeChangeEventArgs(state));
-                        }
+                            EventHandler<LeapModeChangeEventArgs> mode = LeapModeChangeEvent;
+                            if (mode != null)
+                            {
+                                mode(this, new LeapModeChangeEventArgs(state));
+                            }
 
-                        break;
+                            break;
 
-                    // Enter erasing mode
-                    case Gesture.GestureType.TYPESWIPE:
-                        if (currentFrame.Fingers.Count >= 4)
-                        {
-                            state = State.Erasing;
-                        }
-                        EventHandler<LeapModeChangeEventArgs> mode2 = LeapModeChangeEvent;
-                        if (mode2 != null)
-                        {
-                            mode2(this, new LeapModeChangeEventArgs(state));
-                        }
-                        break;
+                        // Enter erasing mode
+                        case Gesture.GestureType.TYPESWIPE:
+                            if (currentFrame.Fingers.Count >= 4)
+                            {
+                                state = State.Erasing;
+                            }
+                            EventHandler<LeapModeChangeEventArgs> mode2 = LeapModeChangeEvent;
+                            if (mode2 != null)
+                            {
+                                mode2(this, new LeapModeChangeEventArgs(state));
+                            }
+                            break;
 
+                    }
                 }
-            }
             #endregion
 
-            #region TwoHands
-            if (currentFrame.Hands.Count >= 2)
-            {
-                // Scale Action
-                //#region Scale
-                //// Suppose it is playing a scale action when the number of fingers greater than 7
-                //if (currentFrame.Fingers.Count >= 9)
-                //{
-                    
-                //    EventHandler<PreScaleOperationEventArgs> scale = PreScaleOperationEvent;
-                //    if (scale != null)
-                //    {
-                //        scale(this, new PreScaleOperationEventArgs(currentFrame.ScaleFactor(lastFrame)));
-                //    }
-                //}
-                //#endregion
-                // Get left hand
-
-                Hand leftHand = currentFrame.Hands.Leftmost;
-                // Rotate Action
-
-                if (leftHand.Fingers.Count > 3)
+                #region TwoHands
+                if (currentFrame.Hands.Count >= 2)
                 {
-                    #region Rotate
-                    EventHandler<PreRotateOperationEventArgs> rotate = PreRotateOperationEvent;
-                    if (rotate != null)
+                    // Scale Action
+                    //#region Scale
+                    //// Suppose it is playing a scale action when the number of fingers greater than 7
+                    //if (currentFrame.Fingers.Count >= 9)
+                    //{
+
+                    //    EventHandler<PreScaleOperationEventArgs> scale = PreScaleOperationEvent;
+                    //    if (scale != null)
+                    //    {
+                    //        scale(this, new PreScaleOperationEventArgs(currentFrame.ScaleFactor(lastFrame)));
+                    //    }
+                    //}
+                    //#endregion
+                    // Get left hand
+
+                    Hand leftHand = currentFrame.Hands.Leftmost;
+                    // Rotate Action
+
+                    if (leftHand.Fingers.Count > 3)
                     {
-                        rotate(this, new PreRotateOperationEventArgs(leftHand.RotationAxis(lastFrame),
-                            leftHand.RotationAngle(lastFrame)));
+                        #region Rotate
+                        EventHandler<PreRotateOperationEventArgs> rotate = PreRotateOperationEvent;
+                        if (rotate != null)
+                        {
+                            rotate(this, new PreRotateOperationEventArgs(leftHand.RotationAxis(lastFrame),
+                                leftHand.RotationAngle(lastFrame)));
+                        }
+                        #endregion
+                    }
+                }
+                #endregion
+
+                #region OneHand
+                // Just one hand and above 4 fingers
+                if (lastFrame.Hands.Count == 1 && currentFrame.Hands.Count == 1)
+                {
+                    Hand hand = currentFrame.Hands[0];
+                    #region Drag
+                    if (hand.Fingers.Count > 3)
+                    {
+
+                        EventHandler<PreDragOperationEventArgs> drag = PreDragOperationEvent;
+                        if (drag != null)
+                        {
+                            Vector transVector = hand.PalmPosition - lastFrame.Hands[0].PalmPosition;
+                            //transVector.z = 0;
+                            trans.TransVector(transVector);
+                            drag(this, new PreDragOperationEventArgs(transVector));
+                        }
+
                     }
                     #endregion
                 }
-            }
-            #endregion
+                #endregion
 
-            #region OneHand
-            // Just one hand and above 4 fingers
-            if (lastFrame.Hands.Count == 1 && currentFrame.Hands.Count == 1)
-            {
-                Hand hand = currentFrame.Hands[0];
-                #region Drag
-                if (hand.Fingers.Count > 3)
+                #region Pointable
+
+                if (!pointables.IsEmpty)
                 {
-                    
-                    EventHandler<PreDragOperationEventArgs> drag = PreDragOperationEvent;
-                    if (drag != null)
+                    //pointable = currentFrame.Pointable(pointableID);
+                    // Ensure that this vector is valid
+                    if (trans.TransPoint(pointable.TipPosition))
                     {
-                        Vector transVector = hand.PalmPosition - lastFrame.Hands[0].PalmPosition;
-                        //transVector.z = 0;
-                        trans.TransVector(transVector);
-                        drag(this, new PreDragOperationEventArgs(transVector));
+
+                        switch (state)
+                        {
+                            case State.Normal:
+                                EventHandler<PreFocusOperationEventArgs> focus = PreFocusOperationEvent;
+                                if (focus != null)
+                                {
+                                    focus(this, new PreFocusOperationEventArgs(trans.getNewVec()));
+                                }
+                                break;
+
+                            case State.Erasing:
+                                EventHandler<PreEraseOperationEventArgs> erase = PreEraseOperationEvent;
+                                if (erase != null)
+                                {
+                                    erase(this, new PreEraseOperationEventArgs(trans.getNewVec()));
+                                }
+
+                                break;
+
+                            case State.Drawing:
+                                EventHandler<PreDrawOperationEventArgs> drawLine = PreDrawOperationEvent;
+                                if (drawLine != null)
+                                {
+                                    drawLine(this, new PreDrawOperationEventArgs(trans.getNewVec()));
+                                }
+
+                                break;
+
+                            case State.ChangingColor:
+                                EventHandler<PreChangeColorOperationEventArgs> changeColor = PreChangeColorOperationEvent;
+                                if (changeColor != null)
+                                {
+                                    changeColor(this, new PreChangeColorOperationEventArgs(trans.getNewVec()));
+                                }
+                                break;
+                        }
                     }
+
 
                 }
                 #endregion
-            }
-            #endregion
-
-            #region Pointable
-            
-            if (!pointables.IsEmpty)
-            {
-                //pointable = currentFrame.Pointable(pointableID);
-                // Ensure that this vector is valid
-                if (trans.TransPoint(pointable.TipPosition))
-                {
-                   
-                    switch (state)
-                    {
-                        case State.Normal:
-                            EventHandler<PreFocusOperationEventArgs> focus = PreFocusOperationEvent;
-                            if (focus != null)
-                            {
-                                focus(this, new PreFocusOperationEventArgs(trans.getNewVec()));
-                            }
-                            break;
-
-                        case State.Erasing:
-                            EventHandler<PreEraseOperationEventArgs> erase = PreEraseOperationEvent;
-                            if (erase != null)
-                            {
-                                erase(this, new PreEraseOperationEventArgs(trans.getNewVec()));
-                            }
-                            
-                            break;
-
-                        case State.Drawing:
-                            EventHandler<PreDrawOperationEventArgs> drawLine = PreDrawOperationEvent;
-                            if (drawLine != null)
-                            {
-                                drawLine(this, new PreDrawOperationEventArgs(trans.getNewVec()));
-                            }
-                           
-                            break;
-
-                        case State.ChangingColor:
-                            EventHandler<PreChangeColorOperationEventArgs> changeColor = PreChangeColorOperationEvent;
-                            if (changeColor != null)
-                            {
-                                changeColor(this, new PreChangeColorOperationEventArgs(trans.getNewVec()));
-                            }
-                            break;
-                    }
-                }
-
 
             }
-            #endregion
-
             // Store this frame
             lastFrame = currentFrame;
             base.OnFrame(controller);
