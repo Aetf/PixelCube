@@ -7,8 +7,12 @@
         Title="MainWindow" Height="768" Width="1366"
         Loaded="Window_Loaded" Closing="Window_Closing">
     <Window.Resources>
+        <BitmapImage x:Key="bg" DecodePixelWidth="2560" UriSource="res/bg.jpg"  />
     </Window.Resources>
     <Grid x:Name="rootGrid">
+        <Grid.Background>
+            <ImageBrush  ImageSource="{StaticResource bg}"/>
+        </Grid.Background>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
