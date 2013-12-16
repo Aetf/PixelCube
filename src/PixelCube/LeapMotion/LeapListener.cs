@@ -41,12 +41,14 @@ namespace PixelCube.LeapMotion
        private CoordinatesTrans trans;
 
        private Vector oriMenuPos;
+       internal bool cancelled;
       // private int menuCount;
        #endregion
 
        public LeapListener(CoordinatesTrans trans)
        {
            this.trans = trans;
+           cancelled = false;
        }
 
         /// <summary>
@@ -64,10 +66,13 @@ namespace PixelCube.LeapMotion
             //menuCount = 0;
 
             // Waiting for connection
-            while(!controller.IsConnected)
+            while(!cancelled && !controller.IsConnected)
             {
-                System.Threading.Thread.Sleep(20);
+                System.Threading.Thread.Sleep(200);
             }
+
+            if (cancelled)
+                return;
 
             // Raise early stage event.
             if (LeapConntectionChangedEvent != null)

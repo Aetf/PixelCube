@@ -21,10 +21,13 @@ namespace PixelCube
             appSettings = config.AppSettings as AppSettingsSection;
 
             slotpath = new List<String>();
-            var slot1 = Path.Combine(new String[]{
+            for(int i = 0; i!= 2; i++)
+            {
+                var slot = Path.Combine(new String[]{
                 Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                "PixelCube", "slot1"});
-            slotpath.Add(slot1);
+                "PixelCube", "slot" + i});
+                slotpath.Add(slot);
+            }
         }
 
         private ConfigProvider() { }

@@ -4,7 +4,7 @@
         xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
         xmlns:src="clr-namespace:PixelCube.Wpf"
         WindowState="Maximized" Topmost="False" WindowStyle="None" Cursor="None"
-        Title="MainWindow" Height="480" Width="600"
+        Title="MainWindow" Height="768" Width="1366"
         Loaded="Window_Loaded" Closing="Window_Closing">
     <Window.Resources>
     </Window.Resources>
@@ -18,15 +18,24 @@
                    Grid.Column="1" Margin="0 5 10 0"
                    FontSize="24" FontFamily="Jokerman" Text="Normal"
                    HorizontalAlignment="Right" />
-        <Label x:Name="waitingimg" Grid.ColumnSpan="2" Panel.ZIndex="999999" Visibility="Visible">
-            <Label.Background>
+        <Border x:Name="waitingimg" Grid.ColumnSpan="2" Panel.ZIndex="999999" Visibility="Visible">
+            <Border.Background>
                 <ImageBrush>
                     <ImageBrush.ImageSource>
                         <BitmapImage DecodePixelWidth="1366" UriSource="res/plug.png" />
                     </ImageBrush.ImageSource>
                 </ImageBrush>
-            </Label.Background>
-        </Label>
+            </Border.Background>
+            <TextBlock TextAlignment="Center" VerticalAlignment="Center"
+                       Foreground="White" FontFamily="Jokerman" FontSize="24"
+                       Margin="0 450 0 0">
+            Waiting for LeapMotion...
+            <LineBreak />
+            <LineBreak />
+            Press ESC to exit. Your work will be auto saved.
+            </TextBlock>
+        </Border>
+        
         <h:HelixViewport3D x:Name="sceneViewport" Grid.ColumnSpan="2"
                            ShowCameraInfo="False" ShowCoordinateSystem="True"
                            CameraRotationMode="Turntable" ModelUpDirection="0,1,0">
