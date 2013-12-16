@@ -17,7 +17,7 @@ namespace PixelCube.Scene3D
 
             win.LeapT.TraceEvent += (obj, arg) =>
             {
-                Point3D tipPos = arg.TracePosition.ToPoint3D();
+                Point3D tipPos = arg.TracePosition;
                 win.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     // Tip Position

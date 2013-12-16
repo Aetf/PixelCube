@@ -104,7 +104,7 @@ namespace PixelCube.LoadAndSave
                 String fileName = ArtworkDoc.FileName;
                 if (!Directory.Exists(Path.GetDirectoryName(fileName)))
                     Directory.CreateDirectory(Path.GetDirectoryName(fileName));
-                Stream stream = File.OpenWrite(fileName);
+                Stream stream = File.Open(fileName, FileMode.Create);
                 using (StreamWriter writer = new StreamWriter(stream))
                 {
                     writer.BaseStream.Flush();

@@ -53,28 +53,29 @@ namespace PixelCube.Wpf
         }
         #endregion
 
-        #region public Point3D Pointer
+        #region public Point3D RawPointer
         /// <summary>
-        /// Identifies the <see cref="Pointer"/> dependency property.
+        /// Identifies the <see cref="RawPointer"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty PointerProperty = DependencyProperty.Register(
-            "Pointer",
+        public static readonly DependencyProperty RawPointerProperty = DependencyProperty.Register(
+            "RawPointer",
             typeof(Point3D),
             typeof(SAOMenu3D),
-            new UIPropertyMetadata(default(Point3D), PointerChanged));
+            new UIPropertyMetadata(default(Point3D), RawPointerChanged));
 
-        protected static void PointerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        protected static void RawPointerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             (d as SAOMenu3D).JudgeFocus();
         }
 
         /// <summary>
-        /// Get or set the pointer position of the menu.
+        /// Get or set the pointer position of the menu. In initial world coordinate.
+        /// Without any transform.
         /// </summary>
-        public Point3D Pointer
+        public Point3D RawPointer
         {
-            get { return (Point3D)this.GetValue(PointerProperty); }
-            set { this.SetValue(PointerProperty, value); }
+            get { return (Point3D)this.GetValue(RawPointerProperty); }
+            set { this.SetValue(RawPointerProperty, value); }
         }
         #endregion
 
@@ -172,6 +173,7 @@ namespace PixelCube.Wpf
                     this.Children.Add(item.Symbol);
                     this.Children.Add(item.Textboard);
                 }
+                SelectedIndex = -1;
 
                 animating = true;
                 showsb.BeginTime = TimeSpan.FromSeconds(passed);
@@ -185,7 +187,9 @@ namespace PixelCube.Wpf
                     item.Textboard.Opacity = 0;
                 }
                 this.Children.Clear();
+                animating = true;
                 RestoreCamera();
+                animating = false;
             }
         }
 
@@ -464,14 +468,24 @@ namespace PixelCube.Wpf
             }
             var rightdir = Vector3D.CrossProduct(lookdir, updir); rightdir.Normalize();
 
-            // yvec's projection on updir
-            var y = distOn(Pointer, Position, updir);
-            // A little scale for better operation.
+            System.Diagnostics.Debug.WriteLine("=================");
+            System.Diagnostics.Debug.WriteLine("updir = " + updir);
+            // Translate pointer to screen coordiant
             // Because the camera has been zoomed out but the world transform was not updated.
-            double scale = distOn(origCameraPos, new Point3D(0, 0, 0), lookdir);
-            scale = 1 + ZoomOutDistance / scale;
-            y /= scale * 6;
-            y += 2.5;
+            var transoffset = Vector3D.Multiply(lookdir, -(ZoomOutDistance - Distance));
+            var pos = Point3D.Add(RawPointer, transoffset);
+            
+
+
+            // yvec's projection on updir
+            var y = distOn(pos, Position, updir);
+            //// A little scale  better operation.
+            //double scale = Math.Abs(distOn(origCameraPos, new Point3D(0, 0, 0), lookdir));
+            //scale = 1 + ZoomOutDistance / scale;
+            //y += 1;
+            //y /= 2;
+            y /= 5;
+            y += 5;
             System.Diagnostics.Debug.WriteLine("yafter = " + y);
 
             for(int i = 0; i!= Items.Count; i++)
@@ -485,19 +499,21 @@ namespace PixelCube.Wpf
                 if(y >= lowbound && y <= upperbound)
                 {
                     // Little tricky, the element in Items are actually displayed in reversed order.
-                    SelectedIndex = Items.Count - i - 1;
+                    SelectedIndex = i;
                     break;
                 }
             }
+            System.Diagnostics.Debug.WriteLine("Selected = " + SelectedIndex);
         }
 
         private void ChangeFocus(int from, int to)
         {
-            if (from != -1)
+            if (from != -1 && from < Items.Count)
             {
                 Items[from].Symbol.DecroateTransform = Transform3D.Identity;
             }
-            Items[to].Symbol.DecroateTransform = new ScaleTransform3D(new Vector3D(1.5, 1.5, 1.5), Items[to].Symbol.Position);
+            if(to != -1 && to < Items.Count)
+                Items[to].Symbol.DecroateTransform = new ScaleTransform3D(new Vector3D(1.5, 1.5, 1.5), Items[to].Symbol.Position);
         }
 
         private void UpdateModels()

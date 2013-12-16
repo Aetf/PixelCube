@@ -141,6 +141,7 @@ namespace PixelCube.Scene3D
             }
 
             // Show cubes on screen
+            mCubeGroup.Children.Clear();
             for (int i = 0; i != sceneSize.Item1; i++)
                 for (int j = 0; j != sceneSize.Item2; j++)
                     for (int k = 0; k != sceneSize.Item3; k++)
@@ -152,6 +153,13 @@ namespace PixelCube.Scene3D
                             m.Material = new MaterialGroup();
                             (m.Material as MaterialGroup).Children.Add(
                                 new DiffuseMaterial(new SolidColorBrush(c.CubeColor)));
+
+                            //添加发光材质
+                            Color s = new Color();
+                            s.ScA = (float)0.18824; s.ScB = 1; s.ScG = 1; s.ScR = 1;
+                            (m.Material as MaterialGroup).Children.Add(     
+                                new EmissiveMaterial(new SolidColorBrush(s)));
+
                             mCubeGroup.Children.Add(m);
                         }
                     }
