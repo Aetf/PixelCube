@@ -1,13 +1,14 @@
 ﻿using System;
+using System.Windows.Media.Media3D;
 using Leap;
 
 namespace PixelCube.LeapMotion
 {
     public class PreDrawOperationEventArgs : EventArgs
     {
-        public Vector DrawPosition { set; get; }
+        public Point3D DrawPosition { set; get; }
 
-        public PreDrawOperationEventArgs(Vector drawPosition)
+        public PreDrawOperationEventArgs(Point3D drawPosition)
         {
             DrawPosition = drawPosition;
         }

@@ -116,14 +116,14 @@ namespace PixelCube
             };
             LeapT.TraceEvent += (sender, e) =>
             {
-                Point3D tipPos = e.TracePosition.ToPoint3D();
+                Point3D tipPos = e.TracePosition;
                 this.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    saomenu.Pointer = SceneControler.WorldTransform.Transform(tipPos);
+                    saomenu.RawPointer = SceneControler.WorldTransform.Transform(tipPos);
                 }));
                 this.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    slotmenu.Pointer = SceneControler.WorldTransform.Transform(tipPos);
+                    slotmenu.RawPointer = SceneControler.WorldTransform.Transform(tipPos);
                 }));
             };
             LeapT.SelectMenuEvent += (sender, e) =>
@@ -152,6 +152,14 @@ namespace PixelCube
         private void ResetWorld()
         {
             cubeGroup.Children.Clear();
+            if (Leap != null)
+            {
+                Leap.Uninitialize();
+            }
+            if (LeapT != null)
+            {
+                LeapT.Uninitialize();
+            }
             mCamera.Position = new Point3D(20, 20, 110);
             mCamera.LookDirection = new Vector3D(0, 0, -1);
             mCamera.UpDirection = new Vector3D(0, 1, 0);
@@ -196,6 +204,7 @@ namespace PixelCube
             var tmp = LSDocu.LoadArtworkDoc(ConfigProvider.Instance.SlotPath[0]);
             if(tmp != null)
             {
+                ResetWorld();
                 CurrentArt = tmp;
                 InitModules();
             }

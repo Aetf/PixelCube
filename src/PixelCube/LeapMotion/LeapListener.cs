@@ -164,12 +164,11 @@ namespace PixelCube.LeapMotion
                     pointableID = pointable.Id;
                 }
 
-                if (trans.TransPoint(pointable.TipPosition))
+                if (trans.CheckBound(pointable.TipPosition))
                 {
-                    EventHandler<TraceMenuArgs> trace = TraceEvent;
-                    if (trace != null)
+                    if (TraceEvent != null)
                     {
-                        trace(this, new TraceMenuArgs(trans.getNewVec()));
+                        TraceEvent(this, new TraceMenuArgs(trans.TransPoint(pointable.TipPosition)));
                     }
                 }
                 else // Invalid position
@@ -323,11 +322,11 @@ namespace PixelCube.LeapMotion
                             if (draw != null)
                             {
                                 ScreenTapGesture screenTapGesture = new ScreenTapGesture(gesture);
-                                if (trans.TransPoint(screenTapGesture.Position))
+                                if (trans.CheckBound(screenTapGesture.Position))
                                 {
-                                    Vector tempVec = trans.getNewVec();
-                                    tempVec.z += 8;
-                                    draw(this, new PreDrawOperationEventArgs(tempVec));
+                                    var tempPos = trans.TransPoint(screenTapGesture.Position);
+                                    tempPos.Z += 8;
+                                    draw(this, new PreDrawOperationEventArgs(tempPos));
                                 }
                             }
                             break;
@@ -418,8 +417,7 @@ namespace PixelCube.LeapMotion
                         {
                             Vector transVector = hand.PalmPosition - lastFrame.Hands[0].PalmPosition;
                             //transVector.z = 0;
-                            trans.TransVector(transVector);
-                            drag(this, new PreDragOperationEventArgs(transVector));
+                            drag(this, new PreDragOperationEventArgs(trans.TransVector(transVector)));
                         }
 
                     }
@@ -433,16 +431,16 @@ namespace PixelCube.LeapMotion
                 {
                     //pointable = currentFrame.Pointable(pointableID);
                     // Ensure that this vector is valid
-                    if (trans.TransPoint(pointable.TipPosition))
+                    if (trans.CheckBound(pointable.TipPosition))
                     {
-
+                        var tipPosition = trans.TransPoint(pointable.TipPosition);
                         switch (state)
                         {
                             case State.Normal:
                                 EventHandler<PreFocusOperationEventArgs> focus = PreFocusOperationEvent;
                                 if (focus != null)
                                 {
-                                    focus(this, new PreFocusOperationEventArgs(trans.getNewVec()));
+                                    focus(this, new PreFocusOperationEventArgs(tipPosition));
                                 }
                                 break;
 
@@ -450,7 +448,7 @@ namespace PixelCube.LeapMotion
                                 EventHandler<PreEraseOperationEventArgs> erase = PreEraseOperationEvent;
                                 if (erase != null)
                                 {
-                                    erase(this, new PreEraseOperationEventArgs(trans.getNewVec()));
+                                    erase(this, new PreEraseOperationEventArgs(tipPosition));
                                 }
 
                                 break;
@@ -459,7 +457,7 @@ namespace PixelCube.LeapMotion
                                 EventHandler<PreDrawOperationEventArgs> drawLine = PreDrawOperationEvent;
                                 if (drawLine != null)
                                 {
-                                    drawLine(this, new PreDrawOperationEventArgs(trans.getNewVec()));
+                                    drawLine(this, new PreDrawOperationEventArgs(tipPosition));
                                 }
 
                                 break;
@@ -468,7 +466,7 @@ namespace PixelCube.LeapMotion
                                 EventHandler<PreChangeColorOperationEventArgs> changeColor = PreChangeColorOperationEvent;
                                 if (changeColor != null)
                                 {
-                                    changeColor(this, new PreChangeColorOperationEventArgs(trans.getNewVec()));
+                                    changeColor(this, new PreChangeColorOperationEventArgs(tipPosition));
                                 }
                                 break;
                         }

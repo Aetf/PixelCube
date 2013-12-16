@@ -97,9 +97,7 @@ namespace PixelCube.Operations
             mwin.Dispatcher.BeginInvoke(new Action(() =>
             {
                 //获取事件参数中的坐标
-                Vector curLPPosition = e.FocusPosition;
-                //封装成C#坐标
-                Point3D precurPosition = new Point3D(curLPPosition.x, curLPPosition.y, curLPPosition.z);
+                var precurPosition = e.FocusPosition;
                 //对当前坐标进行逆变换
                 Point3D curPosition = msceneController.WorldTransform.Transform(precurPosition);
                 //x,y,z为小方块的绝对三维坐标
@@ -143,10 +141,7 @@ namespace PixelCube.Operations
             mwin.Dispatcher.BeginInvoke(new Action(() =>
             {
                 //通过事件参数获取上色小方块坐标
-                Vector drawPosition = e.DrawPosition;
-
-                //将leapmotion捕捉到的小方块坐标封装
-                Point3D preinCameraPosition = new Point3D(drawPosition.x, drawPosition.y, drawPosition.z);
+                var preinCameraPosition = e.DrawPosition;
                 //获取当前坐标相对摄像机的坐标
                 Point3D inCameraPosition = msceneController.WorldTransform.Transform(preinCameraPosition);
 
@@ -287,12 +282,12 @@ namespace PixelCube.Operations
             mwin.Dispatcher.BeginInvoke(new Action(() =>
             {
                 //从事件参数中获取平移向量参数
-                Vector transVector = e.TransVector;
+                var transVector = e.TransVector;
 
                 //i,j,k为小方块的三维位置索引,用来与画布中小方块个数比较，判断是否平移太远，若是，则取消此次平移
-                int i = (int)(transVector.x / mcubea);
-                int j = (int)(transVector.y / mcubea);
-                int k = (int)(transVector.z / mcubea);
+                int i = (int)(transVector.X / mcubea);
+                int j = (int)(transVector.Y / mcubea);
+                int k = (int)(transVector.Z / mcubea);
 
                 //假设能够平移，更新累计向量
                 dragFactor[0] += i;
@@ -303,11 +298,11 @@ namespace PixelCube.Operations
                 if (dragFactor[0] < martwork.SceneSize.Item1 && dragFactor[1] < martwork.SceneSize.Item2 && dragFactor[2] < martwork.SceneSize.Item3 && dragFactor[0] > -martwork.SceneSize.Item1 && dragFactor[1] > -martwork.SceneSize.Item2 && dragFactor[2] > -martwork.SceneSize.Item3)
                 {
 
-                    //封装为三维向量,并转换为对摄像机的转换矩阵的平移向量参数，即对原平移向量坐标取反
-                    Vector3D preinCameraTransVector = new Vector3D(-transVector.x, -transVector.y, -transVector.z);
+                    //转换为对摄像机的转换矩阵的平移向量参数，即对原平移向量坐标取反
+                    transVector.Negate();
 
                     // 使用累计转换矩阵转换向量坐标
-                    Vector3D inCameraTransVector = msceneController.WorldTransform.Transform(preinCameraTransVector);
+                    Vector3D inCameraTransVector = msceneController.WorldTransform.Transform(transVector);
 
                     var controller = msceneController as PixelCube.Scene3D.CubeSceneController;
                     controller.TranslateCamera(inCameraTransVector);
@@ -338,10 +333,7 @@ namespace PixelCube.Operations
             mwin.Dispatcher.BeginInvoke(new Action(() =>
             {
                 //通过事件参数获取上色小方块坐标
-                Vector erasePosition = e.Position;
-
-                //将leapmotion捕捉到的小方块坐标封装
-                Point3D preinCameraPosition = new Point3D(erasePosition.x, erasePosition.y, erasePosition.z);
+                var preinCameraPosition = e.Position;
 
                 //对当前坐标进行逆变换
                 Point3D inCameraPosition = msceneController.WorldTransform.Transform(preinCameraPosition);

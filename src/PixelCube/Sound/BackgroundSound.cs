@@ -15,16 +15,6 @@ namespace PixelCube.Sound
         static WindowsMediaPlayer drawsound = new WindowsMediaPlayer();
 
         /// <summary>
-        /// 获取音频文件的绝对路径
-        /// </summary>
-        public static string GetPath()
-        {
-            DirectoryInfo dr = new DirectoryInfo(Assembly.GetEntryAssembly().Location);
-            dr = dr.Parent.Parent;
-            return dr.FullName;
-        }
-
-        /// <summary>
         /// WMP 参数设置
         /// </summary>
         /// <param name="sound"></param>
@@ -33,7 +23,7 @@ namespace PixelCube.Sound
         {
             sound.uiMode = "Invisible";
             sound.settings.autoStart = false;
-            sound.URL = Path.Combine(Path.GetDirectoryName(GetPath()), "Sound//"+name+".wav");
+            sound.URL = "res//"+name+".wav";
         }
 
         static BackgroundSound()
