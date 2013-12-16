@@ -155,7 +155,7 @@ namespace PixelCube.Operations
                     return;
 
                 //设置小方块上色的颜色，目前为默认值
-                Color c = new Color();
+                Color c = Color.FromRgb(0x51, 0x3D, 0x2E);
 
                 //判断小方块绝对三维坐标是否离开画布
                 if (i < martwork.SceneSize.Item1 && j < martwork.SceneSize.Item2 && k < martwork.SceneSize.Item3

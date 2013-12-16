@@ -3875,9 +3875,9 @@
 		<col def="V0">Data</col>
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I2">ISIconIndex</col>
-		<row><td>ARPPRODUCTICON.exe</td><td/><td>F:\Develop\Git\PixelCube\src\PixelCube\res\Photoshop.ico</td><td>0</td></row>
-		<row><td>_Built1_3FD7EA3C558747079FC94F6E59802646.exe</td><td/><td>F:\Develop\Git\PixelCube\src\PixelCube\res\Photoshop.ico</td><td>0</td></row>
-		<row><td>_Built_BD28FCBCF7144B17A31B217257FCD87C.exe</td><td/><td>F:\Develop\Git\PixelCube\src\PixelCube\res\Photoshop.ico</td><td>0</td></row>
+		<row><td>ARPPRODUCTICON.exe</td><td/><td>F:\Develop\Git\PixelCube\src\PixelCube\res\logo128.ico</td><td>0</td></row>
+		<row><td>_Built1_7A45A3ED57F847F69C86EF1B9F39D04C.exe</td><td/><td>F:\Develop\Git\PixelCube\src\PixelCube\res\logo128.ico</td><td>0</td></row>
+		<row><td>_Built_149C3520B2A442F69E9BAEE3D04612CF.exe</td><td/><td>F:\Develop\Git\PixelCube\src\PixelCube\res\logo128.ico</td><td>0</td></row>
 	</table>
 
 	<table name="IniFile">
@@ -4394,9 +4394,9 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKAPPPOOLS</td><td>##IDS_PROGMSG_IIS_ROLLBACKAPPPOOLS##</td><td/></row>
 		<row><td>PROGMSG_IIS_ROLLBACKVROOTS</td><td>##IDS_PROGMSG_IIS_ROLLBACKVROOTS##</td><td/></row>
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
-		<row><td>ProductCode</td><td>{4E186017-0360-4049-8D25-D14779BD8B0B}</td><td/></row>
+		<row><td>ProductCode</td><td>{38B32B15-AFA0-45D8-8A35-ABC01701AA2C}</td><td/></row>
 		<row><td>ProductName</td><td>PixelCube</td><td/></row>
-		<row><td>ProductVersion</td><td>1.00.0002</td><td/></row>
+		<row><td>ProductVersion</td><td>1.01.0000</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
@@ -4561,8 +4561,8 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">ISComments</col>
 		<col def="S255">ISShortcutName</col>
 		<col def="I4">ISAttributes</col>
-		<row><td>_Built</td><td>pixelc_1_pixelcube</td><td>##IDS_SHORTCUT_DISPLAY_NAME1##</td><td>Component3</td><td>AlwaysInstall</td><td/><td/><td/><td>_Built_BD28FCBCF7144B17A31B217257FCD87C.exe</td><td>0</td><td>3</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
-		<row><td>_Built1</td><td>DesktopFolder</td><td>##IDS_SHORTCUT_DISPLAY_NAME1##</td><td>Component3</td><td>AlwaysInstall</td><td/><td/><td/><td>_Built1_3FD7EA3C558747079FC94F6E59802646.exe</td><td>0</td><td>3</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>_Built</td><td>pixelc_1_pixelcube</td><td>##IDS_SHORTCUT_DISPLAY_NAME1##</td><td>Component3</td><td>AlwaysInstall</td><td/><td/><td/><td>_Built_149C3520B2A442F69E9BAEE3D04612CF.exe</td><td>0</td><td>3</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>_Built1</td><td>DesktopFolder</td><td>##IDS_SHORTCUT_DISPLAY_NAME1##</td><td>Component3</td><td>AlwaysInstall</td><td/><td/><td/><td>_Built1_7A45A3ED57F847F69C86EF1B9F39D04C.exe</td><td>0</td><td>3</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="Signature">

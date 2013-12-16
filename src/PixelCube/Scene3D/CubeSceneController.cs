@@ -221,9 +221,9 @@ namespace PixelCube.Scene3D
         public void SetColor(int i, int j, int k, Color c)
         {
             // FIXME: only debug propose here!! Should delete this line in release.
-            Color s = new Color();
-            s.ScA = 1; s.ScB = (float)0.9882; s.ScG = (float)0.6863; s.ScR = (float)0.3765;
-            c = s;
+            //Color s = new Color();
+            //s.ScA = 1; s.ScB = (float)0.9882; s.ScG = (float)0.6863; s.ScR = (float)0.3765;
+            //c = s;
             // ENDFIXME
 
             var model = ModelFromIdx(i, j, k);

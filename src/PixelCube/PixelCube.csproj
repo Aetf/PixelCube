@@ -49,6 +49,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>logo128.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="HelixToolkit.Wpf">
       <HintPath>lib\HelixToolkit.Wpf.dll</HintPath>
@@ -202,7 +205,9 @@
     <Resource Include="res\plug.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="res\logo128.ico" />
     <Resource Include="res\bg.jpg" />
+    <Resource Include="logo128.ico" />
     <Content Include="res\drawsound.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
