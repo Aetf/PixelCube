@@ -123,6 +123,10 @@ namespace PixelCube.LeapMotion
             return listener;
         }
 
+        public void CancelInit()
+        {
+            listener.cancelled = true;
+        }
 
         #region Init&Uninit
         /* Intializer and Unintializer */
@@ -133,8 +137,12 @@ namespace PixelCube.LeapMotion
 
         public void Uninitialize()
         {
-            controller.RemoveListener(listener);
-            controller.Dispose();
+            if(controller != null)
+            {
+                if(listener != null)
+                    controller.RemoveListener(listener);
+                controller.Dispose();
+            }
         }
         #endregion
     }

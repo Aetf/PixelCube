@@ -1,13 +1,13 @@
 ﻿using System;
+using System.Threading;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media.Media3D;
-using HelixToolkit.Wpf;
 using PixelCube.LeapMotion;
 using PixelCube.LoadAndSave;
 using PixelCube.Operations;
 using PixelCube.Scene3D;
 using PixelCube.Sound;
-using PixelCube.Utils;
 
 namespace PixelCube
 {
@@ -47,7 +47,8 @@ namespace PixelCube
                 this.Dispatcher.BeginInvoke(new Action(() => this.WaitLeap(e.Connected)));
             };
 
-            leap.Initialize();
+            // Initilize in another thread not to block ui thread.
+            ThreadPool.QueueUserWorkItem(new WaitCallback(o => leap.Initialize()));
             return leap;
         }
 
@@ -180,8 +181,10 @@ namespace PixelCube
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             bgm = CreateBGM();
-            CurrentArt = LSDocu.NewArtwork();
+            waitingimg.Focus();
+            Keyboard.AddKeyDownHandler(this, waiting_KeyDown);
 
+            CurrentArt = LSDocu.NewArtwork();
             // Post init event in message queue
             // not to block the window.
             this.Dispatcher.BeginInvoke(new Action(InitModules));
@@ -231,6 +234,21 @@ namespace PixelCube
                 };
             timer.Elapsed += (o, arg) => this.Dispatcher.BeginInvoke(new Action(()=> this.Close()));
             timer.Start();
+        }
+
+        private void waiting_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (waitingimg.Visibility != Visibility.Visible)
+                return;
+
+            switch(e.Key)
+            {
+            case System.Windows.Input.Key.Escape:
+                    CurrentArt.FileName = ConfigProvider.Instance.SlotPath[1];
+                    LSDocu.SaveDocument(CurrentArt);
+                    this.Close();
+                break;
+            }
         }
     }
 }

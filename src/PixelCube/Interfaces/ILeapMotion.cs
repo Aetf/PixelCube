@@ -8,6 +8,11 @@ namespace PixelCube.LeapMotion
         void Initialize();    // LeapMotion initialize
         void Uninitialize();
 
+        /// <summary>
+        /// 取消初始化过程，取消后必须重新实例化该对象。
+        /// </summary>
+        void CancelInit();
+
         //LeapListener GetListener();
         event EventHandler<LeapModeChangeEventArgs> LeapModeChangeEvent;    // Device status change
         event EventHandler<PreDrawOperationEventArgs> PreDrawOperationEvent;    // Draw event
