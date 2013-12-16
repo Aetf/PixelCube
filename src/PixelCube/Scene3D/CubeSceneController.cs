@@ -152,6 +152,13 @@ namespace PixelCube.Scene3D
                             m.Material = new MaterialGroup();
                             (m.Material as MaterialGroup).Children.Add(
                                 new DiffuseMaterial(new SolidColorBrush(c.CubeColor)));
+
+                            //添加发光材质
+                            Color s = new Color();
+                            s.ScA = (float)0.18824; s.ScB = 1; s.ScG = 1; s.ScR = 1;
+                            (m.Material as MaterialGroup).Children.Add(     
+                                new EmissiveMaterial(new SolidColorBrush(s)));
+
                             mCubeGroup.Children.Add(m);
                         }
                     }
