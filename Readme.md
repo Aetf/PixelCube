@@ -1,4 +1,5 @@
 #PixelCube#
+---
 3D像素画创作，利用LeapMotion带来的灵活操纵能力，充分发挥创作灵感
 ---
 Pixel Cube is a unique little pixel rotating and painting game, in which you design, paint and rotate a cloud of pixels to create a beautiful 3D image, almost like magic. With the power of LeapMotion, you can twist the pixels in a natural way virtually like holding the pixels in your hands! Just Use you imagination and intuition moving your fingers now!
